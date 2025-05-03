@@ -10,6 +10,8 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "bcrypt": "^5.1.1",
     "kysely": "^0.28.2",
     "mysql2": "^3.14.0",
     "nuxt": "^3.16.2",

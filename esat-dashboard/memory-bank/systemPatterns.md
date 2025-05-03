@@ -18,10 +18,13 @@ The project follows the standard Nuxt 3 architecture, leveraging its file-based 
         *   `server/api/esats/[id].get.ts`: Get a single resource by ID (GET /api/esats/{id})
         *   `server/api/esats/[id].put.ts`: Update a resource by ID (PUT /api/esats/{id})
         *   `server/api/esats/[id].delete.ts`: Delete a resource by ID (DELETE /api/esats/{id})
-    *   **Request Handling:** Using `h3` utilities (`defineEventHandler`, `getRouterParam`, `readBody`, `setResponseStatus`) within API route handlers.
-2.  **Type-Safe Database Access:** Employing Kysely with TypeScript interfaces (`Database`, `EsatTable`, etc. in `server/utils/db.ts`) to ensure type safety from the database query down to the API response. Includes basic input type definitions (`EsatInsertData`, `EsatUpdateData`) in API handlers.
-3.  **Environment Variable Configuration:** Standard practice using `.env` for local development, with server-side variables accessed securely via Nuxt's `runtimeConfig` defined in `nuxt.config.ts`.
-4.  **Centralized DB Utility:** Creating a single point of access (`server/utils/db.ts`) for the database instance promotes consistency and simplifies potential future modifications to the database connection logic.
+    *   This pattern is replicated for the `users` resource (`server/api/users/`, `server/api/users/[id]/`).
+    *   **Request Handling:** Using `h3` utilities (`defineEventHandler`, `getRouterParam`, `readBody`, `setResponseStatus`, `createError`) within API route handlers.
+    *   **Response Filtering:** Sensitive data (e.g., `password_hash`) is explicitly excluded from data returned by API endpoints using Kysely's `.select()` or type definitions (`Omit`).
+2.  **Type-Safe Database Access:** Employing Kysely with TypeScript interfaces (`Database`, `EsatTable`, `UserTable`, etc. in `server/utils/db.ts`) to ensure type safety from the database query down to the API response. Includes specific input/output type definitions (e.g., `UserInsertData`, `UserUpdateData`, `UserSelectable`) in API handlers.
+3.  **Password Hashing:** Using `bcrypt` library to securely hash user passwords before storing them in the database (`password_hash` column). Hashing occurs in the POST (`users.post.ts`) and PUT (`users/[id].put.ts`) endpoints.
+4.  **Environment Variable Configuration:** Standard practice using `.env` for local development, with server-side variables accessed securely via Nuxt's `runtimeConfig` defined in `nuxt.config.ts`.
+5.  **Centralized DB Utility:** Creating a single point of access (`server/utils/db.ts`) for the database instance promotes consistency and simplifies potential future modifications to the database connection logic.
 
 ## Future Considerations
 

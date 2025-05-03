@@ -19,7 +19,7 @@ interface EsatTable {
   updated_at: Date; // TIMESTAMP
 }
 
-interface UserTable {
+export interface UserTable { // Added export keyword
   id: number; // INT AUTO_INCREMENT
   esat_id: number | null; // INT NULL (Foreign key) - Use snake_case to match DB
   email: string; // VARCHAR(255) UNIQUE
