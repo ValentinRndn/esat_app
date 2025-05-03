@@ -22,3 +22,4 @@ The `esat-dashboard` aims to provide a centralized, web-based platform to stream
 *   **Reliability:** Ensure data integrity and consistent performance.
 
 *(This context will evolve as specific features are defined and developed.)*
+ 
