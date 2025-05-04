@@ -30,7 +30,7 @@ export interface UserTable { // Added export keyword
   updated_at: Date; // TIMESTAMP
 }
 
-interface WorkerTable {
+export interface WorkerTable {
   id: number; // INT AUTO_INCREMENT
   esat_id: number; // INT NOT NULL (Foreign key)
   first_name: string; // VARCHAR(100)

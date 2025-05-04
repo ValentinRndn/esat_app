@@ -1,40 +1,56 @@
-# Active Context: ESAT Dashboard (Initialization Phase)
+# Active Context: ESAT Dashboard (Frontend Development Phase)
 
 ## Current Focus
 
-The primary focus has been establishing the foundational structure of the `esat-dashboard` project. This involved:
-*   Setting up the Nuxt 3 project.
-*   Configuring environment variables for database connection.
-*   Integrating Kysely as the type-safe query builder.
-*   Creating a basic API endpoint (`/api/esats`) to test the database connection.
-*   Initializing the core Memory Bank documentation.
-
-## Current Focus
-
-Developing the core API endpoints for managing ESAT data. Starting with full CRUD (Create, Read, Update, Delete) operations for the `esats` entity.
+The project has progressed from the API development phase to frontend implementation. The current focus is on:
+*   Building a responsive and user-friendly interface for the dashboard.
+*   Implementing CRUD operations in the UI for all core entities.
+*   Connecting the frontend components to the API endpoints.
+*   Ensuring a consistent user experience across the application.
+*   Documenting progress and patterns in the Memory Bank.
 
 ## Recent Changes
 
-*   **Fixed DB Connection:** Resolved the `runtimeConfig` validation issue in `server/utils/db.ts` that incorrectly flagged empty passwords as missing configuration. The application now connects to the database successfully.
-*   **Verified Setup:** Confirmed the Nuxt 3 project, Kysely integration, and database connection are working as expected.
+*   **Created Application Layout:** Implemented a responsive layout with navigation in `layouts/default.vue`.
+*   **Implemented Dashboard:** Created a dashboard homepage in `pages/index.vue` showing entity counts and quick actions.
+*   **Developed ESAT Management UI:** Built complete CRUD interface for ESATs:
+    *   List view (`pages/esats/index.vue`) with delete confirmation modal
+    *   Detail view (`pages/esats/[id].vue`) showing related users and workers
+    *   Create form (`pages/esats/create.vue`) with validation
+    *   Edit form (`pages/esats/[id]/edit.vue`) with data loading and update functionality
+*   **Updated Documentation:** Kept Memory Bank files (`progress.md`) in sync with implementation progress.
 
 ## Next Steps (Immediate)
 
-1.  **Implement ESAT CRUD API:**
-    *   Modify `server/api/esats.get.ts` to fetch all ESATs.
-    *   Create `server/api/esats/[id].get.ts` to fetch a single ESAT.
-    *   Create `server/api/esats.post.ts` to create a new ESAT.
-    *   Create `server/api/esats/[id].put.ts` to update an ESAT.
-    *   Create `server/api/esats/[id].delete.ts` to delete an ESAT.
-2.  **Update Schema/Types (If Necessary):** Review and potentially update the `EsatTable` interface in `server/utils/db.ts` if the actual database schema differs significantly from the placeholder.
-3.  **Update Memory Bank:** Document the implemented API endpoints in `progress.md` and `systemPatterns.md`.
+1.  **User Management UI:**
+    *   Create list view (`pages/users/index.vue`)
+    *   Implement detail view (`pages/users/[id].vue`)
+    *   Build create form with password handling (`pages/users/create.vue`)
+    *   Develop edit form (`pages/users/[id]/edit.vue`)
+2.  **Worker Management UI:**
+    *   Create list view (`pages/workers/index.vue`)
+    *   Implement detail view (`pages/workers/[id].vue`)
+    *   Build create form (`pages/workers/create.vue`)
+    *   Develop edit form (`pages/workers/[id]/edit.vue`)
+3.  **Authentication & Authorization:**
+    *   Implement login page and functionality
+    *   Add user session management
+    *   Set up route guards based on user roles
 
 ## Key Decisions/Patterns Confirmed
 
-*   Nuxt 3 as the full-stack framework.
-*   MySQL as the database.
-*   Kysely for type-safe database access.
-*   Environment variables (`.env`) for configuration, accessed server-side via Nuxt's `runtimeConfig`.
-*   Centralized database utility (`db.ts`).
-*   Nuxt server routes for the API.
-*   Memory Bank for project documentation.
+*   **Architecture:** Nuxt 3 as the full-stack framework with server API routes.
+*   **Database:** MySQL with Kysely for type-safe query building.
+*   **API Structure:** Consistent RESTful CRUD pattern across all entities.
+*   **Security:** Password hashing with bcrypt for user authentication.
+*   **Configuration:** Environment variables via `.env` and Nuxt's `runtimeConfig`.
+*   **Documentation:** Comprehensive Memory Bank for project knowledge persistence.
+*   **Type Safety:** Strict TypeScript interfaces for database tables and API operations.
+*   **Validation:** Input validation for required fields and enum values.
+*   **UI Patterns:**
+    *   Consistent page structure with header actions
+    *   Card-based content containers
+    *   Form layout and validation approach
+    *   Modal confirmation for destructive actions
+    *   Loading and error state handling
+    *   Responsive design using CSS Grid and Flexbox
