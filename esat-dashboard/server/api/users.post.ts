@@ -1,6 +1,6 @@
 import { defineEventHandler, readBody, setResponseStatus } from 'h3';
 import { db, UserTable } from '../utils/db'; // Adjust path
-import { Insertable, Selectable } from 'kysely';
+import { Insertable, Selectable, sql } from 'kysely';
 import bcrypt from 'bcrypt';
 
 // Define the type for the data expected in the request body for creating a user
@@ -8,6 +8,8 @@ import bcrypt from 'bcrypt';
 // Include the plain password for hashing
 type UserInsertData = Omit<Insertable<UserTable>, 'id' | 'created_at' | 'updated_at' | 'password_hash'> & {
   password?: string; // Make password optional in input, but we'll validate it
+  first_name?: string; // Inclure first_name qui est dans la table
+  last_name?: string; // Inclure last_name qui est dans la table
 };
 
 // Define the type for the user data we expect to return (excluding password hash)
@@ -38,33 +40,53 @@ export default defineEventHandler(async (event): Promise<UserSelectable> => {
     // Hash the password
     const password_hash = await bcrypt.hash(body.password, SALT_ROUNDS);
 
-    // Prepare data for insertion (excluding plain password)
-    // Kysely handles omitted DB-generated fields like id, created_at, updated_at
-
-    // Insert the new user into the database, passing values directly
-    const result = await db
+    // 1. Insérer l'utilisateur
+    const insertResult = await db
       .insertInto('users')
-      .values({ // Pass object literal directly and cast type
+      .values({
+        first_name: body.first_name ?? '',
+        last_name: body.last_name ?? '',
         esat_id: body.esat_id ?? null,
         email: body.email,
-        password_hash: password_hash, // Use the hashed password
+        password_hash: password_hash,
         role: body.role,
         is_active: body.is_active ?? true,
-        // created_at and updated_at are handled by the DB
-      } as Insertable<UserTable>) // Explicitly cast the object
-      .returning([ // Return the fields we want, excluding password_hash
+      } as Insertable<UserTable>)
+      .execute();
+
+    // 2. Récupérer l'ID inséré en utilisant une table fictive comme base
+    // Cette méthode est compatible avec le typage de Kysely
+    const lastIdResult = await db
+      .selectFrom('users') // Table existante comme base
+      .select(sql`LAST_INSERT_ID()`.as('id'))
+      .limit(1)
+      .executeTakeFirstOrThrow();
+
+    const insertedId = Number(lastIdResult.id);
+
+    if (!insertedId) {
+      throw new Error('Failed to get inserted ID');
+    }
+
+    // 3. Récupérer l'utilisateur nouvellement créé
+    const newUser = await db
+      .selectFrom('users')
+      .select([
         'id',
         'esat_id',
         'email',
+        'first_name',
+        'last_name',
         'role',
         'is_active',
         'created_at',
         'updated_at',
       ])
-      .executeTakeFirstOrThrow(); // Use OrThrow to ensure a result is returned
+      .where('id', '=', insertedId)
+      .executeTakeFirstOrThrow();
 
     setResponseStatus(event, 201); // Created
-    return result as UserSelectable; // Type assertion
+    return newUser as UserSelectable;
 
   } catch (error: any) {
     // Handle potential duplicate email errors (specific error code might vary by DB driver)

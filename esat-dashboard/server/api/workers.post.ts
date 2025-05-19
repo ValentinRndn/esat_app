@@ -39,41 +39,39 @@ export default defineEventHandler(async (event): Promise<WorkerSelectable> => {
 
   try {
     // Insert the new worker into the database
+    // MySQL does not support the RETURNING clause directly in INSERT statements.
+    // Kysely's executeTakeFirstOrThrow() might still return the insertId for MySQL.
     const result = await db
       .insertInto('workers')
       .values(body as Insertable<WorkerTable>) // Cast to ensure type compatibility
-      .returning([
-        'id',
-        'esat_id',
-        'first_name',
-        'last_name',
-        'date_of_birth',
-        'contact_info',
-        'internal_code',
-        'entry_date_esat',
-        'work_regime',
-        'part_time_percentage',
-        'work_hours',
-        'living_situation',
-        'mobility_info',
-        'protection_measure',
-        'health_info_summary',
-        'educational_background',
-        'professional_background_summary',
-        'created_at',
-        'updated_at'
-      ]) // Explicitly list all fields to return
+      // Removed .returning() as it's not supported by MySQL
       .executeTakeFirstOrThrow(); // Use OrThrow to ensure a result is returned
 
+    // For MySQL, result.insertId should contain the ID of the newly inserted row.
+    // We need to return an object that matches the expected WorkerSelectable type,
+    // which includes the ID. We can construct a basic object with the ID.
+    // A more robust solution might involve a separate SELECT query after the INSERT
+    // to fetch the complete inserted row, especially if default values or triggers
+    // modify the data upon insertion. For now, we'll return a minimal object with the ID.
+    const newWorkerId = Number(result.insertId); // Get the insertId
+
+    // Return a minimal object with the ID, as the frontend expects an object with an 'id'
+    const newWorker = { id: newWorkerId } as WorkerSelectable; // Cast to the expected type
+
     setResponseStatus(event, 201); // Created
-    return result;
+    return newWorker; // Return the object with the new ID
   } catch (error: any) {
     console.error('Error creating worker:', error);
     // Throw a generic server error for other issues
     throw createError({
       statusCode: 500,
       statusMessage: 'Failed to create worker',
-      message: error.message,
+      message: error.message, // Include error message for debugging (consider removing in production)
     });
   }
 });
+// Note: If you need to return the full inserted row, you would typically
+// perform a SELECT query immediately after the INSERT using the newWorkerId.
+// Example:
+// const fullNewWorker = await db.selectFrom('workers').selectAll().where('id', '=', newWorkerId).executeTakeFirstOrThrow();
+// return fullNewWorker;

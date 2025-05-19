@@ -22,17 +22,7 @@ The project has progressed from the API development phase to frontend implementa
 
 ## Next Steps (Immediate)
 
-1.  **User Management UI:**
-    *   Create list view (`pages/users/index.vue`)
-    *   Implement detail view (`pages/users/[id].vue`)
-    *   Build create form with password handling (`pages/users/create.vue`)
-    *   Develop edit form (`pages/users/[id]/edit.vue`)
-2.  **Worker Management UI:**
-    *   Create list view (`pages/workers/index.vue`)
-    *   Implement detail view (`pages/workers/[id].vue`)
-    *   Build create form (`pages/workers/create.vue`)
-    *   Develop edit form (`pages/workers/[id]/edit.vue`)
-3.  **Authentication & Authorization:**
+1.  **Authentication & Authorization:**
     *   Implement login page and functionality
     *   Add user session management
     *   Set up route guards based on user roles
