@@ -63,7 +63,120 @@
           <h2 class="text-lg font-semibold text-gray-800">Informations du nouveau travailleur</h2>
         </div>
       </div>
-      
+
+      <!-- Composant de dépôt de PDF pour auto-remplissage -->
+      <div class="p-4 bg-blue-50 border-b border-blue-200">
+        <div class="flex flex-col md:flex-row items-start justify-between mb-4">
+          <div class="mb-4 md:mb-0">
+            <h3 class="text-base font-medium text-blue-800 mb-1">Importation depuis un PDF</h3>
+            <p class="text-sm text-blue-600">
+              Déposez un fichier PDF contenant des informations sur le travailleur pour remplir automatiquement le formulaire.
+            </p>
+          </div>
+          <div class="flex flex-col w-full md:w-auto">
+            <label for="pdf-upload" class="inline-flex items-center px-4 py-2 border border-blue-500 shadow-sm text-sm font-medium rounded-md text-blue-700 bg-white hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200 cursor-pointer">
+              <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              Sélectionner un PDF
+              <input 
+                id="pdf-upload" 
+                type="file" 
+                accept="application/pdf" 
+                class="hidden" 
+                @change="handlePdfUpload" 
+                :disabled="pdfProcessing"
+              />
+            </label>
+            <div v-if="selectedPdfName" class="mt-2 text-sm text-blue-700 flex items-center">
+              <svg class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              {{ selectedPdfName }}
+            </div>
+          </div>
+        </div>
+        
+        <!-- Zone de glisser-déposer -->
+        <div 
+          class="border-2 border-dashed rounded-lg p-8 text-center transition-colors duration-200 mt-2"
+          :class="[
+            isDragging ? 'border-blue-500 bg-blue-100' : 'border-blue-300 hover:border-blue-500',
+            pdfProcessing ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+          ]"
+          @dragover.prevent="isDragging = true"
+          @dragleave.prevent="isDragging = false"
+          @drop.prevent="handleFileDrop"
+          @click="!pdfProcessing && $refs.fileInput.click()"
+          :aria-disabled="pdfProcessing"
+        >
+          <input 
+            ref="fileInput"
+            type="file"
+            accept="application/pdf"
+            class="hidden"
+            @change="handlePdfUpload"
+            :disabled="pdfProcessing"
+          />
+          
+          <svg class="h-12 w-12 mx-auto text-blue-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          
+          <p class="text-blue-700 font-medium">
+            Glissez et déposez votre PDF ici
+          </p>
+          <p class="text-blue-600 text-sm mt-1">
+            ou cliquez pour sélectionner un fichier
+          </p>
+        </div>
+        
+        <!-- État de traitement du PDF -->
+        <div v-if="pdfProcessing" class="mt-3 p-3 bg-white rounded-md flex items-center">
+          <svg class="animate-spin h-5 w-5 text-blue-600 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <span class="text-blue-800">Analyse du PDF en cours, veuillez patienter...</span>
+        </div>
+        
+        <!-- Message d'erreur PDF -->
+        <div v-if="pdfError" class="mt-3 p-3 bg-red-50 border-l-4 border-red-500 rounded-md">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <svg class="h-5 w-5 text-red-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span class="text-red-700">{{ pdfError }}</span>
+            </div>
+            <button 
+              @click="resetPdfState" 
+              class="px-3 py-1 border border-red-300 rounded-md text-sm text-red-700 hover:bg-red-100 transition-colors duration-200"
+            >
+              Réessayer
+            </button>
+          </div>
+        </div>
+        
+        <!-- Message de succès PDF -->
+        <div v-if="pdfSuccess" class="mt-3 p-3 bg-green-50 border-l-4 border-green-500 rounded-md">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <svg class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              <span class="text-green-700">PDF analysé avec succès ! Le formulaire a été pré-rempli.</span>
+            </div>
+            <button 
+              @click="resetPdfState" 
+              class="px-3 py-1 border border-green-300 rounded-md text-sm text-green-700 hover:bg-green-100 transition-colors duration-200"
+            >
+              Nouveau PDF
+            </button>
+          </div>
+        </div>
+      </div>
+
       <div class="p-6 space-y-6">
         <!-- Navigation par onglets -->
         <div class="mb-4 border-b border-gray-200">
@@ -979,6 +1092,173 @@ const loadingEsats = ref(true);
 const esatsError = ref(null);
 const esatSelectError = ref(null);
 
+// Variables pour la gestion du PDF
+const selectedPdfName = ref(null);
+const pdfProcessing = ref(false);
+const pdfError = ref(null);
+const pdfSuccess = ref(false);
+const isDragging = ref(false);
+const fileInput = ref(null); // Référence à l'input file
+
+// Fonction pour gérer l'upload du PDF
+const handlePdfUpload = async (event) => {
+  const file = event.target.files[0];
+  if (!file) return;
+  
+  // Vérifier que c'est bien un PDF
+  if (file.type !== 'application/pdf') {
+    pdfError.value = 'Veuillez sélectionner un fichier PDF valide.';
+    return;
+  }
+  
+  selectedPdfName.value = file.name;
+  pdfProcessing.value = true;
+  pdfError.value = null;
+  pdfSuccess.value = false;
+  
+  try {
+    // Lire le fichier PDF
+    const reader = new FileReader();
+    
+    reader.onload = async (e) => {
+      const pdfData = e.target.result;
+      
+      // Convertir les données binaires en base64
+      const base64Data = btoa(
+        new Uint8Array(pdfData)
+          .reduce((data, byte) => data + String.fromCharCode(byte), '')
+      );
+      
+      // Appeler l'API pour extraire les informations
+      await extractDataFromPdf(base64Data);
+    };
+    
+    reader.onerror = () => {
+      pdfError.value = "Erreur lors de la lecture du fichier PDF.";
+      pdfProcessing.value = false;
+    };
+    
+    // Lire le fichier comme un tableau binaire
+    reader.readAsArrayBuffer(file);
+    
+  } catch (err) {
+    console.error('Erreur lors du traitement du PDF:', err);
+    pdfError.value = `Erreur: ${err.message}`;
+    pdfProcessing.value = false;
+  }
+};
+
+// Fonction pour extraire les données du PDF avec Gemini API
+const extractDataFromPdf = async (base64Data) => {
+  try {
+    // Appel à l'API Gemini
+    const response = await fetch('/api/extract-pdf-data', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        pdfData: base64Data,
+      }),
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Erreur HTTP: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    // Vérifier si la réponse contient une erreur
+    if (!response.ok || data.statusCode >= 400) {
+      // Si le serveur a renvoyé un message d'erreur spécifique, l'utiliser
+      if (data.error) {
+        throw new Error(data.error);
+      } else {
+        throw new Error(`Erreur HTTP: ${response.status}`);
+      }
+    }
+    
+    // Vérifier si des données ont été extraites
+    if (!data.extractedData || Object.keys(data.extractedData).length === 0) {
+      console.error('Aucune donnée extraite du PDF:', data);
+      throw new Error('Aucune donnée n\'a pu être extraite du PDF');
+    }
+    
+    console.log('Données extraites du PDF:', data.extractedData);
+    
+    // Remplir le formulaire avec les données extraites
+    if (data && data.extractedData) {
+      const extractedData = data.extractedData;
+      
+      // Mettre à jour les champs du formulaire avec les données extraites
+      if (extractedData.first_name) formData.value.first_name = extractedData.first_name;
+      if (extractedData.last_name) formData.value.last_name = extractedData.last_name;
+      if (extractedData.birth_date) formData.value.birth_date = extractedData.birth_date;
+      if (extractedData.contact_info) formData.value.contact_info = extractedData.contact_info;
+      if (extractedData.internal_code) formData.value.internal_code = extractedData.internal_code;
+      if (extractedData.entry_date_esat) formData.value.entry_date_esat = extractedData.entry_date_esat;
+      if (extractedData.work_regime) formData.value.work_regime = extractedData.work_regime;
+      if (extractedData.part_time_percentage) formData.value.part_time_percentage = extractedData.part_time_percentage;
+      if (extractedData.work_hours) formData.value.work_hours = extractedData.work_hours;
+      if (extractedData.living_situation) formData.value.living_situation = extractedData.living_situation;
+      if (extractedData.mobility_info) formData.value.mobility_info = extractedData.mobility_info;
+      if (extractedData.protection_measure) formData.value.protection_measure = extractedData.protection_measure;
+      if (extractedData.health_info_summary) formData.value.health_info_summary = extractedData.health_info_summary;
+      if (extractedData.educational_background) formData.value.educational_background = extractedData.educational_background;
+      if (extractedData.professional_background_summary) formData.value.professional_background_summary = extractedData.professional_background_summary;
+      if (extractedData.legal_guardian) formData.value.legal_guardian = extractedData.legal_guardian;
+      if (extractedData.emergency_contact) formData.value.emergency_contact = extractedData.emergency_contact;
+      if (extractedData.vigilance_points) formData.value.vigilance_points = extractedData.vigilance_points;
+      
+      // Identifier les champs qui ont été extraits
+      const extractedFields = Object.keys(extractedData).filter(key => 
+        extractedData[key] !== null && extractedData[key] !== undefined && extractedData[key] !== ''
+      );
+      
+      // Afficher un message de succès
+      pdfSuccess.value = true;
+      
+      // Faire défiler vers le premier onglet
+      activeTab.value = 0;
+      
+      console.log('Formulaire rempli avec les données extraites:', extractedData);
+      console.log('Champs extraits:', extractedFields);
+      
+      // Notification visuelle des champs remplis
+      setTimeout(() => {
+        extractedFields.forEach(field => {
+          const element = document.getElementById(field);
+          if (element) {
+            element.classList.add('bg-green-50', 'border-green-300');
+            setTimeout(() => {
+              element.classList.remove('bg-green-50', 'border-green-300');
+            }, 3000);
+          }
+        });
+      }, 500);
+    } else {
+      throw new Error('Aucune donnée extraite du PDF');
+    }
+    
+  } catch (err) {
+    console.error('Erreur lors de l\'extraction des données du PDF:', err);
+    
+    // Analyse plus détaillée de l'erreur
+    if (err.message.includes('Aucune donnée extraite')) {
+      pdfError.value = "Aucune donnée n'a pu être extraite du PDF. Vérifiez que le document contient bien des informations sur un travailleur.";
+    } else if (err.message.includes('API Gemini')) {
+      // C'est une erreur de l'API Gemini, on l'affiche telle quelle
+      pdfError.value = err.message;
+    } else if (err.message.includes('NetworkError') || err.message.includes('Failed to fetch')) {
+      pdfError.value = "Erreur de connexion au service d'extraction. Vérifiez votre connexion internet et réessayez.";
+    } else {
+      pdfError.value = `Erreur lors de l'extraction: ${err.message}`;
+    }
+  } finally {
+    pdfProcessing.value = false;
+  }
+};
+
 // Convertir les sélections en chaînes pour le formData
 watch(selectedReadingSkills, (newVal) => {
   formData.value.reading_skills = newVal.join(',');
@@ -1088,6 +1368,37 @@ const submitForm = async () => {
   } finally {
     submitting.value = false;
   }
+};
+
+// Fonction pour gérer le glisser-déposer des fichiers
+const handleFileDrop = (event) => {
+  isDragging.value = false;
+  const file = event.dataTransfer.files[0];
+  
+  if (!file) return;
+  
+  // Vérifier que c'est un PDF
+  if (file.type !== 'application/pdf') {
+    pdfError.value = 'Veuillez déposer un fichier PDF valide.';
+    return;
+  }
+  
+  // Créer un objet qui imite l'événement change d'un input file
+  const fakeEvent = {
+    target: {
+      files: [file]
+    }
+  };
+  
+  // Utiliser la fonction existante pour traiter le fichier
+  handlePdfUpload(fakeEvent);
+};
+
+// Réinitialiser l'état du processus d'extraction PDF
+const resetPdfState = () => {
+  pdfProcessing.value = false;
+  pdfError.value = null;
+  pdfSuccess.value = false;
 };
 </script>
 

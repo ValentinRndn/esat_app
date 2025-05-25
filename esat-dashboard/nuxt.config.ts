@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
 
   runtimeConfig: {
-    geminiApiKey: process.env.NUXT_GEMINI_API_KEY,
+    geminiApiKey: process.env.NUXT_GEMINI_API_KEY || process.env.GEMINI_API_KEY,
     dbHost: process.env.DB_HOST,
     dbPort: process.env.DB_PORT,
     dbUser: process.env.DB_USER,
