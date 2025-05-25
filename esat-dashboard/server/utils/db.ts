@@ -3,6 +3,103 @@ import { Kysely, MysqlDialect, type Selectable, type Generated } from 'kysely'; 
 import { createPool } from 'mysql2';
 import { useRuntimeConfig } from '#imports';
 
+// --- Helpers pour les champs spéciaux ---
+
+/**
+ * Nettoie les données avant de les envoyer à la base de données
+ * Prévient les erreurs SQL et les injections
+ */
+export function sanitizeDbInput<T extends Record<string, any>>(input: T): Record<string, any> {
+  const result: Record<string, any> = { ...input };
+
+  // Liste des champs à traiter avec soin
+  const commaListFields = [
+    'reading_skills', 'writing_skills', 
+    'calculation_skills', 'next_steps'
+  ];
+  
+  const jsonFields = [
+    'activity_sectors',
+    'professional_evaluation', 'social_relations', 'spatial_temporal_orientation',
+    'professional_experiences', 'declined_applications',
+    'professional_project_2_years', 'social_life_project', 'training_project', 
+    'employment_insertion_project'
+  ];
+
+  // Nettoyer les champs de liste (ne pas les convertir en JSON, mais s'assurer qu'ils sont bien formatés)
+  for (const field of commaListFields) {
+    if (field in result && result[field] !== null && result[field] !== undefined) {
+      // Si c'est un tableau, le convertir en chaîne
+      if (Array.isArray(result[field])) {
+        result[field] = result[field].join(',');
+      }
+      
+      // S'assurer que c'est une chaîne et supprimer les caractères qui pourraient causer des problèmes
+      if (typeof result[field] === 'string') {
+        result[field] = result[field].replace(/['"`]/g, '');
+      }
+    }
+  }
+
+  // Traiter les champs JSON
+  for (const field of jsonFields) {
+    if (field in result && result[field] !== null && result[field] !== undefined) {
+      // Si c'est déjà un objet, le convertir en chaîne JSON
+      if (typeof result[field] === 'object') {
+        try {
+          result[field] = JSON.stringify(result[field]);
+        } catch (e) {
+          console.error(`Erreur lors de la conversion en JSON pour ${field}:`, e);
+          result[field] = null;
+        }
+      } 
+      // Si c'est une chaîne, s'assurer qu'elle est au format JSON valide
+      else if (typeof result[field] === 'string') {
+        const trimmed = result[field].trim();
+        if (trimmed === '') {
+          result[field] = null;
+        } else if (!(trimmed.startsWith('{') || trimmed.startsWith('['))) {
+          // Si ce n'est pas déjà du JSON (ne commence pas par { ou [)
+          try {
+            // Essayer de le convertir en JSON
+            result[field] = JSON.stringify(trimmed);
+          } catch (e) {
+            console.error(`Erreur lors de la conversion en JSON pour ${field}:`, e);
+            result[field] = null;
+          }
+        } else {
+          // Vérifier si c'est un JSON valide
+          try {
+            JSON.parse(trimmed);
+            // Si ça passe, c'est déjà un JSON valide, on garde tel quel
+          } catch (e) {
+            // Si ce n'est pas un JSON valide, mettre à null
+            console.error(`Chaîne JSON invalide pour ${field}:`, e);
+            result[field] = null;
+          }
+        }
+      }
+    }
+  }
+
+  // Pour les champs booléens, s'assurer qu'ils sont bien convertis
+  const booleanFields = ['has_cv', 'has_motivation_letter', 'has_cpf_account', 'information_sharing_consent'];
+  for (const field of booleanFields) {
+    if (field in result) {
+      // Convertir en vrai booléen
+      if (result[field] === 1 || result[field] === '1' || result[field] === 'true' || result[field] === true) {
+        result[field] = true;
+      } else if (result[field] === 0 || result[field] === '0' || result[field] === 'false' || result[field] === false) {
+        result[field] = false;
+      } else {
+        result[field] = null;
+      }
+    }
+  }
+
+  return result as T;
+}
+
 // --- Interfaces des Tables ---
 
 export interface EsatTable {
@@ -53,21 +150,26 @@ export interface WorkerTable {
   created_at: Date;
   updated_at: Date;
   
-  // Ajoutez tous les nouveaux champs ici
+  // Champs texte simples
   legal_guardian: string | null;
   emergency_contact: string | null;
+  // Liste séparée par des virgules (pas un JSON)
   activity_sectors: string | null;
   activity_sectors_other: string | null;
   vigilance_points: string | null;
   vigilance_actions: string | null;
+  // JSON
   spatial_temporal_orientation: string | null;
+  // Listes séparées par des virgules (pas JSON)
   reading_skills: string | null;
   writing_skills: string | null;
   calculation_skills: string | null;
   computer_skills: string | null;
   computer_skills_comments: string | null;
+  // JSON
   professional_evaluation: string | null;
   professional_evaluation_comments: string | null;
+  // JSON
   social_relations: string | null;
   social_relations_comments: string | null;
   has_cv: boolean | null;
@@ -78,19 +180,26 @@ export interface WorkerTable {
   desired_companies: string | null;
   geographic_mobility: string | null;
   geographic_mobility_other: string | null;
+  // JSON
   professional_experiences: string | null;
+  // JSON
   declined_applications: string | null;
   exceptional_experiences: string | null;
   project_difficulties: string | null;
   professional_project_clarity: number | null;
   ordinary_work_capacity: number | null;
   monitor_assessment: string | null;
+  // Liste séparée par des virgules
   next_steps: string | null;
   information_sharing_consent: boolean | null;
   signature_name: string | null;
+  // JSON
   professional_project_2_years: string | null;
+  // JSON
   social_life_project: string | null;
+  // JSON
   training_project: string | null;
+  // JSON
   employment_insertion_project: string | null;
 }
 export type WorkerSelectable = Selectable<WorkerTable>;

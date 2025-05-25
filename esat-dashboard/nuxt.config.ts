@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ['@nuxtjs/tailwindcss'],
-    css: ['~/assets/css/main.css'],
+  css: ['~/assets/css/main.css'],
 
   runtimeConfig: {
     geminiApiKey: process.env.NUXT_GEMINI_API_KEY,
