@@ -1,4 +1,4 @@
-import { defineEventHandler, getRouterParam, readBody, setResponseStatus } from 'h3';
+import { defineEventHandler, getRouterParam, readBody, setResponseStatus, createError } from 'h3';
 import { db, WorkerTable } from '../../utils/db'; // Adjust path
 import { Updateable, Selectable } from 'kysely';
 
@@ -50,27 +50,7 @@ export default defineEventHandler(async (event): Promise<WorkerSelectable | unde
       .updateTable('workers')
       .set(workerDataToUpdate)
       .where('id', '=', workerId)
-      .returning([
-        'id',
-        'esat_id',
-        'first_name',
-        'last_name',
-        'date_of_birth',
-        'contact_info',
-        'internal_code',
-        'entry_date_esat',
-        'work_regime',
-        'part_time_percentage',
-        'work_hours',
-        'living_situation',
-        'mobility_info',
-        'protection_measure',
-        'health_info_summary',
-        'educational_background',
-        'professional_background_summary',
-        'created_at',
-        'updated_at'
-      ])
+      .returningAll()
       .executeTakeFirst(); // Use executeTakeFirst as update might affect 0 or 1 row
 
     // 5. Handle not found

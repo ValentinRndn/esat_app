@@ -65,8 +65,28 @@
       </div>
       
       <div class="p-6 space-y-6">
-        <!-- Section Informations personnelles -->
-        <div>
+        <!-- Navigation par onglets -->
+        <div class="mb-4 border-b border-gray-200">
+          <ul class="flex flex-wrap -mb-px text-sm font-medium text-center">
+            <li class="mr-2" v-for="(tab, index) in tabs" :key="index">
+              <button 
+                type="button"
+                @click="activeTab = index"
+                :class="[
+                  'inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300',
+                  activeTab === index 
+                    ? 'text-green-600 border-green-600' 
+                    : 'text-gray-500 border-transparent'
+                ]"
+              >
+                {{ tab.label }}
+              </button>
+            </li>
+          </ul>
+        </div>
+        
+        <!-- Section 1: Informations personnelles -->
+        <div v-show="activeTab === 0">
           <h3 class="flex items-center text-base font-semibold text-gray-800 pb-2 mb-4 border-b border-gray-200">
             <svg class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
@@ -111,7 +131,7 @@
             >
           </div>
           
-          <div>
+          <div class="mb-4">
             <label for="contact_info" class="block text-sm font-medium text-gray-700 mb-1">Informations de contact</label>
             <input 
               type="text" 
@@ -122,10 +142,34 @@
               :disabled="submitting"
             >
           </div>
+          
+          <div class="mb-4">
+            <label for="legal_guardian" class="block text-sm font-medium text-gray-700 mb-1">Tuteur légal</label>
+            <input 
+              type="text" 
+              id="legal_guardian" 
+              v-model="formData.legal_guardian" 
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
+              placeholder="Nom et relation du tuteur légal"
+              :disabled="submitting"
+            >
+          </div>
+          
+          <div class="mb-4">
+            <label for="emergency_contact" class="block text-sm font-medium text-gray-700 mb-1">Contact d'urgence</label>
+            <input 
+              type="text" 
+              id="emergency_contact" 
+              v-model="formData.emergency_contact" 
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
+              placeholder="Nom et téléphone du contact d'urgence"
+              :disabled="submitting"
+            >
+          </div>
         </div>
         
-        <!-- Section Informations ESAT -->
-        <div>
+        <!-- Section 2: Informations ESAT -->
+        <div v-show="activeTab === 1">
           <h3 class="flex items-center text-base font-semibold text-gray-800 pb-2 mb-4 border-b border-gray-200">
             <svg class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
@@ -239,13 +283,13 @@
           </div>
         </div>
         
-        <!-- Section Informations complémentaires -->
-        <div>
+        <!-- Section 3: Situation personnelle -->
+        <div v-show="activeTab === 2">
           <h3 class="flex items-center text-base font-semibold text-gray-800 pb-2 mb-4 border-b border-gray-200">
-            <svg class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            <svg class="h-5 w-5 text-blue-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
             </svg>
-            Informations complémentaires
+            Situation personnelle
           </h3>
           
           <div class="mb-4">
@@ -295,6 +339,16 @@
               </div>
             </div>
           </div>
+        </div>
+        
+        <!-- Section 4: Santé et parcours -->
+        <div v-show="activeTab === 3">
+          <h3 class="flex items-center text-base font-semibold text-gray-800 pb-2 mb-4 border-b border-gray-200">
+            <svg class="h-5 w-5 text-red-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+            </svg>
+            Santé et parcours
+          </h3>
           
           <div class="mb-4">
             <label for="health_info_summary" class="block text-sm font-medium text-gray-700 mb-1">Résumé d'informations santé</label>
@@ -320,7 +374,7 @@
             ></textarea>
           </div>
           
-          <div>
+          <div class="mb-4">
             <label for="professional_background_summary" class="block text-sm font-medium text-gray-700 mb-1">Parcours professionnel</label>
             <textarea 
               id="professional_background_summary" 
@@ -331,44 +385,531 @@
               :disabled="submitting"
             ></textarea>
           </div>
+          
+          <div class="mb-4">
+            <label for="vigilance_points" class="block text-sm font-medium text-gray-700 mb-1">Points de vigilance</label>
+            <textarea 
+              id="vigilance_points" 
+              v-model="formData.vigilance_points" 
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
+              rows="3"
+              placeholder="Points d'attention particuliers (santé, comportement, etc.)"
+              :disabled="submitting"
+            ></textarea>
+          </div>
+          
+          <div>
+            <label for="vigilance_actions" class="block text-sm font-medium text-gray-700 mb-1">Actions face aux points de vigilance</label>
+            <textarea 
+              id="vigilance_actions" 
+              v-model="formData.vigilance_actions" 
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
+              rows="3"
+              placeholder="Actions mises en place pour répondre aux points de vigilance"
+              :disabled="submitting"
+            ></textarea>
+          </div>
+        </div>
+        
+        <!-- Section 5: Savoirs de base -->
+        <div v-show="activeTab === 4">
+          <h3 class="flex items-center text-base font-semibold text-gray-800 pb-2 mb-4 border-b border-gray-200">
+            <svg class="h-5 w-5 text-indigo-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 4.75 7.5 4.75a4.5 4.5 0 00-4.5 4.5c0 1.746 0.726 3.33 1.957 4.583M12 6.253v13m0-13C13.168 5.477 14.754 4.75 16.5 4.75a4.5 4.5 0 014.5 4.5c0 1.746-.726 3.33-1.957 4.583"></path>
+            </svg>
+            Savoirs de base
+          </h3>
+          
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Repères spatio-temporels</label>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div class="flex items-center">
+                <input 
+                  type="checkbox" 
+                  id="time_orientation" 
+                  v-model="formData.spatial_temporal_orientation.time_orientation" 
+                  class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded transition-colors duration-200"
+                  :disabled="submitting"
+                >
+                <label for="time_orientation" class="ml-2 block text-sm text-gray-700">Orientation temporelle</label>
+              </div>
+              <div class="flex items-center">
+                <input 
+                  type="checkbox" 
+                  id="space_orientation" 
+                  v-model="formData.spatial_temporal_orientation.space_orientation" 
+                  class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded transition-colors duration-200"
+                  :disabled="submitting"
+                >
+                <label for="space_orientation" class="ml-2 block text-sm text-gray-700">Orientation spatiale</label>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Compétences en lecture</label>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div v-for="option in readingOptions" :key="option.value" class="flex items-center">
+                <input 
+                  type="checkbox" 
+                  :id="`reading_${option.value}`" 
+                  v-model="selectedReadingSkills" 
+                  :value="option.value" 
+                  class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded transition-colors duration-200"
+                  :disabled="submitting"
+                >
+                <label :for="`reading_${option.value}`" class="ml-2 block text-sm text-gray-700">{{ option.label }}</label>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Compétences en écriture</label>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div v-for="option in writingOptions" :key="option.value" class="flex items-center">
+                <input 
+                  type="checkbox" 
+                  :id="`writing_${option.value}`" 
+                  v-model="selectedWritingSkills" 
+                  :value="option.value" 
+                  class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded transition-colors duration-200"
+                  :disabled="submitting"
+                >
+                <label :for="`writing_${option.value}`" class="ml-2 block text-sm text-gray-700">{{ option.label }}</label>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Compétences en calcul</label>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div v-for="option in calculationOptions" :key="option.value" class="flex items-center">
+                <input 
+                  type="checkbox" 
+                  :id="`calculation_${option.value}`" 
+                  v-model="selectedCalculationSkills" 
+                  :value="option.value" 
+                  class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded transition-colors duration-200"
+                  :disabled="submitting"
+                >
+                <label :for="`calculation_${option.value}`" class="ml-2 block text-sm text-gray-700">{{ option.label }}</label>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mb-4">
+            <label for="computer_skills" class="block text-sm font-medium text-gray-700 mb-1">Compétences informatiques</label>
+            <input 
+              type="text" 
+              id="computer_skills" 
+              v-model="formData.computer_skills" 
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
+              placeholder="Ex: Word, Excel, Internet, etc."
+              :disabled="submitting"
+            >
+          </div>
+          
+          <div>
+            <label for="computer_skills_comments" class="block text-sm font-medium text-gray-700 mb-1">Commentaires sur les compétences informatiques</label>
+            <textarea 
+              id="computer_skills_comments" 
+              v-model="formData.computer_skills_comments" 
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
+              rows="3"
+              placeholder="Commentaires sur les compétences informatiques"
+              :disabled="submitting"
+            ></textarea>
+          </div>
+        </div>
+        
+        <!-- Section 6: Employabilité -->
+        <div v-show="activeTab === 5">
+          <h3 class="flex items-center text-base font-semibold text-gray-800 pb-2 mb-4 border-b border-gray-200">
+            <svg class="h-5 w-5 text-orange-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.221-.791-9-2.245M16 6.379a23.897 23.897 0 00-9 0m13 12.379a23.897 23.897 0 01-9 0M9 5a2.25 2.25 0 012.25-2.25h.5a2.25 2.25 0 012.25 2.25m-1.378 1.122c-.462.462-.921.921-1.378 1.378m0 0A12.012 12.012 0 0112 12c.47 0 .934.016 1.392.048m0 0c.555-.555 1.21-.892 1.95-.892m0 0A12.012 12.012 0 0012 9c-.47 0-.934-.016-1.392-.048m0 0c.555.555 1.21.892 1.95.892M6.379 16.379c-.462-.462-.921-.921-1.378-1.378M13 17.254A23.917 23.917 0 0016 15c3.184 0 6.221-.791 9-2.245M3 3.621a23.917 23.917 0 019 0"></path>
+            </svg>
+            Employabilité
+          </h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div class="flex items-center">
+              <input 
+                type="checkbox" 
+                id="has_cv" 
+                v-model="formData.has_cv" 
+                class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded transition-colors duration-200"
+                :disabled="submitting"
+              >
+              <label for="has_cv" class="ml-2 block text-sm text-gray-700">CV disponible</label>
+            </div>
+            <div class="flex items-center">
+              <input 
+                type="checkbox" 
+                id="has_motivation_letter" 
+                v-model="formData.has_motivation_letter" 
+                class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded transition-colors duration-200"
+                :disabled="submitting"
+              >
+              <label for="has_motivation_letter" class="ml-2 block text-sm text-gray-700">Lettre de motivation disponible</label>
+            </div>
+            <div class="flex items-center">
+              <input 
+                type="checkbox" 
+                id="has_cpf_account" 
+                v-model="formData.has_cpf_account" 
+                class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded transition-colors duration-200"
+                :disabled="submitting"
+              >
+              <label for="has_cpf_account" class="ml-2 block text-sm text-gray-700">Compte CPF</label>
+            </div>
+          </div>
+          
+          <div class="mb-4">
+            <label for="employer_work_willingness" class="block text-sm font-medium text-gray-700 mb-1">Volonté de travailler chez un employeur</label>
+            <div class="relative">
+              <select 
+                id="employer_work_willingness" 
+                v-model="formData.employer_work_willingness" 
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm appearance-none focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
+                :disabled="submitting"
+              >
+                <option :value="null">Sélectionner</option>
+                <option value="very_interested">Très intéressé</option>
+                <option value="interested">Intéressé</option>
+                <option value="interested_with_doubts">Intéressé avec des doutes</option>
+                <option value="not_interested">Pas intéressé</option>
+              </select>
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mb-4">
+            <label for="desired_job_field" class="block text-sm font-medium text-gray-700 mb-1">Domaine de métier souhaité</label>
+            <input 
+              type="text" 
+              id="desired_job_field" 
+              v-model="formData.desired_job_field" 
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
+              placeholder="Ex: Restauration, Jardinage, etc."
+              :disabled="submitting"
+            >
+          </div>
+          
+          <div class="mb-4">
+            <label for="desired_companies" class="block text-sm font-medium text-gray-700 mb-1">Entreprises souhaitées</label>
+            <input 
+              type="text" 
+              id="desired_companies" 
+              v-model="formData.desired_companies" 
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
+              placeholder="Noms d'entreprises souhaitées si pertinent"
+              :disabled="submitting"
+            >
+          </div>
+          
+          <div class="mb-4">
+            <label for="geographic_mobility" class="block text-sm font-medium text-gray-700 mb-1">Mobilité géographique</label>
+            <div class="relative">
+              <select 
+                id="geographic_mobility" 
+                v-model="formData.geographic_mobility" 
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm appearance-none focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
+                :disabled="submitting"
+              >
+                <option :value="null">Sélectionner</option>
+                <option value="less_than_10km">Moins de 10 km</option>
+                <option value="less_than_30km">Moins de 30 km</option>
+                <option value="department">Département</option>
+                <option value="france">France entière</option>
+                <option value="other">Autre</option>
+              </select>
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+          
+          <div v-if="formData.geographic_mobility === 'other'" class="mb-4">
+            <label for="geographic_mobility_other" class="block text-sm font-medium text-gray-700 mb-1">Précisions mobilité</label>
+            <input 
+              type="text" 
+              id="geographic_mobility_other" 
+              v-model="formData.geographic_mobility_other" 
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
+              placeholder="Préciser la mobilité géographique"
+              :disabled="submitting"
+            >
+          </div>
+          
+          <div>
+            <label for="project_difficulties" class="block text-sm font-medium text-gray-700 mb-1">Difficultés liées au projet</label>
+            <textarea 
+              id="project_difficulties" 
+              v-model="formData.project_difficulties" 
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
+              rows="3"
+              placeholder="Difficultés potentielles pour l'insertion en milieu ordinaire"
+              :disabled="submitting"
+            ></textarea>
+          </div>
+        </div>
+        
+        <!-- Section 7: Évaluation du projet -->
+        <div v-show="activeTab === 6">
+          <h3 class="flex items-center text-base font-semibold text-gray-800 pb-2 mb-4 border-b border-gray-200">
+            <svg class="h-5 w-5 text-purple-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            Évaluation du projet
+          </h3>
+          
+          <div class="mb-4">
+            <label for="professional_project_clarity" class="block text-sm font-medium text-gray-700 mb-1">Clarté du projet professionnel</label>
+            <div class="relative">
+              <select 
+                id="professional_project_clarity" 
+                v-model="formData.professional_project_clarity" 
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm appearance-none focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
+                :disabled="submitting"
+              >
+                <option :value="null">Sélectionner</option>
+                <option :value="0">0 - Pas de projet professionnel défini</option>
+                <option :value="1">1 - Projet peu clair, pas en accord avec les capacités et les compétences</option>
+                <option :value="2">2 - Projet assez clair, avec des étapes à réaliser</option>
+                <option :value="3">3 - Projet clair et bien en accord avec les compétences et les intérêts</option>
+              </select>
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mb-4">
+            <label for="ordinary_work_capacity" class="block text-sm font-medium text-gray-700 mb-1">Capacité à travailler en milieu ordinaire</label>
+            <div class="relative">
+              <select 
+                id="ordinary_work_capacity" 
+                v-model="formData.ordinary_work_capacity" 
+                class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm appearance-none focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
+                :disabled="submitting"
+              >
+                <option :value="null">Sélectionner</option>
+                <option :value="0">0 - Capacités très limitées, besoin de beaucoup de soutien</option>
+                <option :value="1">1 - Capacités présentes, mais besoin d'un soutien moyen</option>
+                <option :value="2">2 - Capacités conformes, besoin d'un soutien occasionnel</option>
+                <option :value="3">3 - Capacités très solides, presque autonome pour travailler en milieu ordinaire</option>
+              </select>
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mb-4">
+            <label for="monitor_assessment" class="block text-sm font-medium text-gray-700 mb-1">Évaluation du moniteur</label>
+            <textarea 
+              id="monitor_assessment" 
+              v-model="formData.monitor_assessment" 
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
+              rows="3"
+              placeholder="Synthèse de l'évaluation par le moniteur"
+              :disabled="submitting"
+            ></textarea>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Prochaines étapes</label>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div v-for="option in nextStepsOptions" :key="option.value" class="flex items-center">
+                <input 
+                  type="checkbox" 
+                  :id="`next_step_${option.value}`" 
+                  v-model="selectedNextSteps" 
+                  :value="option.value" 
+                  class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded transition-colors duration-200"
+                  :disabled="submitting"
+                >
+                <label :for="`next_step_${option.value}`" class="ml-2 block text-sm text-gray-700">{{ option.label }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Section 8: Consentements -->
+        <div v-show="activeTab === 7">
+          <h3 class="flex items-center text-base font-semibold text-gray-800 pb-2 mb-4 border-b border-gray-200">
+            <svg class="h-5 w-5 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+            </svg>
+            Consentements
+          </h3>
+          
+          <div class="mb-4">
+            <div class="flex items-center">
+              <input 
+                type="checkbox" 
+                id="information_sharing_consent" 
+                v-model="formData.information_sharing_consent" 
+                class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded transition-colors duration-200"
+                :disabled="submitting"
+              >
+              <label for="information_sharing_consent" class="ml-2 block text-sm text-gray-700">Consentement au partage d'informations</label>
+            </div>
+            <p class="mt-1 text-xs text-gray-500">
+              Le travailleur consent au partage des informations nécessaires à son accompagnement entre les différents intervenants.
+            </p>
+          </div>
+          
+          <div>
+            <label for="signature_name" class="block text-sm font-medium text-gray-700 mb-1">Signature</label>
+            <input 
+              type="text" 
+              id="signature_name" 
+              v-model="formData.signature_name" 
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
+              placeholder="Nom et prénom de la personne qui signe"
+              :disabled="submitting"
+            >
+          </div>
         </div>
       </div>
       
-      <!-- Footer du formulaire avec boutons d'action -->
-      <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex items-center justify-end gap-3">
-        <button 
-          type="button" 
-          @click="resetForm" 
-          class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200" 
-          :disabled="submitting"
-        >
-          <svg class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-          </svg>
-          Réinitialiser
-        </button>
-        <button 
-          type="submit" 
-          class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200" 
-          :disabled="submitting"
-        >
-          <svg v-if="!submitting" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
-          </svg>
-          <svg v-else class="animate-spin h-4 w-4 mr-1.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-          </svg>
-          {{ submitting ? 'Création en cours...' : 'Créer le Travailleur' }}
-        </button>
+      <!-- Footer du formulaire avec boutons d'action et navigation -->
+      <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
+        <div class="flex gap-2">
+          <button 
+            type="button" 
+            @click="previousTab" 
+            class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200" 
+            :disabled="activeTab === 0 || submitting"
+          >
+            <svg class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+            Précédent
+          </button>
+          <button 
+            type="button" 
+            @click="nextTab" 
+            class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200" 
+            :disabled="activeTab === tabs.length - 1 || submitting"
+          >
+            Suivant
+            <svg class="h-4 w-4 ml-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </button>
+        </div>
+        
+        <div class="flex gap-2">
+          <button 
+            type="button" 
+            @click="resetForm" 
+            class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200" 
+            :disabled="submitting"
+          >
+            <svg class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+            </svg>
+            Réinitialiser
+          </button>
+          <button 
+            type="submit" 
+            class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200" 
+            :disabled="submitting"
+          >
+            <svg v-if="!submitting" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+            </svg>
+            <svg v-else class="animate-spin h-4 w-4 mr-1.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            {{ submitting ? 'Création en cours...' : 'Créer le Travailleur' }}
+          </button>
+        </div>
       </div>
     </form>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch, computed } from 'vue';
 
+// Configuration des onglets
+const tabs = [
+  { label: 'Informations personnelles' },
+  { label: 'Informations ESAT' },
+  { label: 'Situation personnelle' },
+  { label: 'Santé et parcours' },
+  { label: 'Savoirs de base' },
+  { label: 'Employabilité' },
+  { label: 'Évaluation du projet' },
+  { label: 'Consentements' }
+];
+const activeTab = ref(0);
+
+const nextTab = () => {
+  if (activeTab.value < tabs.length - 1) {
+    activeTab.value++;
+  }
+};
+
+const previousTab = () => {
+  if (activeTab.value > 0) {
+    activeTab.value--;
+  }
+};
+
+// Options pour les compétences et prochaines étapes
+const readingOptions = [
+  { value: 'can_read_letters', label: 'Lecture des lettres' },
+  { value: 'can_read_words', label: 'Lecture des mots' },
+  { value: 'can_read_sentences', label: 'Lecture de phrases' },
+  { value: 'can_read_with_comprehension', label: 'Lecture avec compréhension' }
+];
+
+const writingOptions = [
+  { value: 'can_copy', label: 'Copie de texte' },
+  { value: 'can_write_letters', label: 'Écriture de lettres' },
+  { value: 'can_write_words', label: 'Écriture de mots' },
+  { value: 'can_write_sentences', label: 'Écriture de phrases' }
+];
+
+const calculationOptions = [
+  { value: 'can_count', label: 'Comptage' },
+  { value: 'can_add', label: 'Addition' },
+  { value: 'can_subtract', label: 'Soustraction' },
+  { value: 'can_multiply', label: 'Multiplication' },
+  { value: 'can_divide', label: 'Division' },
+  { value: 'can_solve_problems', label: 'Résolution de problèmes' }
+];
+
+const nextStepsOptions = [
+  { value: 'duoday', label: 'DuoDay' },
+  { value: 'pmsmp', label: 'PMSMP' },
+  { value: 'prestation', label: 'Prestation' },
+  { value: 'double_activity', label: 'Double activité' },
+  { value: 'full_time', label: 'Temps complet' }
+];
+
+// Variables pour les compétences et prochaines étapes
+const selectedReadingSkills = ref([]);
+const selectedWritingSkills = ref([]);
+const selectedCalculationSkills = ref([]);
+const selectedNextSteps = ref([]);
+
+// Données complètes du formulaire
 const defaultFormData = {
   first_name: '',
   last_name: '',
@@ -385,9 +926,48 @@ const defaultFormData = {
   protection_measure: null,
   health_info_summary: null,
   educational_background: null,
-  professional_background_summary: null
+  professional_background_summary: null,
+  
+  // Nouveaux champs
+  legal_guardian: null,
+  emergency_contact: null,
+  vigilance_points: null,
+  vigilance_actions: null,
+  
+  // Champs structurés
+  spatial_temporal_orientation: {
+    time_orientation: false,
+    space_orientation: false
+  },
+  reading_skills: null,
+  writing_skills: null,
+  calculation_skills: null,
+  computer_skills: null,
+  computer_skills_comments: null,
+  
+  // Employabilité
+  has_cv: false,
+  has_motivation_letter: false,
+  has_cpf_account: false,
+  employer_work_willingness: null,
+  desired_job_field: null,
+  desired_companies: null,
+  geographic_mobility: null,
+  geographic_mobility_other: null,
+  project_difficulties: null,
+  
+  // Évaluation du projet
+  professional_project_clarity: null,
+  ordinary_work_capacity: null,
+  monitor_assessment: null,
+  next_steps: null,
+  
+  // Consentements
+  information_sharing_consent: false,
+  signature_name: null
 };
 
+// Variables d'état
 const formData = ref({ ...defaultFormData });
 const submitting = ref(false);
 const error = ref(null);
@@ -399,6 +979,24 @@ const loadingEsats = ref(true);
 const esatsError = ref(null);
 const esatSelectError = ref(null);
 
+// Convertir les sélections en chaînes pour le formData
+watch(selectedReadingSkills, (newVal) => {
+  formData.value.reading_skills = newVal.join(',');
+});
+
+watch(selectedWritingSkills, (newVal) => {
+  formData.value.writing_skills = newVal.join(',');
+});
+
+watch(selectedCalculationSkills, (newVal) => {
+  formData.value.calculation_skills = newVal.join(',');
+});
+
+watch(selectedNextSteps, (newVal) => {
+  formData.value.next_steps = newVal.join(',');
+});
+
+// Charger les ESATs
 onMounted(async () => {
   try {
     const response = await fetch('/api/esats');
@@ -420,13 +1018,20 @@ onMounted(async () => {
   }
 });
 
+// Réinitialiser le formulaire
 const resetForm = () => {
   formData.value = { ...defaultFormData };
+  selectedReadingSkills.value = [];
+  selectedWritingSkills.value = [];
+  selectedCalculationSkills.value = [];
+  selectedNextSteps.value = [];
   error.value = null;
   success.value = false;
   esatSelectError.value = null;
+  activeTab.value = 0;
 };
 
+// Soumettre le formulaire
 const submitForm = async () => {
   error.value = null;
   success.value = false;
@@ -434,6 +1039,7 @@ const submitForm = async () => {
 
   if (formData.value.esat_id === null) {
     esatSelectError.value = 'Veuillez sélectionner un ESAT.';
+    activeTab.value = 1; // Aller à l'onglet ESAT
     return;
   }
 
@@ -441,16 +1047,25 @@ const submitForm = async () => {
   
   try {
     const cleanedData = { ...formData.value };
+    
+    // Nettoyer les données
     Object.keys(cleanedData).forEach(key => {
       if (cleanedData[key] === '') {
         cleanedData[key] = null;
       }
     });
     
+    // Convertir les types de données
     cleanedData.esat_id = parseInt(cleanedData.esat_id, 10);
     if (cleanedData.part_time_percentage) {
       cleanedData.part_time_percentage = parseInt(cleanedData.part_time_percentage, 10);
     }
+    
+    // Convertir les objets en JSON
+    cleanedData.spatial_temporal_orientation = JSON.stringify({
+      time_orientation: cleanedData.spatial_temporal_orientation.time_orientation ? 'yes' : 'no',
+      space_orientation: cleanedData.spatial_temporal_orientation.space_orientation ? 'yes' : 'no'
+    });
 
     const response = await fetch('/api/workers', {
       method: 'POST',
@@ -486,5 +1101,13 @@ const submitForm = async () => {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
 }
 </style>

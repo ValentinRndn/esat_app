@@ -7,10 +7,10 @@
         <div class="p-5 border-b border-gray-100">
           <div class="flex items-center">
             <!-- Logo ANAIS stylisé -->
-            <div class="relative w-9 h-9 mr-3 flex-shrink-0">
+            <NuxtLink to="/" class="relative w-9 h-9 mr-3 flex-shrink-0">
               <div class="absolute inset-0 bg-pink-600 rounded-md"></div>
               <div class="absolute w-5 h-6 top-0.5 left-2 border-t-2 border-l-2 border-r-2 border-white rounded-t-full transform rotate-[20deg]"></div>
-            </div>
+            </NuxtLink>
             
             <h1 :class="`font-semibold text-gray-800 transition-opacity duration-200 ${sidebarExpanded ? 'opacity-100' : 'opacity-0 w-0 overflow-hidden'}`">
               ESAT<span class="font-normal text-gray-600 ml-1">Dashboard</span>

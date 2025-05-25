@@ -1,5 +1,5 @@
-import { defineEventHandler, getRouterParam, setResponseStatus } from 'h3';
-import { db, WorkerTable } from '../../utils/db'; // Adjust path for nested directory
+import { defineEventHandler, getRouterParam, setResponseStatus, createError } from 'h3';
+import { db, WorkerTable } from '../../utils/db';
 import { Selectable } from 'kysely';
 
 // Define the type for the worker data we expect to select and return
@@ -11,8 +11,8 @@ export default defineEventHandler(async (event): Promise<WorkerSelectable | unde
 
   // Validate the ID
   if (isNaN(workerId)) {
-    setResponseStatus(event, 400); // Bad Request
-    return undefined; // Or throw createError({ statusCode: 400, statusMessage: 'Invalid worker ID' });
+    setResponseStatus(event, 400);
+    return undefined;
   }
 
   try {
@@ -21,17 +21,16 @@ export default defineEventHandler(async (event): Promise<WorkerSelectable | unde
       .selectFrom('workers')
       .where('id', '=', workerId)
       .selectAll()
-      .executeTakeFirst(); // Use executeTakeFirst() for single record
+      .executeTakeFirst();
 
     if (!worker) {
-      setResponseStatus(event, 404); // Not Found
-      return undefined; // Or throw createError({ statusCode: 404, statusMessage: 'Worker not found' });
+      setResponseStatus(event, 404);
+      return undefined;
     }
 
     return worker;
   } catch (error: any) {
     console.error(`Error fetching worker with ID ${workerId}:`, error);
-    // Throw a structured error for Nuxt to handle
     throw createError({
       statusCode: 500,
       statusMessage: `Failed to fetch worker with ID ${workerId}`,

@@ -25,13 +25,9 @@ export default defineEventHandler(async (event) => {
 
     // Initialize the Gemini client
     const genAI = new GoogleGenerativeAI(geminiApiKey);
-    // Vous pouvez maintenant choisir le modèle qui a fonctionné, ou un autre si vous le souhaitez
-    const modelName = "gemini-1.5-flash-latest"; // Ou "gemini-pro" si vous voulez retester avec la bonne clé
+    const modelName = "gemini-1.5-flash-latest";
     console.log(`Nuxt App - Attempting to initialize model: "${modelName}"`);
     const model = genAI.getGenerativeModel({ model: modelName });
-
-    // ... (reste de votre logique pour récupérer workerId, worker, esat, construire le prompt) ...
-    // Assurez-vous que les chemins d'importation pour db, WorkerTable, etc., sont corrects.
 
     const workerId = event.context.params?.id;
 
@@ -59,15 +55,100 @@ export default defineEventHandler(async (event) => {
         .where('id', '=', worker.esat_id)
         .executeTakeFirst();
     }
-    
-    let prompt = `Idéalement, en considérant le projet individuel de ce travailleur d'ESAT, et les entreprises disponibles aux alentours, fais-moi des propositions d'emplois possibles, en élargissant à d'autres métier comparable. Propose-moi des entreprises locales alignées sur son profil et ses souhaits. Considérant que le travailleur est intéressé par toutes tes suggestions, merci d'affiner tes recommandations et pour aider à contacter les entreprises adaptées.`;
+      
+// Format les données JSON pour le prompt
+function formatJsonField<T>(field: any, defaultValue: T): T {
+  if (!field) return defaultValue;
+  
+  try {
+    if (typeof field === 'string') {
+      return JSON.parse(field);
+    }
+    return field;
+  } catch (e) {
+    return field;
+  }
+}
 
-    // Add worker information to the prompt
-    prompt += `\n\nInformations sur le travailleur :`;
-    prompt += `\n- Nom: ${worker.first_name} ${worker.last_name}`;
-    // ... (ajoutez les autres informations du worker comme avant) ...
-    // ... (ajoutez les informations de l'ESAT comme avant) ...
+// 2. Utilisez la fonction modifiée avec le type approprié
+let experiencesText = "Non spécifiées";
+const experiences = formatJsonField<any[]>(worker.professional_experiences, []);
+if (Array.isArray(experiences) && experiences.length > 0) {
+  experiencesText = experiences.map(exp => 
+    `- ${exp.company || 'Entreprise non spécifiée'}: ${exp.missions || 'Missions non spécifiées'}`
+  ).join('\n');
+}
+    // Construire les compétences à partir des évaluations professionnelles
+    let professionalSkills = "Non spécifiées";
+    const evaluation = formatJsonField(worker.professional_evaluation, {});
+    if (Object.keys(evaluation).length > 0) {
+      const skillsList = Object.entries(evaluation).map(([key, value]: [string, any]) => {
+        const rating = value.monitor || value.worker || "medium";
+        const isStrong = rating === "good";
+        return isStrong ? `- ${key.replace(/_/g, ' ')}` : null;
+      }).filter(Boolean);
+      
+      if (skillsList.length > 0) {
+        professionalSkills = skillsList.join('\n');
+      }
+    }
 
+    // Formatter les savoirs de base
+    const formatSkill = (skill: string | null | undefined, type: string): string => {
+      if (!skill) return `${type}: Non spécifié`;
+      return `${type}: ${skill.replace(/_/g, ' ')}`;
+    };
+
+    const prompt = `
+Tu es un conseiller en insertion professionnelle spécialisé dans l'accompagnement de travailleurs en situation de handicap. 
+Ta mission est de suggérer des pistes d'emploi précises et réalistes pour ce travailleur d'ESAT.
+
+PROFIL DU TRAVAILLEUR:
+- Nom: ${worker.first_name} ${worker.last_name}
+- Âge: ${worker.birth_date ? Math.floor((new Date().getTime() - new Date(worker.birth_date).getTime()) / 31557600000) : 'Non spécifié'} ans
+- Formation: ${worker.educational_background || 'Non spécifiée'}
+- Parcours professionnel: ${worker.professional_background_summary || 'Non spécifié'}
+- Expériences professionnelles:
+${experiencesText}
+
+COMPÉTENCES ET APTITUDES:
+- Lecture: ${formatSkill(worker.reading_skills, 'Niveau')}
+- Écriture: ${worker.writing_skills || 'Non spécifiée'}
+- Calcul: ${worker.calculation_skills || 'Non spécifié'}
+- Informatique: ${worker.computer_skills || 'Non spécifié'}
+${worker.computer_skills_comments ? `  Commentaire: ${worker.computer_skills_comments}` : ''}
+- Points forts professionnels:
+${professionalSkills}
+- Évaluation générale: ${worker.professional_evaluation_comments || 'Non spécifiée'}
+
+PROJET PROFESSIONNEL:
+- Clarté du projet: ${worker.professional_project_clarity ? `${worker.professional_project_clarity}/3` : 'Non évaluée'}
+- Capacité à travailler en milieu ordinaire: ${worker.ordinary_work_capacity ? `${worker.ordinary_work_capacity}/3` : 'Non évaluée'}
+- Volonté de travailler en entreprise: ${worker.employer_work_willingness || 'Non spécifiée'}
+- Domaines souhaités: ${worker.desired_job_field || 'Non spécifiés'}
+- Entreprises ciblées: ${worker.desired_companies || 'Non spécifiées'}
+- Mobilité géographique: ${worker.geographic_mobility || 'Non spécifiée'}
+${worker.geographic_mobility === 'other' && worker.geographic_mobility_other ? `  Précision: ${worker.geographic_mobility_other}` : ''}
+- Difficultés potentielles: ${worker.project_difficulties || 'Non spécifiées'}
+- Points de vigilance: ${worker.vigilance_points || 'Non spécifiés'}
+
+CONTEXTE ESAT:
+${esat ? `- Nom de l'ESAT: ${esat.name || 'Non spécifié'}
+- Localisation: ${esat.city || 'Non spécifiée'} }` : 'Pas d\'information sur l\'ESAT'}
+
+FORMAT DE RÉPONSE:
+Propose 5 à 8 métiers adaptés sous ce format:
+
+1. **[NOM DU MÉTIER]**
+   - Description: Brève description du poste (2 lignes max)
+   - Adéquation: Pourquoi ce métier convient au profil du travailleur
+   - Aménagements: Adaptations potentiellement nécessaires 
+
+**Entreprises locales**: 2-3 types d'entreprises qui recrutent
+
+Sois concret, réaliste et tiens compte des limites et points forts du travailleur. Considère à la fois ses aspirations et ses compétences réelles. 
+Privilégie les emplois accessibles avec son niveau de qualification.
+`;
 
     // 4. Call the Gemini API
     try {
@@ -77,6 +158,7 @@ export default defineEventHandler(async (event) => {
       const aiText = aiResponse.text();
       console.log('Nuxt App - Received response from Gemini API');
 
+      // Return the AI suggestions with Markdown formatting
       return {
         status: 'success',
         suggestions: aiText,
@@ -85,7 +167,19 @@ export default defineEventHandler(async (event) => {
       console.error('Nuxt App - Error calling Gemini API:', aiError);
       let errorMessage = aiError.message || 'Unknown error calling Gemini API';
       let statusCode = 500;
-      // ... (votre gestion d'erreur pour aiError) ...
+      
+      // Check for specific Gemini API errors
+      if (aiError.message?.includes('quota exceeded')) {
+        errorMessage = 'Quota API dépassé. Veuillez réessayer plus tard.';
+        statusCode = 429;
+      } else if (aiError.message?.includes('permission denied')) {
+        errorMessage = 'Accès à l\'API refusé. Vérifiez les paramètres d\'authentification.';
+        statusCode = 403;
+      } else if (aiError.message?.includes('invalid argument')) {
+        errorMessage = 'Arguments invalides pour l\'API. Vérifiez les paramètres de requête.';
+        statusCode = 400;
+      }
+      
       throw createError({
         statusCode,
         statusMessage: 'Failed to get suggestions from AI',

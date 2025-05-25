@@ -2,3 +2,41 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.prose h1 {
+    @apply text-xl font-bold text-gray-800 my-4;
+  }
+  
+  .prose h2 {
+    @apply text-lg font-bold text-gray-700 my-3;
+  }
+  
+  .prose p {
+    @apply my-2;
+  }
+  
+  .prose ul, .prose ol {
+    @apply my-2 ml-4;
+  }
+  
+  .prose li {
+    @apply mb-1;
+  }
+  
+  .prose strong {
+    @apply font-bold text-gray-800;
+  }
+  
+  .prose em {
+    @apply italic text-gray-600;
+  }
+  
+  /* Style pour les noms de métiers */
+  .prose h3 + p, .prose h4 + p {
+    @apply text-gray-600 italic mb-3;
+  }
+  
+  /* Style pour les séparateurs entre métiers */
+  .prose hr {
+    @apply my-6 border-t-2 border-gray-200;
+  }

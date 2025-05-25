@@ -33,25 +33,65 @@ export interface UserTable {
 export type UserSelectable = Selectable<UserTable>;
 
 export interface WorkerTable {
-  id: Generated<number>;
-  esat_id: number;
+  id: number;
+  esat_id: number | null;
   first_name: string;
   last_name: string;
   birth_date: Date | null;
   contact_info: string | null;
   internal_code: string | null;
   entry_date_esat: Date | null;
-  work_regime: 'full-time' | 'part-time' | null;
+  work_regime: string | null;
   part_time_percentage: number | null;
   work_hours: string | null;
   living_situation: string | null;
   mobility_info: string | null;
-  protection_measure: 'tutelle' | 'curatelle_simple' | 'curatelle_renforcee' | 'pas_de_mesure' | 'autre' | null;
+  protection_measure: string | null;
   health_info_summary: string | null;
   educational_background: string | null;
   professional_background_summary: string | null;
   created_at: Date;
   updated_at: Date;
+  
+  // Ajoutez tous les nouveaux champs ici
+  legal_guardian: string | null;
+  emergency_contact: string | null;
+  activity_sectors: string | null;
+  activity_sectors_other: string | null;
+  vigilance_points: string | null;
+  vigilance_actions: string | null;
+  spatial_temporal_orientation: string | null;
+  reading_skills: string | null;
+  writing_skills: string | null;
+  calculation_skills: string | null;
+  computer_skills: string | null;
+  computer_skills_comments: string | null;
+  professional_evaluation: string | null;
+  professional_evaluation_comments: string | null;
+  social_relations: string | null;
+  social_relations_comments: string | null;
+  has_cv: boolean | null;
+  has_motivation_letter: boolean | null;
+  has_cpf_account: boolean | null;
+  employer_work_willingness: string | null;
+  desired_job_field: string | null;
+  desired_companies: string | null;
+  geographic_mobility: string | null;
+  geographic_mobility_other: string | null;
+  professional_experiences: string | null;
+  declined_applications: string | null;
+  exceptional_experiences: string | null;
+  project_difficulties: string | null;
+  professional_project_clarity: number | null;
+  ordinary_work_capacity: number | null;
+  monitor_assessment: string | null;
+  next_steps: string | null;
+  information_sharing_consent: boolean | null;
+  signature_name: string | null;
+  professional_project_2_years: string | null;
+  social_life_project: string | null;
+  training_project: string | null;
+  employment_insertion_project: string | null;
 }
 export type WorkerSelectable = Selectable<WorkerTable>;
 
