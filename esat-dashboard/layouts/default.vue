@@ -7,7 +7,7 @@
         <div class="p-5 border-b border-gray-100">
           <div class="flex items-center">
             <!-- Logo ANAIS stylisé -->
-            <NuxtLink to="/" class="relative w-9 h-9 mr-3 flex-shrink-0">
+            <NuxtLink to="/dashboard" class="relative w-9 h-9 mr-3 flex-shrink-0">
               <div class="absolute inset-0 bg-pink-600 rounded-md"></div>
               <div class="absolute w-5 h-6 top-0.5 left-2 border-t-2 border-l-2 border-r-2 border-white rounded-t-full transform rotate-[20deg]"></div>
             </NuxtLink>
@@ -22,8 +22,8 @@
         <nav class="flex-grow py-5 overflow-y-auto">
           <ul class="space-y-1 px-3">
             <li>
-              <NuxtLink to="/" class="flex items-center p-3 rounded-lg hover:bg-pink-50 hover:text-pink-600 transition-colors duration-200 group" :class="[
-                $route.path === '/' ? 'bg-pink-50 text-pink-600  pl-[10px]' : 'text-gray-600 border-l-4 border-transparent pl-[10px]'
+              <NuxtLink to="/dashboard" class="flex items-center p-3 rounded-lg hover:bg-pink-50 hover:text-pink-600 transition-colors duration-200 group" :class="[
+                $route.path === '/dashboard' ? 'bg-pink-50 text-pink-600  pl-[10px]' : 'text-gray-600 border-l-4 border-transparent pl-[10px]'
               ]">
                 <svg class="w-6 h-6 transition-colors duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>

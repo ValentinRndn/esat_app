@@ -56,28 +56,29 @@ export default defineEventHandler(async (event) => {
         .executeTakeFirst();
     }
       
-// Format les données JSON pour le prompt
-function formatJsonField<T>(field: any, defaultValue: T): T {
-  if (!field) return defaultValue;
-  
-  try {
-    if (typeof field === 'string') {
-      return JSON.parse(field);
+    // Format les données JSON pour le prompt
+    function formatJsonField<T>(field: any, defaultValue: T): T {
+      if (!field) return defaultValue;
+      
+      try {
+        if (typeof field === 'string') {
+          return JSON.parse(field);
+        }
+        return field;
+      } catch (e) {
+        return field;
+      }
     }
-    return field;
-  } catch (e) {
-    return field;
-  }
-}
 
-// 2. Utilisez la fonction modifiée avec le type approprié
-let experiencesText = "Non spécifiées";
-const experiences = formatJsonField<any[]>(worker.professional_experiences, []);
-if (Array.isArray(experiences) && experiences.length > 0) {
-  experiencesText = experiences.map(exp => 
-    `- ${exp.company || 'Entreprise non spécifiée'}: ${exp.missions || 'Missions non spécifiées'}`
-  ).join('\n');
-}
+    // 2. Utilisez la fonction modifiée avec le type approprié
+    let experiencesText = "Non spécifiées";
+    const experiences = formatJsonField<any[]>(worker.professional_experiences, []);
+    if (Array.isArray(experiences) && experiences.length > 0) {
+      experiencesText = experiences.map(exp => 
+        `- ${exp.company || 'Entreprise non spécifiée'}: ${exp.missions || 'Missions non spécifiées'}`
+      ).join('\n');
+    }
+
     // Construire les compétences à partir des évaluations professionnelles
     let professionalSkills = "Non spécifiées";
     const evaluation = formatJsonField(worker.professional_evaluation, {});
@@ -140,14 +141,18 @@ FORMAT DE RÉPONSE:
 Propose 5 à 8 métiers adaptés sous ce format:
 
 1. **[NOM DU MÉTIER]**
-   - Description: Brève description du poste (2 lignes max)
-   - Adéquation: Pourquoi ce métier convient au profil du travailleur
-   - Aménagements: Adaptations potentiellement nécessaires 
+   - Description: Brève description du poste (1 ligne max)
+
+   \n   - Adéquation: Pourquoi ce métier convient au profil du travailleur
+
+   \n   - Aménagements: Adaptations potentiellement nécessaires
 
 **Entreprises locales**: 2-3 types d'entreprises qui recrutent
 
 Sois concret, réaliste et tiens compte des limites et points forts du travailleur. Considère à la fois ses aspirations et ses compétences réelles. 
 Privilégie les emplois accessibles avec son niveau de qualification.
+
+L'accompagnement par un conseiller Pôle Emploi spécialisé dans le handicap pourra être utile pour faciliter l'intégration en milieu ordinaire et obtenir les aménagements nécessaires.
 `;
 
     // 4. Call the Gemini API

@@ -194,11 +194,20 @@
                   id="esat_id" 
                   v-model="formData.esat_id" 
                   class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                  :disabled="submitting"
+                  :disabled="submitting || loadingEsats"
                 >
                   <option :value="null">Sélectionner un ESAT</option>
-                  <option :value="1">ESAT Principal</option>
+                  <option v-if="loadingEsats" disabled>Chargement des ESATs...</option>
+                  <option v-for="esat in esats" :key="esat.id" :value="esat.id">{{ esat.name }}</option>
                 </select>
+                <div v-if="esatsError" class="mt-1 text-sm text-red-600">{{ esatsError }}</div>
+                <div v-if="loadingEsats" class="mt-1 text-sm text-gray-500 flex items-center">
+                  <svg class="animate-spin h-4 w-4 mr-1 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Chargement des ESATs...
+                </div>
               </div>
             </div>
 
@@ -1429,7 +1438,57 @@ const loading = ref(true);
 const submitting = ref(false);
 const error = ref(null);
 const success = ref(false);
-const formData = ref({});
+const formData = ref({
+  first_name: '',
+  last_name: '',
+  birth_date: null,
+  contact_info: '',
+  internal_code: '',
+  esat_id: null,
+  entry_date_esat: null,
+  work_regime: null,
+  part_time_percentage: null,
+  work_hours: '',
+  activity_sectors: [],
+  activity_sectors_other: '',
+  living_situation: '',
+  mobility_info: '',
+  legal_guardian: '',
+  emergency_contact: '',
+  protection_measure: null,
+  health_info_summary: '',
+  educational_background: '',
+  professional_background_summary: '',
+  vigilance_points: '',
+  vigilance_actions: '',
+  computer_skills: '',
+  computer_skills_comments: '',
+  professional_evaluation_comments: '',
+  social_relations_comments: '',
+  monitor_assessment: '',
+  has_cv: false,
+  has_motivation_letter: false,
+  has_cpf_account: false,
+  employer_work_willingness: null,
+  desired_job_field: '',
+  desired_companies: '',
+  geographic_mobility: null,
+  geographic_mobility_other: '',
+  exceptional_experiences: '',
+  project_difficulties: '',
+  professional_project_clarity: 0,
+  ordinary_work_capacity: 0,
+  information_sharing_consent: false,
+  signature_name: '',
+  reading_skills: '',
+  writing_skills: '',
+  calculation_skills: '',
+  next_steps: '',
+  professional_evaluation: null,
+  social_relations: null,
+  spatial_temporal_orientation: null,
+  professional_experiences: null
+});
 const activeTab = ref('personal');
 const activitySectorsArray = ref([]);
 const spatialTemporalData = ref({
@@ -1476,59 +1535,83 @@ const socialRelationsData = ref({
 });
 const professionalExperiencesData = ref([]);
 
+// État pour les ESATs
+const esats = ref([]);
+const loadingEsats = ref(true);
+const esatsError = ref(null);
+
 // Récupérer les données du travailleur
 onMounted(async () => {
   try {
-    console.log('Chargement du travailleur ID:', id.value);
     loading.value = true;
     error.value = null;
-    
-    if (!id.value) {
-      error.value = "ID du travailleur manquant";
-      loading.value = false;
-      return;
+
+    // Charger les ESATs
+    try {
+      const esatsResponse = await fetch('/api/esats');
+      if (!esatsResponse.ok) throw new Error(`Erreur HTTP: ${esatsResponse.status}`);
+      const esatsData = await esatsResponse.json();
+      console.log('Fetched ESATs for worker edit:', esatsData);
+
+      if (esatsData.status === 'success' && Array.isArray(esatsData.data)) {
+        esats.value = esatsData.data;
+      } else {
+        esatsError.value = 'Format de données ESAT inattendu.';
+        console.error('Unexpected ESAT data format:', esatsData);
+      }
+    } catch (err) {
+      esatsError.value = `Erreur chargement ESATs: ${err.message}`;
+      console.error('Erreur lors du chargement des ESATs:', err);
+    } finally {
+      loadingEsats.value = false;
     }
-    
-    const response = await fetch(`/api/workers/${id.value}`);
-    
-    if (response.status === 404) {
-      error.value = 'Travailleur non trouvé';
-      loading.value = false;
-      return;
-    }
-    
+
+    // Charger les données du travailleur
+    const response = await fetch(`/api/workers/${route.params.id}`);
     if (!response.ok) {
+      if (response.status === 404) {
+        throw new Error('Travailleur non trouvé');
+      }
       throw new Error(`Erreur HTTP: ${response.status}`);
     }
-    
+
     const data = await response.json();
-    worker.value = data;
+    worker.value = data.data || data;
+    console.log('Données du travailleur chargées:', worker.value);
     
-    // Copier les données dans le formulaire
-    formData.value = { ...data };
-    
-    // Formater la date correctement pour l'input date
+    // Copier les données du travailleur dans le formulaire
+    for (const [key, value] of Object.entries(worker.value)) {
+      if (key in formData.value) {
+        formData.value[key] = value;
+      }
+    }
+
+    // Formater les dates
     if (formData.value.birth_date) {
-      try {
-        formData.value.birth_date = formData.value.birth_date.split('T')[0];
-      } catch (e) {
-        console.warn('Erreur de formatage de la date de naissance:', e);
-        formData.value.birth_date = null;
-      }
+      formData.value.birth_date = formData.value.birth_date.split('T')[0];
     }
-    
     if (formData.value.entry_date_esat) {
-      try {
-        formData.value.entry_date_esat = formData.value.entry_date_esat.split('T')[0];
-      } catch (e) {
-        console.warn('Erreur de formatage de la date d\'entrée:', e);
-        formData.value.entry_date_esat = null;
-      }
+      formData.value.entry_date_esat = formData.value.entry_date_esat.split('T')[0];
     }
-    
-    // Convertir les données JSON en objets lors du chargement
+
+    // Initialiser les expériences professionnelles depuis les données du travailleur
+    if (worker.value.professional_experiences) {
+      try {
+        if (typeof worker.value.professional_experiences === 'string') {
+          professionalExperiencesData.value = JSON.parse(worker.value.professional_experiences);
+        } else if (Array.isArray(worker.value.professional_experiences)) {
+          professionalExperiencesData.value = worker.value.professional_experiences;
+        }
+      } catch (e) {
+        console.error('Erreur lors du parsing des expériences professionnelles:', e);
+        professionalExperiencesData.value = [];
+      }
+    } else {
+      professionalExperiencesData.value = [];
+    }
+
     parseJsonData();
-    
+    console.log('Données du formulaire après chargement:', formData.value);
   } catch (err) {
     console.error('Erreur lors du chargement du travailleur:', err);
     error.value = `Erreur lors du chargement du travailleur: ${err.message}`;
