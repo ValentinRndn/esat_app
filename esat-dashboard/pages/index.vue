@@ -20,7 +20,8 @@
     <!-- Main Content -->
     <main class="relative z-10 px-6 pt-16 pb-20">
       <div class="max-w-4xl mx-auto text-center">
-        
+        <div class="light-halo light-halo-1"></div>
+        <div class="light-halo light-halo-2"></div>
         <!-- Badge -->
         <div class="inline-flex items-center mb-8">
           <span class="px-4 py-2 bg-green-500 text-white rounded-full text-sm font-medium mr-3">
@@ -126,5 +127,42 @@ const scrollToDemo = () => {
 /* Smooth gradients */
 .bg-gradient-to-br {
   background: linear-gradient(135deg, #111827 0%, #1f2937 50%, #111827 100%);
+}
+
+/* Light Halos */
+.light-halo {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.light-halo-1 {
+  top: -8%;
+  right: -8%;
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(
+    circle,
+    rgba(34, 197, 94, 0.25) 0%,
+    rgba(34, 197, 94, 0.15) 30%,
+    rgba(34, 197, 94, 0.08) 60%,
+    transparent 100%
+  );
+  filter: blur(60px);
+}
+
+.light-halo-2 {
+  top: 5%;
+  left: 5%;
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(
+    circle,
+    rgba(34, 197, 94, 0.20) 0%,
+    rgba(34, 197, 94, 0.12) 30%,
+    rgba(34, 197, 94, 0.06) 60%,
+    transparent 100%
+  );
+  filter: blur(50px);
 }
 </style> 
