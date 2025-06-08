@@ -1,203 +1,336 @@
 <template>
-  <div class="flex h-screen overflow-hidden bg-gray-100">
+  <div class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden">
+    <!-- Grid Background avec effet de fade -->
+    <div class="absolute inset-0 z-0">
+      <div class="grid-pattern"></div>
+      <div class="grid-fade-overlay"></div>
+      
+      <!-- Light Halos -->
+      <div class="light-halo light-halo-1"></div>
+      <div class="light-halo light-halo-2"></div>
+    </div>
+
     <!-- Sidebar Navigation -->
-    <aside :class="`transition-all duration-300 h-screen bg-white border-r border-gray-200 shadow-sm ${sidebarExpanded ? 'w-64' : 'w-20'}`">
-      <div class="flex flex-col h-full">
-        <!-- Logo and header -->
-        <div class="p-5 border-b border-gray-100">
-          <div class="flex items-center">
-            <!-- Logo ANAIS stylisé -->
-            <NuxtLink to="/dashboard" class="relative w-9 h-9 mr-3 flex-shrink-0">
-              <div class="absolute inset-0 bg-pink-600 rounded-md"></div>
-              <div class="absolute w-5 h-6 top-0.5 left-2 border-t-2 border-l-2 border-r-2 border-white rounded-t-full transform rotate-[20deg]"></div>
-            </NuxtLink>
-            
-            <h1 :class="`font-semibold text-gray-800 transition-opacity duration-200 ${sidebarExpanded ? 'opacity-100' : 'opacity-0 w-0 overflow-hidden'}`">
-              ESAT<span class="font-normal text-gray-600 ml-1">Dashboard</span>
+    <aside class="sidebar-fixed bg-white/10 backdrop-blur-xl border-r border-white/20 shadow-2xl flex flex-col">
+      <!-- Header avec logo -->
+      <div class="p-6 border-b border-white/20 flex-shrink-0">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 bg-gradient-to-br from-green-400 to-green-600 rounded-xl shadow-lg flex items-center justify-center">
+            <span class="text-white font-bold text-lg">B</span>
+          </div>
+          <div>
+            <h1 class="text-xl font-bold text-white">
+              <span class="text-green-400">BAYTH</span>
             </h1>
+            <p class="text-gray-400 text-xs">Dashboard ESAT</p>
           </div>
         </div>
+      </div>
+      
+      <nav class="p-4 flex-1">
+        <ul class="space-y-2">
+          <!-- Navigation conditionnelle basée sur les permissions -->
+          <li v-if="canAccessDashboard">
+            <NuxtLink 
+              to="/dashboard" 
+              class="group flex items-center p-4 rounded-xl text-white hover:bg-white/10 transition-all duration-200 hover:shadow-lg border border-transparent hover:border-white/20"
+              active-class="bg-green-500/20 border-green-500/30 text-green-300 shadow-lg"
+            >
+              <div class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center mr-3 group-hover:bg-white/20 transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v6H8V5z"></path>
+                </svg>
+              </div>
+              <span class="font-medium">Dashboard</span>
+            </NuxtLink>
+          </li>
+
+          <li v-if="canAccessMyEsat">
+            <NuxtLink 
+              to="/my-esat" 
+              class="group flex items-center p-4 rounded-xl text-white hover:bg-white/10 transition-all duration-200 hover:shadow-lg border border-transparent hover:border-white/20"
+              :class="isMyEsatActive ? 'bg-blue-500/20 border-blue-500/30 text-blue-300 shadow-lg' : ''"
+            >
+              <div class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center mr-3 group-hover:bg-white/20 transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                </svg>
+              </div>
+              <span class="font-medium">Mon ESAT</span>
+            </NuxtLink>
+          </li>
+          
+          <li v-if="canAccessUsers">
+            <NuxtLink 
+              to="/users" 
+              class="group flex items-center p-4 rounded-xl text-white hover:bg-white/10 transition-all duration-200 hover:shadow-lg border border-transparent hover:border-white/20"
+              active-class="bg-purple-500/20 border-purple-500/30 text-purple-300 shadow-lg"
+            >
+              <div class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center mr-3 group-hover:bg-white/20 transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                </svg>
+              </div>
+              <span class="font-medium">Utilisateurs</span>
+            </NuxtLink>
+          </li>
+          
+          <li v-if="canAccessWorkers">
+            <NuxtLink 
+              to="/workers" 
+              class="group flex items-center p-4 rounded-xl text-white hover:bg-white/10 transition-all duration-200 hover:shadow-lg border border-transparent hover:border-white/20"
+              active-class="bg-orange-500/20 border-orange-500/30 text-orange-300 shadow-lg"
+            >
+              <div class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center mr-3 group-hover:bg-white/20 transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 515.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 919.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                </svg>
+              </div>
+              <span class="font-medium">Travailleurs</span>
+            </NuxtLink>
+          </li>
+          
+          <li v-if="canAccessEsats">
+            <NuxtLink 
+              to="/esats" 
+              class="group flex items-center p-4 rounded-xl text-white hover:bg-white/10 transition-all duration-200 hover:shadow-lg border border-transparent hover:border-white/20"
+              active-class="bg-green-500/20 border-green-500/30 text-green-300 shadow-lg"
+            >
+              <div class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center mr-3 group-hover:bg-white/20 transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                </svg>
+              </div>
+              <span class="font-medium">ESATs</span>
+            </NuxtLink>
+          </li>
+        </ul>
+      </nav>
         
-        <!-- Navigation menu -->
-        <nav class="flex-grow py-5 overflow-y-auto">
-          <ul class="space-y-1 px-3">
-            <li>
-              <NuxtLink to="/dashboard" class="flex items-center p-3 rounded-lg hover:bg-pink-50 hover:text-pink-600 transition-colors duration-200 group" :class="[
-                $route.path === '/dashboard' ? 'bg-pink-50 text-pink-600  pl-[10px]' : 'text-gray-600 border-l-4 border-transparent pl-[10px]'
-              ]">
-                <svg class="w-6 h-6 transition-colors duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                  <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                </svg>
-                <span :class="`ml-3 font-medium transition-opacity duration-200 ${sidebarExpanded ? 'opacity-100' : 'opacity-0 w-0 overflow-hidden'}`">
-                  Accueil
-                </span>
-              </NuxtLink>
-            </li>
-            
-            <li>
-              <NuxtLink to="/esats" class="flex items-center p-3 rounded-lg hover:bg-pink-50 hover:text-pink-600 transition-colors duration-200 group" :class="[
-                $route.path.startsWith('/esats') ? 'bg-pink-50 text-pink-600  pl-[10px]' : 'text-gray-600 border-l-4 border-transparent pl-[10px]'
-              ]">
-                <svg class="w-6 h-6 transition-colors duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
-                  <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
-                </svg>
-                <span :class="`ml-3 font-medium transition-opacity duration-200 ${sidebarExpanded ? 'opacity-100' : 'opacity-0 w-0 overflow-hidden'}`">
-                  ESATs
-                </span>
-              </NuxtLink>
-            </li>
-            
-            <li>
-              <NuxtLink to="/users" class="flex items-center p-3 rounded-lg hover:bg-pink-50 hover:text-pink-600 transition-colors duration-200 group" :class="[
-                $route.path.startsWith('/users') ? 'bg-pink-50 text-pink-600  pl-[10px]' : 'text-gray-600 border-l-4 border-transparent pl-[10px]'
-              ]">
-                <svg class="w-6 h-6 transition-colors duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="12" cy="7" r="4"></circle>
-                </svg>
-                <span :class="`ml-3 font-medium transition-opacity duration-200 ${sidebarExpanded ? 'opacity-100' : 'opacity-0 w-0 overflow-hidden'}`">
-                  Utilisateurs
-                </span>
-              </NuxtLink>
-            </li>
-            
-            <li>
-              <NuxtLink to="/workers" class="flex items-center p-3 rounded-lg hover:bg-pink-50 hover:text-pink-600 transition-colors duration-200 group" :class="[
-                $route.path.startsWith('/workers') ? 'bg-pink-50 text-pink-600  pl-[10px]' : 'text-gray-600 border-l-4 border-transparent pl-[10px]'
-              ]">
-                <svg class="w-6 h-6 transition-colors duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="9" cy="7" r="4"></circle>
-                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                </svg>
-                <span :class="`ml-3 font-medium transition-opacity duration-200 ${sidebarExpanded ? 'opacity-100' : 'opacity-0 w-0 overflow-hidden'}`">
-                  Travailleurs
-                </span>
-              </NuxtLink>
-            </li>
-          </ul>
-        </nav>
-        
-        <!-- User profile footer -->
-        <div class="border-t border-gray-100 p-4">
-          <div class="flex items-center cursor-pointer hover:bg-gray-100 p-2 rounded-lg transition-colors duration-200">
-            <div class="w-9 h-9 rounded-full bg-pink-100 flex items-center justify-center flex-shrink-0">
-              <svg class="w-5 h-5 text-pink-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                <circle cx="12" cy="7" r="4"></circle>
-              </svg>
+      <!-- Profil utilisateur en bas -->
+      <div class="p-4 border-t border-white/20 bg-white/5 backdrop-blur-lg flex-shrink-0">
+        <div class="flex items-center justify-between text-white/80">
+          <div class="flex items-center flex-1 min-w-0">
+            <div class="w-10 h-10 bg-gradient-to-br from-green-400 to-green-600 rounded-xl shadow-lg flex items-center justify-center mr-3">
+              <span class="text-sm font-bold text-white">{{ userInitials }}</span>
             </div>
-            
-            <div :class="`ml-3 transition-opacity duration-200 overflow-hidden ${sidebarExpanded ? 'opacity-100' : 'opacity-0 w-0'}`">
-              <p class="text-sm font-medium text-gray-800">Admin</p>
-              <p class="text-xs text-gray-500">Administrateur</p>
-            </div>
-            
-            <div :class="`transition-opacity duration-200 ml-auto ${sidebarExpanded ? 'opacity-100' : 'opacity-0 w-0 overflow-hidden'}`">
-              <svg class="w-5 h-5 text-gray-500 hover:text-pink-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                <polyline points="16 17 21 12 16 7"></polyline>
-                <line x1="21" y1="12" x2="9" y2="12"></line>
-              </svg>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-medium text-white truncate">{{ userDisplayName }}</p>
+              <p class="text-xs text-gray-400 truncate">{{ userRoleDisplay }}</p>
             </div>
           </div>
+          
+          <!-- Bouton de déconnexion -->
+          <button 
+            @click="handleLogout"
+            class="ml-3 p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200 border border-transparent hover:border-white/20"
+            title="Se déconnecter"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+            </svg>
+          </button>
         </div>
       </div>
     </aside>
 
-    <!-- Main Content Area -->
-    <div class="flex flex-col flex-1 h-screen overflow-hidden">
-      <!-- Header -->
-      <header class="bg-white shadow-sm h-16 flex items-center justify-between px-6">
-        <button @click="toggleSidebar" class="text-gray-500 hover:text-pink-600 focus:outline-none p-2 rounded-md hover:bg-gray-100 transition-colors duration-200">
-          <svg v-if="sidebarExpanded" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"></path>
-          </svg>
-          <svg v-else class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
-          </svg>
-        </button>
-        
-        <div class="flex items-center space-x-4">
-          <!-- Search box -->
-          <div class="relative hidden md:block">
-            <input type="text" placeholder="Rechercher..." class="w-64 pl-10 pr-4 py-2 border border-gray-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-pink-600 focus:border-transparent bg-gray-50 transition-all duration-200">
-            <div class="absolute left-0 inset-y-0 flex items-center pl-3 pointer-events-none">
-              <svg class="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              </svg>
-            </div>
-          </div>
-          
-          <!-- Notification icon -->
-          <div class="relative">
-            <button class="p-2 text-gray-500 rounded-full hover:bg-gray-100 hover:text-pink-600 focus:outline-none transition-colors duration-200">
-              <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-              </svg>
-            </button>
-            <span class="absolute top-1 right-1 h-4 w-4 bg-pink-600 rounded-full flex items-center justify-center text-white text-xs font-bold">2</span>
-          </div>
-        </div>
-      </header>
-      
-      <!-- Main content -->
-      <main class="flex-1 overflow-y-auto bg-gray-100 p-6">
-        <slot />
-      </main>
-      
-      <!-- Footer -->
-      <footer class="bg-white border-t border-gray-200 py-3 px-6 text-center text-xs text-gray-500">
-        <p>&copy; {{ new Date().getFullYear() }} Fondation ANAIS - ESAT Dashboard</p>
-      </footer>
+    <!-- Main Content -->
+    <div class="main-content-with-sidebar relative z-10">
+      <slot />
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      sidebarExpanded: true, // Démarrer avec la barre latérale étendue sur desktop
-      screenWidth: 0
-    };
-  },
+<script setup>
+// Initialisation des refs
+const user = ref(null);
+const canAccessDashboard = ref(false);
+const canAccessUsers = ref(false);
+const canAccessWorkers = ref(false);
+const canAccessEsats = ref(false);
+const canAccessMyEsat = ref(false);
+
+// Computed pour l'affichage utilisateur
+const userDisplayName = computed(() => {
+  if (!user.value) return '';
+  return `${user.value.first_name} ${user.value.last_name}`;
+});
+
+const userInitials = computed(() => {
+  if (!user.value) return '';
+  return `${user.value.first_name.charAt(0)}${user.value.last_name.charAt(0)}`.toUpperCase();
+});
+
+const userRoleDisplay = computed(() => {
+  if (!user.value) return '';
+  const roleMap = {
+    'super_admin': 'Super Administrateur',
+    'admin_esat': 'Administrateur ESAT', 
+    'user_esat': 'Utilisateur ESAT'
+  };
+  return roleMap[user.value.role] || user.value.role;
+});
+
+// Computed pour vérifier si l'onglet "Mon ESAT" doit être actif
+const isMyEsatActive = computed(() => {
+  if (!user.value?.esat_id) return false;
   
-  mounted() {
-    // Initialiser la largeur d'écran
-    this.screenWidth = window.innerWidth;
-    this.checkScreenSize();
-    
-    // Écouter les changements de taille d'écran
-    window.addEventListener('resize', this.handleResize);
-  },
+  const route = useRoute();
+  const currentPath = route.path;
   
-  beforeUnmount() {
-    // Nettoyer l'écouteur d'événement
-    window.removeEventListener('resize', this.handleResize);
-  },
+  // Actif si on est sur /my-esat ou sur la page de détails de son propre ESAT
+  if (currentPath === '/my-esat') return true;
   
-  methods: {
-    toggleSidebar() {
-      this.sidebarExpanded = !this.sidebarExpanded;
-    },
-    
-    handleResize() {
-      this.screenWidth = window.innerWidth;
-      this.checkScreenSize();
-    },
-    
-    checkScreenSize() {
-      // Réduire automatiquement sur les écrans mobiles
-      if (this.screenWidth < 768 && this.sidebarExpanded) {
-        this.sidebarExpanded = false;
-      }
-    }
+  const esatIdMatch = currentPath.match(/^\/esats\/(\d+)/);
+  if (esatIdMatch) {
+    const currentEsatId = parseInt(esatIdMatch[1], 10);
+    return currentEsatId === user.value.esat_id;
+  }
+  
+  return false;
+});
+
+// Fonction de déconnexion
+const handleLogout = async () => {
+  try {
+    const { logout } = useAuth();
+    await logout();
+  } catch (error) {
+    console.error('Erreur lors de la déconnexion:', error);
+    // Forcer la redirection vers login même en cas d'erreur
+    await navigateTo('/login');
   }
 };
+
+// Initialisation côté client seulement
+onMounted(async () => {
+  if (!process.client) return;
+  
+  try {
+    // Récupérer les composables d'authentification
+    const { user: authUser, fetchUser } = useAuth();
+    const { 
+      canAccessDashboard: dashboard, 
+      canAccessUsers: users, 
+      canAccessWorkers: workers,
+      canAccessEsats: esats,
+      canAccessMyEsat: myEsat
+    } = usePermissions();
+    
+    // Récupérer l'utilisateur connecté
+    await fetchUser();
+    await nextTick();
+    
+    // Assigner les valeurs
+    user.value = authUser.value;
+    canAccessDashboard.value = dashboard.value;
+    canAccessUsers.value = users.value;
+    canAccessWorkers.value = workers.value;
+    canAccessEsats.value = esats.value;
+    canAccessMyEsat.value = myEsat.value;
+    
+  } catch (error) {
+    console.error("Erreur auth:", error);
+  }
+});
 </script>
+
+<style>
+.backdrop-blur-xl {
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+/* Grid Pattern Background */
+.grid-pattern {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(34, 197, 94, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 197, 94, 0.1) 1px, transparent 1px);
+  background-size: 80px 80px;
+  background-position: 0 0, 0 0;
+}
+
+/* Grid fade overlay */
+.grid-fade-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    transparent 40%,
+    rgba(17, 24, 39, 0.3) 60%,
+    rgba(17, 24, 39, 0.7) 80%,
+    rgba(17, 24, 39, 0.9) 100%
+  );
+  pointer-events: none;
+}
+
+/* Light Halos */
+.light-halo {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.light-halo-1 {
+  top: -8%;
+  right: -8%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(
+    circle,
+    rgba(34, 197, 94, 0.15) 0%,
+    rgba(34, 197, 94, 0.08) 30%,
+    transparent 60%
+  );
+  filter: blur(40px);
+}
+
+.light-halo-2 {
+  top: 60%;
+  left: -8%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(
+    circle,
+    rgba(34, 197, 94, 0.12) 0%,
+    rgba(34, 197, 94, 0.06) 30%,
+    transparent 60%
+  );
+  filter: blur(30px);
+}
+
+/* Sidebar avec hauteur fixe 100vh */
+.sidebar-fixed-height {
+  height: 100vh !important;
+  min-height: 100vh !important;
+  max-height: 100vh !important;
+}
+
+/* Sidebar en position fixed */
+.sidebar-fixed {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 256px; /* w-64 = 16rem = 256px */
+  height: 100vh !important;
+  min-height: 100vh !important;
+  max-height: 100vh !important;
+  z-index: 50;
+}
+
+/* Contenu principal avec marge pour la sidebar */
+.main-content-with-sidebar {
+  margin-left: 256px; /* w-64 = 16rem = 256px */
+  min-height: 100vh;
+}
+</style>

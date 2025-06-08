@@ -204,6 +204,25 @@ export interface WorkerTable {
 }
 export type WorkerSelectable = Selectable<WorkerTable>;
 
+export interface AiSuggestionTable {
+  id: Generated<number>;
+  worker_id: number; // Foreign key vers WorkerTable
+  esat_id: number; // Pour la sécurité et les requêtes optimisées
+  suggestion_type: string; // Type de suggestion (ex: "job_recommendation", "skills_assessment", "training_plan")
+  prompt: string; // La question/prompt envoyée à l'IA
+  response: string; // La réponse complète de l'IA
+  summary: string | null; // Un résumé optionnel de la suggestion
+  confidence_score: number | null; // Score de confiance de 0 à 100
+  status: 'pending' | 'completed' | 'reviewed' | 'applied' | 'rejected'; // Statut de la suggestion
+  tags: string | null; // Tags séparés par des virgules pour faciliter la recherche
+  created_by: number; // ID de l'utilisateur qui a créé la suggestion
+  reviewed_by: number | null; // ID de l'utilisateur qui a reviewé la suggestion
+  reviewed_at: Date | null; // Date de review
+  created_at: Date;
+  updated_at: Date;
+}
+export type AiSuggestionSelectable = Selectable<AiSuggestionTable>;
+
 // TODO: Ajoutez les interfaces ET les types Selectable pour vos autres tables
 
 // --- Interface Database ---
@@ -211,6 +230,7 @@ export interface Database {
   esats: EsatTable;
   users: UserTable;
   workers: WorkerTable;
+  ai_suggestions: AiSuggestionTable;
   // TODO: Ajoutez d'autres tables ici
 }
 

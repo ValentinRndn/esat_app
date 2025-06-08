@@ -1,0 +1,6 @@
+# Ignorer les DevTools de Nuxt
+**/*.devtools.*
+**/devtools.*
+inspector.*
+# Ignorer les fichiers de cache problématiques
+**/*.inspector.* 

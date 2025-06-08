@@ -1,8 +1,9 @@
 // Middleware pour déboguer les routes et s'assurer que les routes d'édition fonctionnent
 export default defineNuxtRouteMiddleware((to, from) => {
-  // Journaliser la route actuelle pour le débogage
-  console.log('Navigation vers:', to.path)
+  // Middleware désactivé temporairement pour déboguer la boucle infinie
+  return;
   
-  // Ne pas bloquer la navigation, juste surveiller
-  return
+  // Code original commenté :
+  // console.log('Navigation vers:', to.path)
+  // return
 }) 

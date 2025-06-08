@@ -1,244 +1,261 @@
 <template>
-  <div class="w-full">
-    <!-- En-tête de la page -->
-    <div class="flex flex-col md:flex-row justify-between items-start mb-6">
-      <div class="mb-4 md:mb-0">
-        <h1 class="text-2xl font-semibold text-gray-800 mb-2">Modifier l'Utilisateur</h1>
-        <p class="text-sm text-gray-500 flex items-center">
-          <span>Dashboard</span>
-          <svg class="h-3 w-3 mx-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-          </svg>
-          <NuxtLink to="/users" class="text-gray-500">Utilisateurs</NuxtLink>
-          <svg class="h-3 w-3 mx-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-          </svg>
-          <span class="text-blue-600 font-medium">Modifier</span>
-        </p>
-      </div>
-      <div class="flex space-x-2">
-        <NuxtLink :to="`/users/${id}`" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
-          <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-          </svg>
-          Voir les détails
-        </NuxtLink>
-        <NuxtLink to="/users" class="inline-flex items-center px-4 py-2 bg-gray-600 text-white rounded-lg shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors duration-200">
-          <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-          </svg>
-          Retour à la liste
-        </NuxtLink>
-      </div>
-    </div>
+  <div class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden">
     
-    <!-- État de chargement -->
-    <div v-if="loading" class="flex flex-col items-center justify-center py-12">
-      <div class="w-12 h-12 border-4 border-gray-200 border-t-blue-600 rounded-full animate-spin mb-4"></div>
-      <p class="text-gray-500">Chargement des données...</p>
+    <!-- Grid Background with fade effect -->
+    <div class="absolute inset-0 z-0">
+      <div class="grid-pattern"></div>
+      <div class="grid-fade-overlay"></div>
+      
+      <!-- Light Halos -->
+      <div class="light-halo light-halo-1"></div>
+      <div class="light-halo light-halo-2"></div>
     </div>
-    
-    <!-- Message d'erreur -->
-    <div v-else-if="error" class="mx-4 my-4 bg-red-50 border-l-4 border-red-500 p-4 rounded">
-      <div class="flex items-start">
-        <svg class="h-5 w-5 text-red-500 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-        </svg>
-        <span class="text-red-700">{{ error }}</span>
-      </div>
-    </div>
-    
-    <!-- Message utilisateur non trouvé -->
-    <div v-else-if="!user" class="mx-4 my-4 bg-red-50 border-l-4 border-red-500 p-4 rounded">
-      <div class="flex items-start">
-        <svg class="h-5 w-5 text-red-500 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-        </svg>
-        <span class="text-red-700">Utilisateur non trouvé.</span>
-      </div>
-    </div>
-    
-    <!-- Message de succès -->
-    <div v-else-if="success" class="bg-green-50 border-l-4 border-green-500 p-4 rounded mb-6">
-      <div class="flex items-start">
-        <svg class="h-5 w-5 text-green-500 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-        </svg>
-        <div class="flex-1">
-          <span class="text-green-700">Utilisateur mis à jour avec succès !</span>
-          <div class="mt-3 flex space-x-3">
-            <NuxtLink :to="`/users/${id}`" class="inline-flex items-center px-3 py-1.5 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
-              <svg class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+
+    <!-- Navigation Header -->
+    <nav class="relative z-50 border-b border-white/10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-20 items-center">
+          <div class="flex items-center">
+            <NuxtLink to="/dashboard" class="text-2xl font-semibold text-white hover:text-green-400 transition-colors duration-200">BAYTH</NuxtLink>
+            <span class="ml-4 text-sm text-gray-400">/ Utilisateurs / Éditer</span>
+          </div>
+          <div class="flex items-center space-x-4">
+            <NuxtLink to="/users" class="inline-flex items-center px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg font-medium transition-all duration-200">
+              <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
               </svg>
-              Voir les détails
-            </NuxtLink>
-            <NuxtLink to="/users" class="inline-flex items-center px-3 py-1.5 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors duration-200">
-              <svg class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
-              </svg>
-              Retour à la liste
+              Retour
             </NuxtLink>
           </div>
         </div>
       </div>
-    </div>
-    
-    <!-- Card du formulaire -->
-    <div v-else class="bg-white rounded-lg shadow overflow-hidden">
-      <!-- En-tête de la card -->
-      <div class="flex items-center p-4 border-b border-gray-200">
-        <svg class="h-6 w-6 text-blue-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-        </svg>
-        <h2 class="text-lg font-semibold text-gray-800">Modifier les informations</h2>
-      </div>
-      
-      <!-- Formulaire -->
-      <form @submit.prevent="submitForm" class="p-6">
-        <div class="grid grid-cols-1 gap-6">
-          <!-- Nom et prénom -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label for="first_name" class="block text-sm font-medium text-gray-700 mb-1">Prénom *</label>
-              <input 
-                type="text" 
-                id="first_name" 
-                v-model="formData.first_name" 
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" 
-                required
-                :disabled="submitting"
-              >
-            </div>
-            
-            <div>
-              <label for="last_name" class="block text-sm font-medium text-gray-700 mb-1">Nom *</label>
-              <input 
-                type="text" 
-                id="last_name" 
-                v-model="formData.last_name" 
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" 
-                required
-                :disabled="submitting"
-              >
-            </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="relative z-10 py-8">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Header Section -->
+        <div class="mb-12">
+          <div class="inline-flex items-center pl-1 pr-4 py-1 rounded-full bg-purple-500/10 mb-4">
+            <span class="text-sm font-semibold text-gray-800 mr-2 rounded-full py-2 px-4 bg-purple-400">Édition</span>
+            <span class="text-sm text-gray-300">Modifier l'utilisateur</span>
           </div>
-          
-          <!-- Email -->
-          <div>
-            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email *</label>
-            <input 
-              type="email" 
-              id="email" 
-              v-model="formData.email" 
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" 
-              required
-              :disabled="submitting"
-            >
-          </div>
-          
-          <!-- Mot de passe -->
-          <div>
-            <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Nouveau mot de passe (laisser vide pour ne pas changer)</label>
-            <input 
-              type="password" 
-              id="password" 
-              v-model="formData.password" 
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-              :disabled="submitting"
-            >
-            <p class="mt-1 text-sm text-gray-500">Si vous remplissez ce champ, le mot de passe de l'utilisateur sera changé.</p>
-          </div>
-          
-          <!-- Rôle et ESAT -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label for="role" class="block text-sm font-medium text-gray-700 mb-1">Rôle *</label>
-              <select 
-                id="role" 
-                v-model="formData.role" 
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" 
-                required
-                :disabled="submitting"
-              >
-                <option value="super_admin">Super Administrateur</option>
-                <option value="admin_esat">Administrateur ESAT</option>
-                <option value="user_esat">Utilisateur ESAT</option>
-              </select>
-            </div>
-            
-            <div>
-              <label for="esat_id" class="block text-sm font-medium text-gray-700 mb-1">ESAT (Optionnel)</label>
-              <select 
-                id="esat_id" 
-                v-model="formData.esat_id" 
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" 
-                :disabled="submitting || loadingEsats"
-              >
-                <option :value="null">Aucun ESAT assigné</option>
-                <option v-if="loadingEsats" disabled>Chargement des ESATs...</option>
-                <option v-for="esatOption in esats" :key="esatOption.id" :value="esatOption.id">
-                  {{ esatOption.name }}
-                </option>
-              </select>
-              <div v-if="esatsError" class="mt-1 text-sm text-red-600">{{ esatsError }}</div>
-              <div v-if="loadingEsats" class="mt-1 text-sm text-gray-500 flex items-center">
-                <svg class="animate-spin h-4 w-4 mr-1 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                Chargement des ESATs...
-              </div>
-            </div>
-          </div>
-          
-          <!-- Statut actif -->
-          <div>
-            <div class="flex items-center">
-              <input 
-                type="checkbox" 
-                id="is_active" 
-                v-model="formData.is_active" 
-                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded transition duration-200"
-                :disabled="submitting"
-              >
-              <label for="is_active" class="ml-2 block text-sm text-gray-700">Actif</label>
-            </div>
-            <p class="mt-1 text-sm text-gray-500">Décochez pour désactiver temporairement le compte de l'utilisateur</p>
+          <h1 class="text-4xl font-bold text-white mb-4">
+            Éditer 
+            <span class="text-purple-400">l'utilisateur</span>
+          </h1>
+        </div>
+
+        <!-- État de chargement -->
+        <div v-if="loading" class="flex flex-col items-center justify-center py-20 bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20">
+          <div class="w-12 h-12 border-4 border-white/20 border-t-purple-400 rounded-full animate-spin mb-4"></div>
+          <p class="text-gray-300">Chargement des données...</p>
+        </div>
+        
+        <!-- Message d'erreur -->
+        <div v-else-if="error" class="bg-red-500/10 backdrop-blur-lg border border-red-500/20 rounded-2xl p-6 mb-8">
+          <div class="flex items-start">
+            <svg class="h-6 w-6 text-red-400 mr-3 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span class="text-red-300">{{ error }}</span>
           </div>
         </div>
         
-        <!-- Footer du formulaire avec boutons d'action -->
-        <div class="mt-8 pt-5 border-t border-gray-200 flex items-center justify-end gap-3">
-          <button 
-            type="button" 
-            @click="resetForm" 
-            class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200" 
-            :disabled="submitting"
-          >
-            <svg class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+        <!-- Message utilisateur non trouvé -->
+        <div v-else-if="!user" class="bg-red-500/10 backdrop-blur-lg border border-red-500/20 rounded-2xl p-6 mb-8">
+          <div class="flex items-start">
+            <svg class="h-6 w-6 text-red-400 mr-3 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            Réinitialiser
-          </button>
-          <button 
-            type="submit" 
-            class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200" 
-            :disabled="submitting"
-          >
-            <svg v-if="!submitting" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-            </svg>
-            <svg v-else class="animate-spin h-4 w-4 mr-1.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-            {{ submitting ? 'Mise à jour en cours...' : 'Mettre à jour l\'Utilisateur' }}
-          </button>
+            <span class="text-red-300">Utilisateur non trouvé.</span>
+          </div>
         </div>
-      </form>
+        
+        <!-- Message de succès -->
+        <div v-else-if="success" class="bg-green-500/10 backdrop-blur-lg border border-green-500/20 rounded-2xl p-6 mb-8">
+          <div class="flex items-start">
+            <svg class="h-6 w-6 text-green-400 mr-3 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            <div class="flex-1">
+              <span class="text-green-300">Utilisateur mis à jour avec succès !</span>
+              <div class="mt-4 flex space-x-3">
+                <NuxtLink :to="`/users/${id}`" class="inline-flex items-center px-4 py-2 bg-purple-500/20 hover:bg-purple-500/30 text-purple-400 rounded-lg transition-all duration-200 border border-purple-500/20">
+                  <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                  Voir les détails
+                </NuxtLink>
+                <NuxtLink to="/users" class="inline-flex items-center px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-all duration-200 border border-white/20">
+                  <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                  </svg>
+                  Retour à la liste
+                </NuxtLink>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Formulaire d'édition -->
+        <div v-else class="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 overflow-hidden">
+          <!-- En-tête du formulaire -->
+          <div class="flex items-center p-8 border-b border-white/10">
+            <div class="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center mr-4">
+              <svg class="w-6 h-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              </svg>
+            </div>
+            <h2 class="text-xl font-semibold text-white">Modifier les informations</h2>
+          </div>
+          
+          <!-- Formulaire -->
+          <form @submit.prevent="submitForm" class="p-8">
+            <div class="space-y-8">
+              <!-- Nom et prénom -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label for="first_name" class="block text-sm font-medium text-gray-300 mb-2">Prénom *</label>
+                  <input 
+                    type="text" 
+                    id="first_name" 
+                    v-model="formData.first_name" 
+                    class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200" 
+                    placeholder="Entrez le prénom"
+                    required
+                    :disabled="submitting"
+                  >
+                </div>
+                
+                <div>
+                  <label for="last_name" class="block text-sm font-medium text-gray-300 mb-2">Nom *</label>
+                  <input 
+                    type="text" 
+                    id="last_name" 
+                    v-model="formData.last_name" 
+                    class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200" 
+                    placeholder="Entrez le nom"
+                    required
+                    :disabled="submitting"
+                  >
+                </div>
+              </div>
+              
+              <!-- Email -->
+              <div>
+                <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email *</label>
+                <input 
+                  type="email" 
+                  id="email" 
+                  v-model="formData.email" 
+                  class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200" 
+                  placeholder="exemple@email.com"
+                  required
+                  :disabled="submitting"
+                >
+              </div>
+              
+              <!-- Mot de passe -->
+              <div>
+                <label for="password" class="block text-sm font-medium text-gray-300 mb-2">Nouveau mot de passe</label>
+                <input 
+                  type="password" 
+                  id="password" 
+                  v-model="formData.password" 
+                  class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200"
+                  placeholder="Laisser vide pour ne pas changer"
+                  :disabled="submitting"
+                >
+                <p class="mt-2 text-sm text-gray-400">Si vous remplissez ce champ, le mot de passe de l'utilisateur sera changé.</p>
+              </div>
+              
+              <!-- Rôle et ESAT -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label for="role" class="block text-sm font-medium text-gray-300 mb-2">Rôle *</label>
+                  <select 
+                    id="role" 
+                    v-model="formData.role" 
+                    class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200" 
+                    required
+                    :disabled="submitting"
+                  >
+                    <option value="admin">Administrateur</option>
+                    <option value="user">Utilisateur</option>
+                    <option value="moderator">Modérateur</option>
+                    <option value="superadmin">Super Administrateur</option>
+                  </select>
+                </div>
+                
+                <div>
+                  <label for="esat_id" class="block text-sm font-medium text-gray-300 mb-2">ESAT (Optionnel)</label>
+                  <select 
+                    id="esat_id" 
+                    v-model="formData.esat_id" 
+                    class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200" 
+                    :disabled="submitting || loadingEsats"
+                  >
+                    <option :value="null">Aucun ESAT assigné</option>
+                    <option v-if="loadingEsats" disabled>Chargement des ESATs...</option>
+                    <option v-for="esatOption in esats" :key="esatOption.id" :value="esatOption.id">
+                      {{ esatOption.name }}
+                    </option>
+                  </select>
+                  <div v-if="esatsError" class="mt-2 text-sm text-red-400">{{ esatsError }}</div>
+                  <div v-if="loadingEsats" class="mt-2 text-sm text-gray-400 flex items-center">
+                    <svg class="animate-spin w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Chargement des ESATs...
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Statut actif -->
+              <div>
+                <div class="flex items-center">
+                  <input 
+                    type="checkbox" 
+                    id="is_active" 
+                    v-model="formData.is_active" 
+                    class="w-4 h-4 text-purple-600 bg-white/5 border-white/20 rounded focus:ring-purple-500 focus:ring-2"
+                    :disabled="submitting"
+                  >
+                  <label for="is_active" class="ml-3 text-sm font-medium text-gray-300">
+                    Compte actif
+                  </label>
+                </div>
+                <p class="mt-2 text-sm text-gray-400">Décochez cette case pour désactiver le compte utilisateur.</p>
+              </div>
+              
+              <!-- Boutons -->
+              <div class="flex justify-end space-x-4 pt-6">
+                <NuxtLink to="/users" class="inline-flex items-center px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-all duration-200 border border-white/20">
+                  Annuler
+                </NuxtLink>
+                <button 
+                  type="submit" 
+                  :disabled="submitting"
+                  class="inline-flex items-center px-6 py-3 bg-purple-500 hover:bg-purple-600 text-white rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <svg v-if="submitting" class="animate-spin w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  <svg v-else class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                  {{ submitting ? 'Mise à jour...' : 'Mettre à jour' }}
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -288,17 +305,18 @@ onMounted(async () => {
       throw new Error(`Erreur HTTP: ${userResponse.status}`);
     }
     
-    user.value = await userResponse.json();
+    const responseData = await userResponse.json();
+    user.value = responseData.data || responseData; // Gérer les deux formats de réponse
     
     // Initialiser le formulaire avec les données de l'utilisateur
     formData.value = {
-      first_name: user.value.first_name,
-      last_name: user.value.last_name,
-      email: user.value.email,
+      first_name: user.value.first_name || '',
+      last_name: user.value.last_name || '',
+      email: user.value.email || '',
       password: '', // Toujours vide pour des raisons de sécurité
-      role: user.value.role,
-      esat_id: user.value.esat_id,
-      is_active: user.value.is_active
+      role: user.value.role || 'user_esat',
+      esat_id: user.value.esat_id || null,
+      is_active: user.value.is_active !== undefined ? user.value.is_active : true
     };
     
     // Sauvegarder les données originales pour la réinitialisation
@@ -313,7 +331,8 @@ onMounted(async () => {
         throw new Error(`Erreur HTTP: ${esatsResponse.status}`);
       }
       
-      esats.value = await esatsResponse.json();
+      const esatsData = await esatsResponse.json();
+      esats.value = Array.isArray(esatsData) ? esatsData : (esatsData.data || []);
     } catch (esatsErr) {
       console.error('Erreur lors du chargement des ESATs:', esatsErr);
       esatsError.value = `Erreur lors du chargement des ESATs: ${esatsErr.message}`;
@@ -391,4 +410,91 @@ const resetForm = () => {
     formData.value = { ...originalData.value };
   }
 };
-</script> 
+</script>
+
+<style>
+.backdrop-blur-lg {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* Grid Pattern Background */
+.grid-pattern {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(34, 197, 94, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 197, 94, 0.1) 1px, transparent 1px);
+  background-size: 80px 80px;
+  background-position: 0 0, 0 0;
+  animation: grid-move 20s linear infinite;
+}
+
+/* Grid fade overlay */
+.grid-fade-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    transparent 40%,
+    rgba(17, 24, 39, 0.3) 60%,
+    rgba(17, 24, 39, 0.7) 80%,
+    rgba(17, 24, 39, 0.9) 100%
+  );
+  pointer-events: none;
+}
+
+/* Optional animation for the grid */
+@keyframes grid-move {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(80px, 80px);
+  }
+}
+
+/* Light Halos */
+.light-halo {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.light-halo-1 {
+  top: -8%;
+  right: -8%;
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(
+    circle,
+    rgba(34, 197, 94, 0.25) 0%,
+    rgba(34, 197, 94, 0.15) 30%,
+    rgba(34, 197, 94, 0.08) 60%,
+    transparent 100%
+  );
+  filter: blur(60px);
+}
+
+.light-halo-2 {
+  top: 5%;
+  left: 5%;
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(
+    circle,
+    rgba(34, 197, 94, 0.20) 0%,
+    rgba(34, 197, 94, 0.12) 30%,
+    rgba(34, 197, 94, 0.06) 60%,
+    transparent 100%
+  );
+  filter: blur(50px);
+}
+</style> 

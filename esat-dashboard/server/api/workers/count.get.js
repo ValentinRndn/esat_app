@@ -1,14 +1,19 @@
+import { db } from '../../utils/db.ts';
+
 export default defineEventHandler(async (event) => {
   try {
-    const { rows } = await event.context.prisma.$queryRaw`
-      SELECT COUNT(*) as count FROM "Worker"
-    `
-    return { count: parseInt(rows[0].count) }
+    const result = await db.selectFrom('workers')
+      .select(({ fn }) => [
+        fn.count('id').as('count')
+      ])
+      .executeTakeFirst();
+    
+    return { count: parseInt(result?.count) || 0 };
   } catch (error) {
-    console.error('Erreur lors du comptage des travailleurs:', error)
+    console.error('Erreur lors du comptage des travailleurs:', error);
     throw createError({
       statusCode: 500,
-      message: 'Erreur lors du comptage des travailleurs'
-    })
+      statusMessage: 'Erreur lors du comptage des travailleurs'
+    });
   }
-}) 
+}); 

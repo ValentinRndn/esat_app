@@ -1,3 +1,4 @@
 export default defineNuxtRouteMiddleware((to) => {
-  // Ne rien faire, laisser le routage par défaut
+  // Middleware désactivé temporairement pour déboguer la boucle infinie
+  return;
 }) 

@@ -1,8 +1,14 @@
+import { defineNuxtConfig } from 'nuxt/config'
+
 // nuxt.config.ts
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+  devtools: { enabled: false },
   modules: ['@nuxtjs/tailwindcss'],
   css: ['~/assets/css/main.css'],
+
+  dev: false,
+  devServer: {
+  },
 
   runtimeConfig: {
     stripeSecretKey: process.env.STRIPE_SECRET_KEY,
@@ -21,6 +27,12 @@ export default defineNuxtConfig({
 
   nitro: {
     plugins: ['~/server/plugins/stripe.ts']
+  },
+
+  vite: {
+    server: {
+      hmr: false
+    }
   },
 
   compatibilityDate: '2025-05-15',

@@ -1,693 +1,660 @@
 <template>
-  <div class="w-full">
-    <!-- En-tête de la page -->
-    <div class="flex flex-col md:flex-row justify-between items-start mb-6">
-      <div class="mb-4 md:mb-0">
-        <h1 class="text-2xl font-semibold text-gray-800 mb-2">Détails du Travailleur</h1>
-        <p class="text-sm text-gray-500 flex items-center">
-          <span>Dashboard</span>
-          <svg class="h-3 w-3 mx-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-          </svg>
-          <NuxtLink to="/workers" class="text-gray-500">Travailleurs</NuxtLink>
-          <svg class="h-3 w-3 mx-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-          </svg>
-          <span class="text-green-600 font-medium">Détails</span>
-        </p>
-      </div>
-      <div class="flex flex-col md:flex-row gap-2">
-        <!-- Bouton Suggérer des métiers et Modifier -->
-        <button 
-          @click="suggestJobs" 
-          class="inline-flex items-center justify-center px-4 py-2 bg-purple-600 text-white rounded-lg shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors duration-200"
-          :disabled="loadingSuggestions"
-        >
-          <svg v-if="!loadingSuggestions" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
-          </svg>
-          <svg v-else class="animate-spin h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-          </svg>
-          {{ loadingSuggestions ? 'Suggestions en cours...' : 'Suggérer des métiers (IA)' }}
-        </button>
-        <NuxtLink :to="`/workers/edit/${id}`" class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200">
-          <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-          </svg>
-          Modifier
-        </NuxtLink>
-        <NuxtLink to="/workers" class="inline-flex items-center px-4 py-2 bg-gray-600 text-white rounded-lg shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors duration-200">
-          <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-          </svg>
-          Retour à la liste
-        </NuxtLink>
-      </div>
-    </div>
+  <div class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden">
     
-    <!-- État de chargement -->
-    <div v-if="loading" class="flex flex-col items-center justify-center py-12">
-      <div class="w-12 h-12 border-4 border-gray-200 border-t-green-600 rounded-full animate-spin mb-4"></div>
-      <p class="text-gray-500">Chargement des données...</p>
+    <!-- Grid Background with fade effect -->
+    <div class="absolute inset-0 z-0">
+      <div class="grid-pattern"></div>
+      <div class="grid-fade-overlay"></div>
+      
+      <!-- Light Halos -->
+      <div class="light-halo light-halo-1"></div>
+      <div class="light-halo light-halo-2"></div>
     </div>
-    
-    <!-- Message d'erreur -->
-    <div v-else-if="error" class="mx-4 my-4 bg-red-50 border-l-4 border-red-500 p-4 rounded">
-      <div class="flex items-start">
-        <svg class="h-5 w-5 text-red-500 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-        </svg>
-        <span class="text-red-700">{{ error }}</span>
+
+    <!-- Navigation Header -->
+    <nav class="relative z-50 border-b border-white/10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-20 items-center">
+          <div class="flex items-center">
+            <NuxtLink to="/dashboard" class="text-2xl font-semibold text-white hover:text-green-400 transition-colors duration-200">BAYTH</NuxtLink>
+            <span class="ml-4 text-sm text-gray-400">/ Travailleurs / Détails</span>
+          </div>
+          <div class="flex items-center space-x-3">
+            <!-- Bouton Suggérer des métiers IA -->
+            <button 
+              @click="suggestJobs" 
+              class="inline-flex items-center px-4 py-2.5 bg-purple-500 hover:bg-purple-600 text-white rounded-full font-medium transition-all duration-200 shadow-lg hover:shadow-xl"
+              :disabled="loadingSuggestions"
+            >
+              <svg v-if="!loadingSuggestions" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+              </svg>
+              <svg v-else class="animate-spin w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              {{ loadingSuggestions ? 'Suggestions IA...' : 'Suggérer métiers (IA)' }}
+            </button>
+            
+            <NuxtLink :to="`/workers/edit/${id}`" class="inline-flex items-center px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-full font-medium transition-all duration-200 shadow-lg hover:shadow-xl">
+              <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              </svg>
+              Modifier
+            </NuxtLink>
+            
+            <div class="flex items-center space-x-4">
+              <NuxtLink to="/workers" class="inline-flex items-center px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg font-medium transition-all duration-200">
+                <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Retour
+              </NuxtLink>
+            </div>
+            
+            <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+              <span class="text-sm font-medium text-white">A</span>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-    
-    <!-- Message travailleur non trouvé -->
-    <div v-else-if="!worker" class="mx-4 my-4 bg-red-50 border-l-4 border-red-500 p-4 rounded">
-      <div class="flex items-start">
-        <svg class="h-5 w-5 text-red-500 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-        </svg>
-        <span class="text-red-700">Travailleur non trouvé.</span>
-      </div>
-    </div>
-    
-    <!-- Contenu principal -->
-    <div v-else>
-      <!-- Informations du travailleur -->
-      <div class="bg-white rounded-lg shadow overflow-hidden mb-6">
-        <!-- En-tête de la card avec identité du travailleur -->
-        <div class="flex items-center p-4 border-b border-gray-200 bg-green-50">
-          <svg class="h-8 w-8 text-green-600 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-          </svg>
-          <div>
-            <h2 class="text-xl font-semibold text-gray-800">
-              {{ worker.first_name }} {{ worker.last_name }}
-            </h2>
-            <div class="text-sm text-gray-500 mt-1">
-              Régime: 
-              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                {{ formatWorkRegime(worker.work_regime) }}
+    </nav>
+
+    <!-- Main Content -->
+    <div class="relative z-10 py-8">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Header Section -->
+        <div class="mb-12">
+          <div class="inline-flex items-center pl-1 pr-4 py-1 rounded-full bg-orange-500/10 mb-4">
+            <span class="text-sm font-semibold text-gray-800 mr-2 rounded-full py-2 px-4 bg-orange-400">Travailleur</span>
+            <span class="text-sm text-gray-300">Détails du profil</span>
+          </div>
+          <h1 class="text-4xl font-bold text-white mb-4">
+            Profil du 
+            <span class="text-orange-400">travailleur</span>
+          </h1>
+        </div>
+
+        <!-- État de chargement -->
+        <div v-if="loading" class="flex flex-col items-center justify-center py-20 bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20">
+          <div class="w-12 h-12 border-4 border-white/20 border-t-orange-400 rounded-full animate-spin mb-4"></div>
+          <p class="text-gray-300">Chargement des données...</p>
+        </div>
+        
+        <!-- Message d'erreur -->
+        <div v-else-if="error" class="bg-red-500/10 backdrop-blur-lg border border-red-500/20 rounded-2xl p-6">
+          <div class="flex items-start">
+            <svg class="h-6 w-6 text-red-400 mr-3 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span class="text-red-300">{{ error }}</span>
+          </div>
+        </div>
+        
+        <!-- Message travailleur non trouvé -->
+        <div v-else-if="!worker" class="bg-red-500/10 backdrop-blur-lg border border-red-500/20 rounded-2xl p-6">
+          <div class="flex items-start">
+            <svg class="h-6 w-6 text-red-400 mr-3 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span class="text-red-300">Travailleur non trouvé.</span>
+          </div>
+        </div>
+        
+        <!-- Contenu principal -->
+        <div v-else class="space-y-8">
+          <!-- En-tête du profil -->
+          <div class="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 overflow-hidden">
+            <div class="p-8">
+              <div class="flex items-start space-x-6">
+                <!-- Avatar -->
+                <div class="w-24 h-24 bg-orange-500/20 rounded-2xl flex items-center justify-center flex-shrink-0">
+                  <span class="text-3xl font-bold text-orange-400">{{ getInitials(worker.first_name, worker.last_name) }}</span>
+                </div>
+                
+                <!-- Informations principales -->
+                <div class="flex-1">
+                  <h2 class="text-3xl font-bold text-white mb-2">
+                    {{ worker.first_name }} {{ worker.last_name }}
+                  </h2>
+                  <div class="flex items-center space-x-4 mb-4">
+                    <span class="px-4 py-2 rounded-full text-sm font-semibold" :class="getWorkRegimeClass(worker.work_regime)">
+                      {{ formatWorkRegime(worker.work_regime) }}
+                    </span>
+                    <span class="px-3 py-1 bg-white/10 rounded-full text-sm text-gray-300">
+                      ID: #{{ worker.id }}
+                    </span>
+                    <span v-if="worker.internal_code" class="px-3 py-1 bg-orange-500/20 rounded-full text-sm text-orange-400">
+                      {{ worker.internal_code }}
+                    </span>
+                  </div>
+                  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                    <div class="flex items-center text-gray-300">
+                      <svg class="w-4 h-4 mr-2 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a1 1 0 011-1h6a1 1 0 011 1v4" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21h18l-3-9H6l-3 9z" />
+                      </svg>
+                      Né(e) le {{ formatDate(worker.birth_date) }}
+                    </div>
+                    <div class="flex items-center text-gray-300">
+                      <svg class="w-4 h-4 mr-2 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      Entrée ESAT: {{ formatDate(worker.entry_date_esat) }}
+                    </div>
+                    <div class="flex items-center text-gray-300">
+                      <svg class="w-4 h-4 mr-2 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                      </svg>
+                      {{ worker.contact_info || 'Contact non spécifié' }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Section Informations personnelles complètes -->
+          <div class="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 p-8">
+            <div class="flex items-center mb-6">
+              <div class="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center mr-4">
+                <svg class="w-6 h-6 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-white">Informations personnelles</h3>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <!-- Colonne 1 -->
+              <div class="space-y-6">
+                <div>
+                  <p class="text-sm font-medium text-gray-400 mb-1">Mesure de protection</p>
+                  <p class="text-white">{{ formatProtectionMeasure(worker.protection_measure) }}</p>
+                </div>
+                
+                <div v-if="worker.legal_guardian">
+                  <p class="text-sm font-medium text-gray-400 mb-1">Tuteur légal</p>
+                  <p class="text-white">{{ worker.legal_guardian }}</p>
+                </div>
+                
+                <div v-if="worker.emergency_contact">
+                  <p class="text-sm font-medium text-gray-400 mb-1">Contact d'urgence</p>
+                  <p class="text-white">{{ worker.emergency_contact }}</p>
+                </div>
+                
+                <div v-if="worker.living_situation">
+                  <p class="text-sm font-medium text-gray-400 mb-2">Situation de logement</p>
+                  <p class="text-white whitespace-pre-line">{{ worker.living_situation }}</p>
+                </div>
+              </div>
+              
+              <!-- Colonne 2 -->
+              <div class="space-y-6">
+                <div v-if="worker.mobility_info">
+                  <p class="text-sm font-medium text-gray-400 mb-2">Informations de mobilité</p>
+                  <p class="text-white whitespace-pre-line">{{ worker.mobility_info }}</p>
+                </div>
+                
+                <div v-if="worker.health_info_summary">
+                  <p class="text-sm font-medium text-gray-400 mb-2">Résumé informations de santé</p>
+                  <p class="text-white whitespace-pre-line">{{ worker.health_info_summary }}</p>
+                </div>
+                
+                <div v-if="worker.educational_background">
+                  <p class="text-sm font-medium text-gray-400 mb-2">Parcours scolaire</p>
+                  <p class="text-white whitespace-pre-line">{{ worker.educational_background }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Section Situation professionnelle -->
+          <div class="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 p-8">
+            <div class="flex items-center mb-6">
+              <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center mr-4">
+                <svg class="w-6 h-6 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-white">Situation professionnelle</h3>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <!-- Informations ESAT -->
+              <div class="space-y-6">
+                <div>
+                  <p class="text-sm font-medium text-gray-400 mb-1">ESAT assigné</p>
+                  <div v-if="worker.esat_id">
+                    <NuxtLink 
+                      :to="`/esats/${worker.esat_id}`" 
+                      class="inline-flex items-center px-4 py-2 bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 rounded-lg transition-all duration-200"
+                    >
+                      <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                      Voir l'ESAT (ID: {{ worker.esat_id }})
+                    </NuxtLink>
+                  </div>
+                  <p v-else class="text-gray-400">Non assigné</p>
+                </div>
+                
+                <div>
+                  <p class="text-sm font-medium text-gray-400 mb-1">Régime de travail</p>
+                  <div class="flex items-center space-x-3">
+                    <span class="px-3 py-1 rounded-full text-sm font-semibold" :class="getWorkRegimeClass(worker.work_regime)">
+                      {{ formatWorkRegime(worker.work_regime) }}
+                    </span>
+                    <span v-if="worker.work_regime === 'part-time' && worker.part_time_percentage" class="px-3 py-1 bg-gray-500/20 rounded-full text-sm text-gray-300">
+                      {{ worker.part_time_percentage }}%
+                    </span>
+                  </div>
+                </div>
+                
+                <div v-if="worker.work_hours">
+                  <p class="text-sm font-medium text-gray-400 mb-1">Horaires de travail</p>
+                  <p class="text-white">{{ worker.work_hours }}</p>
+                </div>
+              </div>
+              
+              <!-- Secteurs d'activité et vigilance -->
+              <div class="space-y-6">
+                <div v-if="worker.activity_sectors">
+                  <p class="text-sm font-medium text-gray-400 mb-2">Secteurs d'activité</p>
+                  <div class="flex flex-wrap gap-2">
+                    <span v-for="sector in getActivitySectors(worker.activity_sectors)" 
+                          :key="sector"
+                          class="px-3 py-1 text-sm bg-blue-500/20 text-blue-400 rounded-full">
+                      {{ sector.trim() }}
+                    </span>
+                  </div>
+                </div>
+                
+                <div v-if="worker.activity_sectors_other">
+                  <p class="text-sm font-medium text-gray-400 mb-1">Autres secteurs</p>
+                  <p class="text-white">{{ worker.activity_sectors_other }}</p>
+                </div>
+                
+                <div v-if="worker.vigilance_points">
+                  <p class="text-sm font-medium text-gray-400 mb-2">Points de vigilance</p>
+                  <p class="text-white whitespace-pre-line">{{ worker.vigilance_points }}</p>
+                </div>
+                
+                <div v-if="worker.vigilance_actions">
+                  <p class="text-sm font-medium text-gray-400 mb-2">Actions de vigilance</p>
+                  <p class="text-white whitespace-pre-line">{{ worker.vigilance_actions }}</p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Parcours professionnel -->
+            <div v-if="worker.professional_background_summary" class="mt-8 pt-6 border-t border-white/10">
+              <p class="text-sm font-medium text-gray-400 mb-2">Résumé du parcours professionnel</p>
+              <p class="text-white whitespace-pre-line">{{ worker.professional_background_summary }}</p>
+            </div>
+          </div>
+          
+          <!-- Section Compétences et évaluations -->
+          <div class="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 p-8">
+            <div class="flex items-center mb-6">
+              <div class="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center mr-4">
+                <svg class="w-6 h-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-white">Compétences et évaluations</h3>
+            </div>
+            
+            <!-- Compétences de base -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+              <div>
+                <h4 class="text-lg font-medium text-white mb-4">Compétences de base</h4>
+                <div class="space-y-4">
+                  <div v-if="worker.reading_skills">
+                    <p class="text-sm font-medium text-gray-400 mb-1">Compétences en lecture</p>
+                    <p class="text-white">{{ formatReadingSkills(worker.reading_skills) }}</p>
+                  </div>
+                  
+                  <div v-if="worker.writing_skills">
+                    <p class="text-sm font-medium text-gray-400 mb-1">Compétences en écriture</p>
+                    <p class="text-white">{{ formatWritingSkills(worker.writing_skills) }}</p>
+                  </div>
+                  
+                  <div v-if="worker.calculation_skills">
+                    <p class="text-sm font-medium text-gray-400 mb-1">Compétences en calcul</p>
+                    <p class="text-white">{{ formatCalculationSkills(worker.calculation_skills) }}</p>
+                  </div>
+                  
+                  <div v-if="worker.computer_skills">
+                    <p class="text-sm font-medium text-gray-400 mb-1">Compétences informatiques</p>
+                    <p class="text-white">{{ worker.computer_skills }}</p>
+                    <div v-if="worker.computer_skills_comments" class="mt-2 p-3 bg-white/5 rounded-lg">
+                      <p class="text-sm text-gray-300">{{ worker.computer_skills_comments }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Capacités et clarté du projet -->
+              <div>
+                <h4 class="text-lg font-medium text-white mb-4">Capacités</h4>
+                <div class="space-y-4">
+                  <div v-if="worker.professional_project_clarity !== null">
+                    <p class="text-sm font-medium text-gray-400 mb-1">Clarté du projet professionnel</p>
+                    <div class="flex items-center space-x-3">
+                      <div class="flex space-x-1">
+                        <div v-for="i in 10" :key="i" 
+                             class="w-3 h-3 rounded-full"
+                             :class="i <= worker.professional_project_clarity ? 'bg-orange-400' : 'bg-gray-600'">
+                        </div>
+                      </div>
+                      <span class="text-white">{{ worker.professional_project_clarity }}/10</span>
+                    </div>
+                  </div>
+                  
+                  <div v-if="worker.ordinary_work_capacity !== null">
+                    <p class="text-sm font-medium text-gray-400 mb-1">Capacité de travail en milieu ordinaire</p>
+                    <div class="flex items-center space-x-3">
+                      <div class="flex space-x-1">
+                        <div v-for="i in 10" :key="i" 
+                             class="w-3 h-3 rounded-full"
+                             :class="i <= worker.ordinary_work_capacity ? 'bg-green-400' : 'bg-gray-600'">
+                        </div>
+                      </div>
+                      <span class="text-white">{{ worker.ordinary_work_capacity }}/10</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Évaluations professionnelles et sociales -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 pt-6 border-t border-white/10">
+              <div v-if="worker.professional_evaluation_comments">
+                <h4 class="text-lg font-medium text-white mb-3">Évaluation professionnelle</h4>
+                <div class="p-4 bg-white/5 rounded-lg">
+                  <p class="text-gray-300 whitespace-pre-line">{{ worker.professional_evaluation_comments }}</p>
+                </div>
+              </div>
+              
+              <div v-if="worker.social_relations_comments">
+                <h4 class="text-lg font-medium text-white mb-3">Relations sociales</h4>
+                <div class="p-4 bg-white/5 rounded-lg">
+                  <p class="text-gray-300 whitespace-pre-line">{{ worker.social_relations_comments }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Section Documents et projet professionnel -->
+          <div class="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 p-8">
+            <div class="flex items-center mb-6">
+              <div class="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center mr-4">
+                <svg class="w-6 h-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-white">Documents et projet professionnel</h3>
+            </div>
+            
+            <!-- Documents disponibles -->
+            <div class="mb-8">
+              <h4 class="text-lg font-medium text-white mb-4">Documents disponibles</h4>
+              <div class="flex flex-wrap gap-3">
+                <div class="flex items-center px-4 py-2 rounded-lg" :class="worker.has_cv ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-400'">
+                  <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  <span class="text-sm font-medium">CV</span>
+                  <span class="ml-2 text-xs">{{ worker.has_cv ? '✓' : '✗' }}</span>
+                </div>
+                
+                <div class="flex items-center px-4 py-2 rounded-lg" :class="worker.has_motivation_letter ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-400'">
+                  <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                  </svg>
+                  <span class="text-sm font-medium">Lettre de motivation</span>
+                  <span class="ml-2 text-xs">{{ worker.has_motivation_letter ? '✓' : '✗' }}</span>
+                </div>
+                
+                <div class="flex items-center px-4 py-2 rounded-lg" :class="worker.has_cpf_account ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-400'">
+                  <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                  </svg>
+                  <span class="text-sm font-medium">Compte CPF</span>
+                  <span class="ml-2 text-xs">{{ worker.has_cpf_account ? '✓' : '✗' }}</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Projet professionnel -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div class="space-y-6">
+                <div v-if="worker.employer_work_willingness">
+                  <p class="text-sm font-medium text-gray-400 mb-2">Volonté de travail chez un employeur</p>
+                  <p class="text-white whitespace-pre-line">{{ worker.employer_work_willingness }}</p>
+                </div>
+                
+                <div v-if="worker.desired_job_field">
+                  <p class="text-sm font-medium text-gray-400 mb-1">Domaine professionnel souhaité</p>
+                  <p class="text-white">{{ worker.desired_job_field }}</p>
+                </div>
+                
+                <div v-if="worker.desired_companies">
+                  <p class="text-sm font-medium text-gray-400 mb-1">Entreprises souhaitées</p>
+                  <p class="text-white">{{ worker.desired_companies }}</p>
+                </div>
+              </div>
+              
+              <div class="space-y-6">
+                <div v-if="worker.geographic_mobility">
+                  <p class="text-sm font-medium text-gray-400 mb-1">Mobilité géographique</p>
+                  <div class="flex items-center space-x-2">
+                    <span class="px-3 py-1 bg-blue-500/20 text-blue-400 rounded-full text-sm">
+                      {{ formatGeographicMobility(worker.geographic_mobility) }}
+                    </span>
+                    <span v-if="worker.geographic_mobility === 'autre' && worker.geographic_mobility_other" class="text-white text-sm">
+                      ({{ worker.geographic_mobility_other }})
+                    </span>
+                  </div>
+                </div>
+                
+                <div v-if="worker.exceptional_experiences">
+                  <p class="text-sm font-medium text-gray-400 mb-2">Expériences exceptionnelles</p>
+                  <p class="text-white whitespace-pre-line">{{ worker.exceptional_experiences }}</p>
+                </div>
+                
+                <div v-if="worker.project_difficulties">
+                  <p class="text-sm font-medium text-gray-400 mb-2">Difficultés du projet</p>
+                  <p class="text-white whitespace-pre-line">{{ worker.project_difficulties }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Section Suggestions IA -->
+        <div v-if="aiSuggestions" ref="aiSuggestionsSection" class="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 p-8">
+          <div class="flex items-center mb-6">
+            <div class="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center mr-4">
+              <svg class="w-6 h-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-white">Suggestions de métiers (IA)</h3>
+            <div class="ml-auto">
+              <span class="px-3 py-1 bg-purple-500/20 text-purple-400 rounded-full text-sm font-medium">
+                Généré par IA
               </span>
             </div>
           </div>
-        </div>
-        
-        <!-- Section Informations personnelles -->
-        <div class="p-5 border-b border-gray-200">
-          <h3 class="flex items-center text-lg font-medium text-gray-700 mb-4">
-            <svg class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-            </svg>
-            Informations personnelles
-          </h3>
           
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4">
-            <div>
-              <p class="text-sm font-medium text-gray-500 mb-1">ID</p>
-              <p class="text-gray-900">
-                <span class="px-2 py-1 text-xs font-medium bg-gray-100 rounded-md text-gray-700">#{{ worker.id }}</span>
-              </p>
-            </div>
-            <div>
-              <p class="text-sm font-medium text-gray-500 mb-1">Prénom</p>
-              <p class="text-gray-900">{{ worker.first_name }}</p>
-            </div>
-            <div>
-              <p class="text-sm font-medium text-gray-500 mb-1">Nom</p>
-              <p class="text-gray-900">{{ worker.last_name }}</p>
-            </div>
-            <div>
-              <p class="text-sm font-medium text-gray-500 mb-1">Date de naissance</p>
-              <p class="text-gray-900">{{ formatDate(worker.birth_date) }}</p>
-            </div>
-            <div>
-              <p class="text-sm font-medium text-gray-500 mb-1">Informations de contact</p>
-              <p class="text-gray-900">{{ worker.contact_info || 'Non spécifiées' }}</p>
-            </div>
-            <div>
-              <p class="text-sm font-medium text-gray-500 mb-1">Code interne ESAT</p>
-              <p class="text-gray-900">{{ worker.internal_code || 'Non spécifié' }}</p>
+          <div class="prose prose-invert max-w-none">
+            <div class="text-gray-300 whitespace-pre-line leading-relaxed" v-html="formattedAiSuggestions">
             </div>
           </div>
-        </div>
-        
-        <!-- Section Informations ESAT -->
-        <div class="p-5 border-b border-gray-200">
-          <h3 class="flex items-center text-lg font-medium text-gray-700 mb-4">
-            <svg class="h-5 w-5 text-pink-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-            </svg>
-            Informations ESAT
-          </h3>
           
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4">
-            <div>
-              <p class="text-sm font-medium text-gray-500 mb-1">ESAT</p>
-              <p class="text-gray-900">
-                <NuxtLink 
-                  v-if="worker.esat_id" 
-                  :to="`/esats/${worker.esat_id}`" 
-                  class="text-pink-600 hover:text-pink-800 hover:underline flex items-center"
-                >
-                  <svg class="h-3.5 w-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                  </svg>
-                  Voir l'ESAT (ID: {{ worker.esat_id }})
-                </NuxtLink>
-                <span v-else class="text-gray-500">Non assigné</span>
-              </p>
-            </div>
-            <div>
-              <p class="text-sm font-medium text-gray-500 mb-1">Date d'entrée dans l'ESAT</p>
-              <p class="text-gray-900">{{ formatDate(worker.entry_date_esat) }}</p>
-            </div>
-            <div>
-              <p class="text-sm font-medium text-gray-500 mb-1">Régime de travail</p>
-              <p class="text-gray-900">
-                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                  {{ formatWorkRegime(worker.work_regime) }}
-                </span>
-              </p>
-            </div>
-            <div v-if="worker.work_regime === 'part-time'">
-              <p class="text-sm font-medium text-gray-500 mb-1">Pourcentage temps partiel</p>
-              <p class="text-gray-900">{{ worker.part_time_percentage ? `${worker.part_time_percentage}%` : 'Non spécifié' }}</p>
-            </div>
-            <div>
-              <p class="text-sm font-medium text-gray-500 mb-1">Horaires de travail</p>
-              <p class="text-gray-900">{{ worker.work_hours || 'Non spécifiés' }}</p>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Section Situation personnelle -->
-        <div class="p-5 border-b border-gray-200">
-          <h3 class="flex items-center text-lg font-medium text-gray-700 mb-4">
-            <svg class="h-5 w-5 text-blue-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-            </svg>
-            Situation personnelle
-          </h3>
-          
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-            <div>
-              <p class="text-sm font-medium text-gray-500 mb-1">Situation de logement</p>
-              <p class="text-gray-900 whitespace-pre-line">{{ worker.living_situation || 'Non spécifiée' }}</p>
-            </div>
-            <div>
-              <p class="text-sm font-medium text-gray-500 mb-1">Informations de mobilité</p>
-              <p class="text-gray-900 whitespace-pre-line">{{ worker.mobility_info || 'Non spécifiées' }}</p>
-            </div>
-            <div>
-              <p class="text-sm font-medium text-gray-500 mb-1">Mesure de protection juridique</p>
-              <p class="text-gray-900">
-                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                  {{ formatProtectionMeasure(worker.protection_measure) }}
-                </span>
-              </p>
-            </div>
-            <div>
-              <p class="text-sm font-medium text-gray-500 mb-1">Tuteur légal</p>
-              <p class="text-gray-900 whitespace-pre-line">{{ worker.legal_guardian || 'Non spécifié' }}</p>
-            </div>
-            <div>
-              <p class="text-sm font-medium text-gray-500 mb-1">Contact d'urgence</p>
-              <p class="text-gray-900 whitespace-pre-line">{{ worker.emergency_contact || 'Non spécifié' }}</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Section Santé et parcours -->
-        <div class="p-5 border-b border-gray-200">
-          <h3 class="flex items-center text-lg font-medium text-gray-700 mb-4">
-            <svg class="h-5 w-5 text-red-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
-            </svg>
-            Santé et parcours
-          </h3>
-          
-          <div class="grid grid-cols-1 gap-x-6 gap-y-4">
-            <div>
-              <p class="text-sm font-medium text-gray-500 mb-1">Résumé d'informations santé</p>
-              <p class="text-gray-900 whitespace-pre-line">{{ worker.health_info_summary || 'Non spécifié' }}</p>
-            </div>
-            <div>
-              <p class="text-sm font-medium text-gray-500 mb-1">Parcours scolaire</p>
-              <p class="text-gray-900 whitespace-pre-line">{{ worker.educational_background || 'Non spécifié' }}</p>
-            </div>
-            <div>
-              <p class="text-sm font-medium text-gray-500 mb-1">Parcours professionnel</p>
-              <p class="text-gray-900 whitespace-pre-line">{{ worker.professional_background_summary || 'Non spécifié' }}</p>
-            </div>
-            <div>
-              <p class="text-sm font-medium text-gray-500 mb-1">Points de vigilance</p>
-              <p class="text-gray-900 whitespace-pre-line">{{ worker.vigilance_points || 'Non spécifié' }}</p>
-            </div>
-            <div>
-              <p class="text-sm font-medium text-gray-500 mb-1">Actions face aux points de vigilance</p>
-              <p class="text-gray-900 whitespace-pre-line">{{ worker.vigilance_actions || 'Non spécifié' }}</p>
-            </div>
-          </div>
-        </div>
-
-  <!-- Section Savoirs de base -->
-  <div class="p-5 border-b border-gray-200">
-    <h3 class="flex items-center text-lg font-medium text-gray-700 mb-4">
-      <svg class="h-5 w-5 text-indigo-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 4.75 7.5 4.75a4.5 4.5 0 00-4.5 4.5c0 1.746 0.726 3.33 1.957 4.583M12 6.253v13m0-13C13.168 5.477 14.754 4.75 16.5 4.75a4.5 4.5 0 014.5 4.5c0 1.746-.726 3.33-1.957 4.583"></path>
-      </svg>
-      Savoirs de base
-    </h3>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-      <div>
-        <p class="text-sm font-medium text-gray-500 mb-1">Repères spatio-temporels</p>
-        <div v-if="parsedSpatialTemporalOrientation" class="mt-2">
-          <div class="flex flex-wrap gap-2">
-            <span v-if="parsedSpatialTemporalOrientation.time_orientation === 'yes'" 
-                  class="px-2 py-1 bg-indigo-100 text-indigo-800 rounded-full text-xs font-medium">
-              Orientation temporelle
-            </span>
-            <span v-if="parsedSpatialTemporalOrientation.space_orientation === 'yes'" 
-                  class="px-2 py-1 bg-indigo-100 text-indigo-800 rounded-full text-xs font-medium">
-              Orientation spatiale
-            </span>
-          </div>
-        </div>
-        <p v-else class="text-gray-900">Non spécifié</p>
-      </div>
-      <div>
-        <p class="text-sm font-medium text-gray-500 mb-1">Compétences en lecture</p>
-        <div v-if="worker.reading_skills" class="flex flex-wrap gap-2 mt-1">
-          <span v-for="skill in formatCommaSeparatedField(worker.reading_skills)" 
-                :key="skill" 
-                class="px-2 py-1 bg-indigo-100 text-indigo-800 rounded-full text-xs font-medium">
-            {{ formatSkillName(skill) }}
-          </span>
-        </div>
-        <p v-else class="text-gray-900">Non spécifié</p>
-      </div>
-      <div>
-        <p class="text-sm font-medium text-gray-500 mb-1">Compétences en écriture</p>
-        <div v-if="worker.writing_skills" class="flex flex-wrap gap-2 mt-1">
-          <span v-for="skill in formatCommaSeparatedField(worker.writing_skills)" 
-                :key="skill" 
-                class="px-2 py-1 bg-indigo-100 text-indigo-800 rounded-full text-xs font-medium">
-            {{ formatSkillName(skill) }}
-          </span>
-        </div>
-        <p v-else class="text-gray-900">Non spécifié</p>
-      </div>
-      <div>
-        <p class="text-sm font-medium text-gray-500 mb-1">Compétences en calcul</p>
-        <div v-if="worker.calculation_skills" class="flex flex-wrap gap-2 mt-1">
-          <span v-for="skill in formatCommaSeparatedField(worker.calculation_skills)" 
-                :key="skill" 
-                class="px-2 py-1 bg-indigo-100 text-indigo-800 rounded-full text-xs font-medium">
-            {{ formatSkillName(skill) }}
-          </span>
-        </div>
-        <p v-else class="text-gray-900">Non spécifié</p>
-      </div>
-      <div>
-        <p class="text-sm font-medium text-gray-500 mb-1">Compétences informatiques</p>
-        <p class="text-gray-900 whitespace-pre-line">{{ worker.computer_skills || 'Non spécifié' }}</p>
-      </div>
-      <div>
-        <p class="text-sm font-medium text-gray-500 mb-1">Commentaires sur les compétences informatiques</p>
-        <p class="text-gray-900 whitespace-pre-line">{{ worker.computer_skills_comments || 'Non spécifié' }}</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Section Évaluations professionnelles -->
-  <div class="p-5 border-b border-gray-200">
-    <h3 class="flex items-center text-lg font-medium text-gray-700 mb-4">
-      <svg class="h-5 w-5 text-teal-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17a2 2 0 11-4 0m5-2V9a2 2 0 00-2-2h-2a2 2 0 00-2 2v10m6 0a2 2 0 100-4m-12 4c.001-1.002.166-1.962.485-2.863a9 9 0 1011.215 0c.319.901.484 1.861.485 2.863m-1.5 1.5a3 3 0 11-6 0m6 0v6"></path>
-      </svg>
-      Évaluations professionnelles
-    </h3>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-      <div>
-        <p class="text-sm font-medium text-gray-500 mb-1">Évaluation professionnelle</p>
-        <div v-if="parsedProfessionalEvaluation" class="space-y-3 mt-2">
-          <div v-for="(value, key) in parsedProfessionalEvaluation" :key="key" class="bg-gray-50 p-3 rounded-lg">
-            <div class="flex items-center justify-between mb-1">
-              <span class="font-medium text-gray-700">{{ formatEvaluationKey(key) }}</span>
-              <div class="flex items-center gap-2">
-                <span class="text-xs text-gray-500">Travailleur:</span>
-                <span :class="`px-2 py-0.5 rounded-full text-xs font-medium ${getRatingClass(value.worker)}`">
-                  {{ formatRating(value.worker) }}
-                </span>
-                <span class="text-xs text-gray-500 ml-2">Moniteur:</span>
-                <span :class="`px-2 py-0.5 rounded-full text-xs font-medium ${getRatingClass(value.monitor)}`">
-                  {{ formatRating(value.monitor) }}
-                </span>
+          <!-- Disclaimer -->
+          <div class="mt-6 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
+            <div class="flex items-start">
+              <svg class="w-5 h-5 text-yellow-400 mr-3 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+              <div class="text-yellow-300 text-sm">
+                <p class="font-medium mb-1">Informations générées par IA</p>
+                <p>Ces suggestions sont basées sur le profil du travailleur et servent d'aide à la décision. Un accompagnement personnalisé reste recommandé pour valider ces orientations professionnelles.</p>
               </div>
             </div>
-            <p v-if="value.comment" class="text-sm text-gray-600 italic">{{ value.comment }}</p>
           </div>
         </div>
-        <p v-else class="text-gray-500 italic">Non spécifié</p>
-      </div>
-      <div>
-        <p class="text-sm font-medium text-gray-500 mb-1">Commentaires sur l'évaluation professionnelle</p>
-        <p class="text-gray-900 whitespace-pre-line">{{ worker.professional_evaluation_comments || 'Non spécifié' }}</p>
-      </div>
-      <div>
-        <p class="text-sm font-medium text-gray-500 mb-1">Relations sociales</p>
-        <div v-if="parsedSocialRelations" class="space-y-3 mt-2">
-          <div v-for="(value, key) in parsedSocialRelations" :key="key" class="bg-gray-50 p-3 rounded-lg">
-            <div class="flex items-center justify-between mb-1">
-              <span class="font-medium text-gray-700">{{ formatEvaluationKey(key) }}</span>
-              <div class="flex items-center gap-2">
-                <span class="text-xs text-gray-500">Travailleur:</span>
-                <span :class="`px-2 py-0.5 rounded-full text-xs font-medium ${getRatingClass(value.worker)}`">
-                  {{ formatRating(value.worker) }}
-                </span>
-                <span class="text-xs text-gray-500 ml-2">Moniteur:</span>
-                <span :class="`px-2 py-0.5 rounded-full text-xs font-medium ${getRatingClass(value.monitor)}`">
-                  {{ formatRating(value.monitor) }}
-                </span>
-              </div>
-            </div>
-            <p v-if="value.comment" class="text-sm text-gray-600 italic">{{ value.comment }}</p>
-          </div>
-        </div>
-        <p v-else class="text-gray-500 italic">Non spécifié</p>
-      </div>
-      <div>
-        <p class="text-sm font-medium text-gray-500 mb-1">Commentaires sur les relations sociales</p>
-        <p class="text-gray-900 whitespace-pre-line">{{ worker.social_relations_comments || 'Non spécifié' }}</p>
-      </div>
-    </div>
-  </div>
-        <!-- Section Employabilité -->
-        <div class="p-5 border-b border-gray-200">
-          <h3 class="flex items-center text-lg font-medium text-gray-700 mb-4">
-            <svg class="h-5 w-5 text-orange-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.221-.791-9-2.245M16 6.379a23.897 23.897 0 00-9 0m13 12.379a23.897 23.897 0 01-9 0M9 5a2.25 2.25 0 012.25-2.25h.5a2.25 2.25 0 012.25 2.25m-1.378 1.122c-.462.462-.921.921-1.378 1.378m0 0A12.012 12.012 0 0112 12c.47 0 .934.016 1.392.048m0 0c.555-.555 1.21-.892 1.95-.892m0 0A12.012 12.012 0 0012 9c-.47 0-.934-.016-1.392-.048m0 0c.555.555 1.21.892 1.95.892M6.379 16.379c-.462-.462-.921-.921-1.378-1.378M13 17.254A23.917 23.917 0 0016 15c3.184 0 6.221-.791 9-2.245M3 3.621a23.917 23.917 0 019 0"></path>
-            </svg>
-            Employabilité
-          </h3>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-            <div>
-              <p class="text-sm font-medium text-gray-500 mb-1">CV disponible</p>
-              <p class="text-gray-900">{{ worker.has_cv ? 'Oui' : 'Non' }}</p>
+        <!-- Section Historique des Suggestions IA -->
+        <div class="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 p-8 mt-8">
+          <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center">
+              <div class="w-12 h-12 bg-yellow-500/20 rounded-xl flex items-center justify-center mr-4">
+                <svg class="w-6 h-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-white">Historique des suggestions IA</h3>
             </div>
-            <div>
-              <p class="text-sm font-medium text-gray-500 mb-1">Lettre de motivation disponible</p>
-              <p class="text-gray-900">{{ worker.has_motivation_letter ? 'Oui' : 'Non' }}</p>
+            <button @click="loadWorkerAiSuggestions" class="inline-flex items-center px-4 py-2 bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-400 rounded-lg transition-all duration-200 border border-yellow-500/20">
+              <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              Actualiser
+            </button>
+          </div>
+          
+          <!-- Loading state -->
+          <div v-if="loadingWorkerSuggestions" class="flex items-center justify-center py-8">
+            <div class="w-8 h-8 border-4 border-white/20 border-t-yellow-400 rounded-full animate-spin mr-3"></div>
+            <p class="text-gray-300">Chargement de l'historique...</p>
+          </div>
+          
+          <!-- Empty state -->
+          <div v-else-if="workerAiSuggestions.length === 0" class="text-center py-8">
+            <div class="w-16 h-16 mx-auto text-gray-400 mb-4">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+              </svg>
             </div>
-            <div>
-              <p class="text-sm font-medium text-gray-500 mb-1">Compte CPF</p>
-              <p class="text-gray-900">{{ worker.has_cpf_account ? 'Oui' : 'Non' }}</p>
-            </div>
-            <div>
-              <p class="text-sm font-medium text-gray-500 mb-1">Volonté de travailler chez un employeur</p>
-              <p class="text-gray-900 whitespace-pre-line">{{ worker.employer_work_willingness || 'Non spécifié' }}</p>
-            </div>
-            <div>
-              <p class="text-sm font-medium text-gray-500 mb-1">Domaine de métier souhaité</p>
-              <p class="text-gray-900 whitespace-pre-line">{{ worker.desired_job_field || 'Non spécifié' }}</p>
-            </div>
-            <div>
-              <p class="text-sm font-medium text-gray-500 mb-1">Entreprises souhaitées</p>
-              <p class="text-gray-900 whitespace-pre-line">{{ worker.desired_companies || 'Non spécifié' }}</p>
-            </div>
-            <div>
-              <p class="text-sm font-medium text-gray-500 mb-1">Mobilité géographique</p>
-              <p class="text-gray-900 whitespace-pre-line">{{ formatGeographicMobility(worker.geographic_mobility) }}</p>
-            </div>
-            <div v-if="worker.geographic_mobility === 'other'">
-              <p class="text-sm font-medium text-gray-500 mb-1">Précisions mobilité</p>
-              <p class="text-gray-900 whitespace-pre-line">{{ worker.geographic_mobility_other || 'Non spécifié' }}</p>
-            </div>
-            <div>
-              <p class="text-sm font-medium text-gray-500 mb-1">Expériences professionnelles</p>
-              <div v-if="parsedExperiences && parsedExperiences.length > 0" class="mt-2">
-                <div v-for="(exp, index) in parsedExperiences" :key="index" class="mb-3 p-3 bg-gray-50 rounded-lg">
-                  <div class="flex justify-between">
-                    <span class="text-xs font-semibold text-gray-500">{{ formatDate(exp.date) }}</span>
-                    <span class="text-xs font-medium text-gray-600">{{ exp.company }}</span>
+            <h4 class="text-lg font-semibold text-white mb-2">Aucune suggestion trouvée</h4>
+            <p class="text-gray-400">Aucune suggestion d'IA n'a encore été générée pour ce travailleur</p>
+          </div>
+          
+          <!-- Suggestions list -->
+          <div v-else class="space-y-4">
+            <div v-for="suggestion in workerAiSuggestions" :key="suggestion.id" class="bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-all duration-200">
+              <!-- En-tête de la suggestion -->
+              <div class="p-4">
+                <div class="flex items-start justify-between mb-3">
+                  <div class="flex items-center space-x-3">
+                    <span class="px-3 py-1 rounded-full text-xs font-semibold" :class="getAiSuggestionStatusClass(suggestion.status)">
+                      {{ formatAiSuggestionStatus(suggestion.status) }}
+                    </span>
+                    <span class="px-3 py-1 rounded-full text-xs font-semibold" :class="getAiSuggestionTypeClass(suggestion.suggestion_type)">
+                      {{ formatAiSuggestionType(suggestion.suggestion_type) }}
+                    </span>
+                    <span v-if="suggestion.confidence_score" class="text-xs text-gray-400">
+                      Confiance: {{ suggestion.confidence_score }}%
+                    </span>
                   </div>
-                  <p class="text-sm mt-1">{{ exp.missions }}</p>
-                  <p class="text-xs italic mt-1 text-gray-600">Avis: {{ exp.worker_opinion }}</p>
-                </div>
-              </div>
-              <p v-else class="text-gray-500 italic">Aucune expérience professionnelle enregistrée</p>
-            </div>
-            <div>
-              <p class="text-sm font-medium text-gray-500 mb-1">Demandes refusées</p>
-              <div v-if="parsedDeclinedApplications && parsedDeclinedApplications.length > 0" class="mt-2">
-                <div v-for="(app, index) in parsedDeclinedApplications" :key="index" class="mb-2">
-                  <span class="text-xs font-semibold text-gray-500">{{ formatDate(app.request_date) }}</span>
-                  <span class="text-sm ml-2">{{ app.company_name }}</span>
-                </div>
-              </div>
-              <p v-else class="text-gray-500 italic">Aucune demande refusée enregistrée</p>
-            </div>
-          </div>
-          
-          <div class="mt-4 grid grid-cols-1 gap-y-4">
-            <div>
-              <p class="text-sm font-medium text-gray-500 mb-1">Expériences exceptionnelles</p>
-              <p class="text-gray-900 whitespace-pre-line">{{ worker.exceptional_experiences || 'Non spécifié' }}</p>
-            </div>
-            <div>
-              <p class="text-sm font-medium text-gray-500 mb-1">Difficultés liées au projet</p>
-              <p class="text-gray-900 whitespace-pre-line">{{ worker.project_difficulties || 'Non spécifié' }}</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Section Évaluation du projet -->
-        <div class="p-5 border-b border-gray-200">
-          <h3 class="flex items-center text-lg font-medium text-gray-700 mb-4">
-            <svg class="h-5 w-5 text-purple-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-            Évaluation du projet
-          </h3>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-            <div>
-              <p class="text-sm font-medium text-gray-500 mb-1">Clarté du projet professionnel</p>
-              <div class="mt-1">
-                <div class="flex items-center">
-                  <div class="flex-1 bg-gray-200 rounded-full h-2">
-                    <div 
-                      class="bg-purple-600 h-2 rounded-full" 
-                      :style="`width: ${(worker.professional_project_clarity || 0) * 33.33}%`"
-                    ></div>
+                  <div class="flex items-center space-x-3">
+                    <span class="text-xs text-gray-400">{{ formatAiSuggestionDate(suggestion.created_at) }}</span>
+                    <button @click="toggleWorkerSuggestionDetails(suggestion.id)" class="text-yellow-400 hover:text-yellow-300 transition-colors duration-200">
+                      <svg class="w-4 h-4 transform transition-transform duration-200" :class="{ 'rotate-180': isWorkerSuggestionExpanded(suggestion.id) }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
                   </div>
-                  <span class="ml-2 text-sm font-medium text-gray-700">{{ worker.professional_project_clarity || 0 }}/3</span>
                 </div>
-                <p class="text-xs text-gray-500 mt-1">{{ formatProjectClarity(worker.professional_project_clarity) }}</p>
-              </div>
-            </div>
-            <div>
-              <p class="text-sm font-medium text-gray-500 mb-1">Capacité à travailler en milieu ordinaire</p>
-              <div class="mt-1">
-                <div class="flex items-center">
-                  <div class="flex-1 bg-gray-200 rounded-full h-2">
-                    <div 
-                      class="bg-purple-600 h-2 rounded-full" 
-                      :style="`width: ${(worker.ordinary_work_capacity || 0) * 33.33}%`"
-                    ></div>
+                
+                <div class="mb-3">
+                  <h4 class="font-medium text-white mb-2">{{ suggestion.summary || 'Suggestion IA' }}</h4>
+                  <p class="text-sm text-gray-300 mb-2">
+                    <strong>Question:</strong> {{ suggestion.prompt.substring(0, 150) }}{{ suggestion.prompt.length > 150 ? '...' : '' }}
+                  </p>
+                </div>
+                
+                <div class="bg-white/5 rounded-lg p-3 mb-3">
+                  <p class="text-sm text-gray-300 whitespace-pre-line">
+                    {{ suggestion.response.substring(0, 300) }}{{ suggestion.response.length > 300 ? '...' : '' }}
+                  </p>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center space-x-2">
+                    <button @click="toggleWorkerSuggestionDetails(suggestion.id)" class="text-yellow-400 hover:text-yellow-300 transition-colors duration-200 text-sm">
+                      {{ isWorkerSuggestionExpanded(suggestion.id) ? 'Masquer' : 'Voir en détail' }}
+                    </button>
+                    <span class="text-gray-500">•</span>
+                    <button @click="updateWorkerSuggestionStatus(suggestion.id, 'reviewed')" v-if="suggestion.status === 'completed'" class="text-blue-400 hover:text-blue-300 transition-colors duration-200 text-sm">
+                      Marquer comme révisé
+                    </button>
                   </div>
-                  <span class="ml-2 text-sm font-medium text-gray-700">{{ worker.ordinary_work_capacity || 0 }}/3</span>
+                  <div v-if="suggestion.tags" class="flex flex-wrap gap-1">
+                    <span v-for="tag in suggestion.tags.split(',')" :key="tag" class="px-2 py-1 bg-gray-500/20 text-gray-300 rounded text-xs">
+                      {{ tag.trim() }}
+                    </span>
+                  </div>
                 </div>
-                <p class="text-xs text-gray-500 mt-1">{{ formatWorkCapacity(worker.ordinary_work_capacity) }}</p>
+              </div>
+              
+              <!-- Détails déroulants -->
+              <div v-if="isWorkerSuggestionExpanded(suggestion.id)" class="px-4 pb-4 border-t border-white/10">
+                <div class="pt-4 space-y-4">
+                  <!-- Prompt complet -->
+                  <div>
+                    <h5 class="text-sm font-semibold text-gray-300 mb-2">Question complète :</h5>
+                    <div class="bg-white/5 rounded-lg p-3">
+                      <p class="text-sm text-gray-200 whitespace-pre-line">{{ suggestion.prompt }}</p>
+                    </div>
+                  </div>
+                  
+                  <!-- Réponse complète -->
+                  <div>
+                    <h5 class="text-sm font-semibold text-gray-300 mb-2">Réponse complète de l'IA :</h5>
+                    <div class="bg-gradient-to-r from-yellow-500/10 to-orange-500/10 rounded-lg p-4 border border-yellow-500/20">
+                      <p class="text-sm text-gray-100 whitespace-pre-line">{{ suggestion.response }}</p>
+                    </div>
+                  </div>
+                  
+                  <!-- Informations techniques -->
+                  <div class="grid grid-cols-2 gap-4 pt-2 border-t border-white/10">
+                    <div>
+                      <p class="text-xs text-gray-400">Type de suggestion</p>
+                      <p class="text-sm text-gray-200">{{ formatAiSuggestionType(suggestion.suggestion_type) }}</p>
+                    </div>
+                    <div>
+                      <p class="text-xs text-gray-400">Statut</p>
+                      <p class="text-sm text-gray-200">{{ formatAiSuggestionStatus(suggestion.status) }}</p>
+                    </div>
+                    <div>
+                      <p class="text-xs text-gray-400">Date de création</p>
+                      <p class="text-sm text-gray-200">{{ formatAiSuggestionDate(suggestion.created_at) }}</p>
+                    </div>
+                    <div v-if="suggestion.reviewed_at">
+                      <p class="text-xs text-gray-400">Date de révision</p>
+                      <p class="text-sm text-gray-200">{{ formatAiSuggestionDate(suggestion.reviewed_at) }}</p>
+                    </div>
+                  </div>
+                  
+                  <!-- Score de confiance en détail -->
+                  <div v-if="suggestion.confidence_score" class="bg-blue-500/10 rounded-lg p-3 border border-blue-500/20">
+                    <div class="flex items-center justify-between mb-2">
+                      <span class="text-sm font-medium text-blue-300">Score de confiance</span>
+                      <span class="text-lg font-bold text-blue-400">{{ suggestion.confidence_score }}%</span>
+                    </div>
+                    <div class="w-full bg-gray-700 rounded-full h-2">
+                      <div class="bg-gradient-to-r from-blue-500 to-green-500 h-2 rounded-full transition-all duration-300" :style="{ width: suggestion.confidence_score + '%' }"></div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-            <div>
-              <p class="text-sm font-medium text-gray-500 mb-1">Évaluation du moniteur</p>
-              <p class="text-gray-900 whitespace-pre-line">{{ worker.monitor_assessment || 'Non spécifié' }}</p>
-            </div>
-            <div>
-              <p class="text-sm font-medium text-gray-500 mb-1">Prochaines étapes</p>
-              <div v-if="worker.next_steps" class="flex flex-wrap gap-2 mt-1">
-                <span 
-                  v-for="step in worker.next_steps.split(',')" 
-                  :key="step" 
-                  class="px-2 py-1 text-xs font-medium bg-purple-100 text-purple-800 rounded-full"
-                >
-                  {{ formatNextStep(step) }}
-                </span>
-              </div>
-              <p v-else class="text-gray-500 italic">Non spécifié</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Section Projets futurs -->
-        <div class="p-5 border-b border-gray-200">
-          <h3 class="flex items-center text-lg font-medium text-gray-700 mb-4">
-            <svg class="h-5 w-5 text-yellow-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-            </svg>
-            Projets futurs
-          </h3>
-
-          <div v-if="hasAnyProject" class="space-y-6">
-            <!-- Projet professionnel -->
-            <div v-if="parsedProfessionalProject && parsedProfessionalProject.length > 0">
-              <h4 class="text-sm font-semibold text-gray-700 mb-2">Projet professionnel pour 2 ans</h4>
-              <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                  <thead class="bg-gray-50">
-                    <tr>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Échéances</th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Responsable</th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Moyens</th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Suivi</th>
-                    </tr>
-                  </thead>
-                  <tbody class="bg-white divide-y divide-gray-200">
-                    <tr v-for="(item, index) in parsedProfessionalProject" :key="index">
-                      <td class="px-3 py-2 text-sm text-gray-900">{{ item.action || '-' }}</td>
-                      <td class="px-3 py-2 text-sm text-gray-900">{{ item.deadline || '-' }}</td>
-                      <td class="px-3 py-2 text-sm text-gray-900">{{ item.responsible || '-' }}</td>
-                      <td class="px-3 py-2 text-sm text-gray-900">{{ item.resources || '-' }}</td>
-                      <td class="px-3 py-2 text-sm text-gray-900">{{ item.follow_up || '-' }}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <!-- Projet vie sociale -->
-            <div v-if="parsedSocialLifeProject && parsedSocialLifeProject.length > 0">
-              <h4 class="text-sm font-semibold text-gray-700 mb-2">Projet vie sociale / compétences psycho sociales</h4>
-              <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                  <thead class="bg-gray-50">
-                    <tr>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Échéances</th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Responsable</th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Moyens</th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Suivi</th>
-                    </tr>
-                  </thead>
-                  <tbody class="bg-white divide-y divide-gray-200">
-                    <tr v-for="(item, index) in parsedSocialLifeProject" :key="index">
-                      <td class="px-3 py-2 text-sm text-gray-900">{{ item.action || '-' }}</td>
-                      <td class="px-3 py-2 text-sm text-gray-900">{{ item.deadline || '-' }}</td>
-                      <td class="px-3 py-2 text-sm text-gray-900">{{ item.responsible || '-' }}</td>
-                      <td class="px-3 py-2 text-sm text-gray-900">{{ item.resources || '-' }}</td>
-                      <td class="px-3 py-2 text-sm text-gray-900">{{ item.follow_up || '-' }}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <!-- Formations -->
-            <div v-if="parsedTrainingProject && parsedTrainingProject.length > 0">
-              <h4 class="text-sm font-semibold text-gray-700 mb-2">Formations</h4>
-              <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                  <thead class="bg-gray-50">
-                    <tr>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Échéances</th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Responsable</th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Moyens</th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Suivi</th>
-                    </tr>
-                  </thead>
-                  <tbody class="bg-white divide-y divide-gray-200">
-                    <tr v-for="(item, index) in parsedTrainingProject" :key="index">
-                      <td class="px-3 py-2 text-sm text-gray-900">{{ item.action || '-' }}</td>
-                      <td class="px-3 py-2 text-sm text-gray-900">{{ item.deadline || '-' }}</td>
-                      <td class="px-3 py-2 text-sm text-gray-900">{{ item.responsible || '-' }}</td>
-                      <td class="px-3 py-2 text-sm text-gray-900">{{ item.resources || '-' }}</td>
-                      <td class="px-3 py-2 text-sm text-gray-900">{{ item.follow_up || '-' }}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <!-- Insertion vers l'emploi -->
-            <div v-if="parsedEmploymentInsertionProject && parsedEmploymentInsertionProject.length > 0">
-              <h4 class="text-sm font-semibold text-gray-700 mb-2">Insertion vers l'emploi</h4>
-              <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                  <thead class="bg-gray-50">
-                    <tr>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Échéances</th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Responsable</th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Moyens</th>
-                      <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Suivi</th>
-                    </tr>
-                  </thead>
-                  <tbody class="bg-white divide-y divide-gray-200">
-                    <tr v-for="(item, index) in parsedEmploymentInsertionProject" :key="index">
-                      <td class="px-3 py-2 text-sm text-gray-900">{{ item.action || '-' }}</td>
-                      <td class="px-3 py-2 text-sm text-gray-900">{{ item.deadline || '-' }}</td>
-                      <td class="px-3 py-2 text-sm text-gray-900">{{ item.responsible || '-' }}</td>
-                      <td class="px-3 py-2 text-sm text-gray-900">{{ item.resources || '-' }}</td>
-                      <td class="px-3 py-2 text-sm text-gray-900">{{ item.follow_up || '-' }}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          <p v-else class="text-gray-500 italic">Aucun projet futur enregistré</p>
-        </div>
-
-        <!-- Section Consentements -->
-        <div class="p-5">
-          <h3 class="flex items-center text-lg font-medium text-gray-700 mb-4">
-            <svg class="h-5 w-5 text-gray-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-            </svg>
-            Consentements
-          </h3>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-            <div>
-              <p class="text-sm font-medium text-gray-500 mb-1">Consentement au partage d'informations</p>
-              <p class="text-gray-900">
-                <span 
-                  :class="`px-2 py-1 text-xs font-medium rounded-full ${worker.information_sharing_consent ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`"
-                >
-                  {{ worker.information_sharing_consent ? 'Oui' : 'Non' }}
-                </span>
-              </p>
-            </div>
-            <div>
-              <p class="text-sm font-medium text-gray-500 mb-1">Signature</p>
-              <p class="text-gray-900">{{ worker.signature_name || 'Non signé' }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Suggestions IA -->
-      <div v-if="aiSuggestions" ref="aiSuggestionsSection" class="bg-white rounded-lg shadow overflow-hidden mb-6">
-        <div class="flex items-center p-4 border-b border-gray-200 bg-purple-50">
-          <svg class="h-6 w-6 text-purple-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
-          </svg>
-          <h3 class="text-lg font-medium text-purple-800">Suggestions de métiers (IA)</h3>
-        </div>
-        <div class="p-5">
-          <div class="prose max-w-none">
-            <!-- Utiliser v-html pour afficher le HTML formaté -->
-            <div v-html="formattedAiSuggestions" class="text-gray-700"></div>
           </div>
         </div>
       </div>
@@ -696,84 +663,39 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, computed, onMounted, nextTick, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
 const id = computed(() => route.params.id);
 
-// Worker data
 const worker = ref(null);
 const loading = ref(true);
 const error = ref(null);
-
-// AI Suggestions data
-const aiSuggestions = ref(null);
 const loadingSuggestions = ref(false);
+const aiSuggestions = ref(null);
 const aiSuggestionsSection = ref(null);
 
-// Fonction simple pour convertir le Markdown en HTML
-const simpleMarkdownToHtml = (text) => {
-  if (!text) return '';
-  
-  return text
-    // Convertir les titres
-    .replace(/^### (.*$)/gim, '<h3 class="text-lg font-bold text-purple-800 mt-4 mb-2">$1</h3>')
-    .replace(/^## (.*$)/gim, '<h2 class="text-xl font-bold text-purple-800 mt-4 mb-2">$1</h2>')
-    .replace(/^# (.*$)/gim, '<h1 class="text-2xl font-bold text-purple-800 mt-4 mb-2">$1</h1>')
-    // Convertir le texte en gras
-    .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-purple-800">$1</strong>')
-    // Convertir le texte en italique
-    .replace(/\*(.*?)\*/g, '<em class="italic">$1</em>')
-    // Convertir les listes à puces
-    .replace(/^\- (.*$)/gim, '<li class="ml-4">• $1</li>')
-    // Convertir les listes numérotées
-    .replace(/^\d+\. (.*$)/gim, '<li class="ml-4 list-decimal">$1</li>')
-    // Convertir les sauts de ligne en paragraphes
-    .replace(/\n\n/g, '</p><p class="mb-2">')
-    // Ajouter les balises de paragraphe au début et à la fin
-    .replace(/^/, '<p class="mb-2">')
-    .replace(/$/, '</p>')
-    // Nettoyer les paragraphes vides
-    .replace(/<p class="mb-2"><\/p>/g, '');
+// Variables pour l'historique des suggestions IA
+const workerAiSuggestions = ref([]);
+const loadingWorkerSuggestions = ref(false);
+const expandedWorkerSuggestions = ref(new Set()); // Pour gérer les détails déroulants
+
+// Get initials helper
+const getInitials = (firstName, lastName) => {
+  const first = firstName ? firstName.charAt(0).toUpperCase() : '';
+  const last = lastName ? lastName.charAt(0).toUpperCase() : '';
+  return first + last || '?';
 };
 
-const formattedAiSuggestions = computed(() => {
-  if (!aiSuggestions.value) return '';
-  
-  try {
-    // Convertir le texte markdown en HTML avec notre fonction simple
-    let html = simpleMarkdownToHtml(aiSuggestions.value);
-    
-    // Ajouter des styles spécifiques pour les suggestions de métiers
-    html = html
-      // Styliser les sections des suggestions de métiers
-      .replace(/- Description:/g, '<span class="font-medium text-gray-700 mt-2">📝 <span class="underline">Description</span>:</span>')
-      .replace(/- Adéquation:/g, '<span class="font-medium text-gray-700 mt-2">✅ <span class="underline">Adéquation</span>:</span>')
-      .replace(/- Aménagements:/g, '<span class="font-medium text-gray-700 mt-2">🔧 <span class="underline">Aménagements</span>:</span>')
-      .replace(/- Entreprises locales:/g, '<span class="font-medium text-gray-700 mt-2">🏢 <span class="underline">Entreprises locales</span>:</span>');
-    
-    return html;
-  } catch (e) {
-    console.error('Error formatting AI suggestions:', e);
-    return aiSuggestions.value.replace(/\n/g, '<br>'); // Retourner le texte avec des sauts de ligne
-  }
-});
-
-// Format date helper (date only)
+// Format date helper
 const formatDate = (dateString) => {
-  if (!dateString) return 'N/A';
+  if (!dateString) return 'Non spécifiée';
   const date = new Date(dateString);
-  return date.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
-};
-
-// Format date and time helper
-const formatDateTime = (dateString) => {
-  if (!dateString) return 'N/A';
-  const date = new Date(dateString);
-  return date.toLocaleDateString('fr-FR', {
-    day: '2-digit', month: '2-digit', year: 'numeric',
-    hour: '2-digit', minute: '2-digit'
+  return date.toLocaleDateString('fr-FR', { 
+    day: '2-digit', 
+    month: '2-digit', 
+    year: 'numeric' 
   });
 };
 
@@ -781,21 +703,37 @@ const formatDateTime = (dateString) => {
 const formatWorkRegime = (regime) => {
   if (!regime) return 'Non spécifié';
   const regimeMap = {
+    'temps_plein': 'Temps plein',
+    'temps_partiel': 'Temps partiel',
     'full-time': 'Temps plein',
     'part-time': 'Temps partiel'
   };
   return regimeMap[regime] || regime;
 };
 
-// Format protection measure helper
+// Get work regime class
+const getWorkRegimeClass = (regime) => {
+  switch (regime) {
+    case 'temps_plein':
+    case 'full-time':
+      return 'bg-green-500/20 text-green-400';
+    case 'temps_partiel':
+    case 'part-time':
+      return 'bg-blue-500/20 text-blue-400';
+    default:
+      return 'bg-gray-500/20 text-gray-400';
+  }
+};
+
+// Format protection measure
 const formatProtectionMeasure = (measure) => {
   if (!measure) return 'Non spécifiée';
   const measureMap = {
-    'tutelle': 'Tutelle',
-    'curatelle_simple': 'Curatelle simple',
-    'curatelle_renforcee': 'Curatelle renforcée',
-    'pas_de_mesure': 'Pas de mesure',
-    'autre': 'Autre'
+    'none': 'Aucune',
+    'tutorship': 'Tutelle',
+    'curatorship': 'Curatelle',
+    'reinforced_curatorship': 'Curatelle renforcée',
+    'safeguard_justice': 'Sauvegarde de justice'
   };
   return measureMap[measure] || measure;
 };
@@ -804,53 +742,68 @@ const formatProtectionMeasure = (measure) => {
 const formatGeographicMobility = (mobility) => {
   if (!mobility) return 'Non spécifiée';
   const mobilityMap = {
-    'less_than_10km': 'Moins de 10 km',
-    'less_than_30km': 'Moins de 30 km',
+    'commune': 'Commune',
     'department': 'Département',
-    'france': 'France entière',
+    'region': 'Région',
+    'national': 'National',
     'other': 'Autre'
   };
   return mobilityMap[mobility] || mobility;
 };
 
+// Get activity sectors helper
+const getActivitySectors = (sectorsString) => {
+  if (!sectorsString) return [];
+  
+  try {
+    // Si c'est déjà un tableau JSON, le parser
+    const parsed = JSON.parse(sectorsString);
+    if (Array.isArray(parsed)) {
+      return parsed.slice(0, 5); // Limite à 5 secteurs pour l'affichage
+    }
+  } catch (e) {
+    // Si ce n'est pas du JSON valide, traiter comme une chaîne séparée par des virgules
+    return sectorsString.split(',').filter(s => s.trim()).slice(0, 5);
+  }
+  
+  return [];
+};
+
 // Format project clarity
 const formatProjectClarity = (clarity) => {
-  if (!clarity) return 'Pas de projet professionnel défini';
   const clarityMap = {
-    0: 'Pas de projet professionnel défini',
-    1: 'Projet peu clair, pas en accord avec les capacités et les compétences',
-    2: 'Projet assez clair, avec des étapes à réaliser',
-    3: 'Projet clair et bien en accord avec les compétences et les intérêts'
+    0: 'Aucune clarté',
+    1: 'Peu clair',
+    2: 'Assez clair',
+    3: 'Très clair'
   };
-  return clarityMap[clarity] || `Niveau ${clarity}`;
+  return clarityMap[clarity] || 'Non évalué';
 };
 
 // Format work capacity
 const formatWorkCapacity = (capacity) => {
-  if (!capacity) return 'Capacités très limitées, besoin de beaucoup de soutien';
   const capacityMap = {
-    0: 'Capacités très limitées, besoin de beaucoup de soutien',
-    1: 'Capacités présentes, mais besoin d\'un soutien moyen',
-    2: 'Capacités conformes, besoin d\'un soutien occasionnel',
-    3: 'Capacités très solides, presque autonome pour travailler en milieu ordinaire'
+    0: 'Aucune capacité',
+    1: 'Capacité limitée',
+    2: 'Capacité modérée',
+    3: 'Bonne capacité'
   };
-  return capacityMap[capacity] || `Niveau ${capacity}`;
+  return capacityMap[capacity] || 'Non évalué';
 };
 
 // Format next step
 const formatNextStep = (step) => {
-  if (!step) return '';
   const stepMap = {
-    'duoday': 'DuoDay',
-    'pmsmp': 'PMSMP',
-    'prestation': 'Prestation',
-    'double_activity': 'Double activité',
-    'full_time': 'Temps complet'
+    'stage': 'Stage',
+    'formation': 'Formation',
+    'emploi_accompagne': 'Emploi accompagné',
+    'milieu_ordinaire': 'Milieu ordinaire',
+    'autre': 'Autre'
   };
-  return stepMap[step.trim()] || step;
+  return stepMap[step.trim()] || step.trim();
 };
 
-// Computed properties for parsing JSON data
+// Computed properties for parsing JSON fields
 const parsedExperiences = computed(() => {
   if (!worker.value || !worker.value.professional_experiences) return null;
   try {
@@ -933,7 +886,6 @@ const hasAnyProject = computed(() => {
   );
 });
 
-// Nouvelles computed properties pour parser les champs JSON
 const parsedSpatialTemporalOrientation = computed(() => {
   if (!worker.value || !worker.value.spatial_temporal_orientation) return null;
   
@@ -973,7 +925,7 @@ const parsedSocialRelations = computed(() => {
   }
 });
 
-// Fonctions d'aide pour le formatage
+// Formatting helper functions
 const formatCommaSeparatedField = (field) => {
   if (!field) return [];
   return field.split(',').map(item => item.trim());
@@ -1041,6 +993,74 @@ const getRatingClass = (rating) => {
   return ratingClassMap[rating] || 'bg-gray-100 text-gray-800';
 };
 
+// Format reading skills
+const formatReadingSkills = (skills) => {
+  if (!skills) return 'Non spécifiées';
+  
+  const skillsMap = {
+    'cannot_read': 'Ne sait pas lire',
+    'can_read_letters': 'Reconnaît les lettres',
+    'can_read_words': 'Peut lire des mots simples',
+    'can_read_sentences': 'Peut lire des phrases',
+    'can_read_with_comprehension': 'Peut lire avec compréhension',
+    'can_read_complex_texts': 'Peut lire des textes complexes'
+  };
+  
+  return skillsMap[skills] || skills;
+};
+
+// Format writing skills
+const formatWritingSkills = (skills) => {
+  if (!skills) return 'Non spécifiées';
+  
+  const skillsList = skills.split(',').map(skill => skill.trim());
+  const skillsMap = {
+    'cannot_write': 'Ne sait pas écrire',
+    'can_copy': 'Peut copier',
+    'can_write_letters': 'Peut écrire des lettres',
+    'can_write_words': 'Peut écrire des mots',
+    'can_write_sentences': 'Peut écrire des phrases',
+    'can_write_texts': 'Peut écrire des textes'
+  };
+  
+  const formattedSkills = skillsList.map(skill => skillsMap[skill] || skill);
+  return formattedSkills.join(', ');
+};
+
+// Format calculation skills
+const formatCalculationSkills = (skills) => {
+  if (!skills) return 'Non spécifiées';
+  
+  const skillsList = skills.split(',').map(skill => skill.trim());
+  const skillsMap = {
+    'cannot_count': 'Ne sait pas compter',
+    'can_count': 'Peut compter',
+    'can_perform_operations': 'Peut effectuer des opérations',
+    'can_add': 'Peut additionner',
+    'can_subtract': 'Peut soustraire',
+    'can_multiply': 'Peut multiplier',
+    'can_divide': 'Peut diviser',
+    'can_solve_problems': 'Peut résoudre des problèmes'
+  };
+  
+  const formattedSkills = skillsList.map(skill => skillsMap[skill] || skill);
+  return formattedSkills.join(', ');
+};
+
+// Computed for formatted AI suggestions
+const formattedAiSuggestions = computed(() => {
+  if (!aiSuggestions.value) return '';
+  
+  // Convert markdown-like formatting to HTML
+  let formatted = aiSuggestions.value
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/\n/g, '<br>');
+  
+  return `<p>${formatted}</p>`;
+});
+
 // Fetch Worker data
 onMounted(async () => {
   try {
@@ -1053,8 +1073,10 @@ onMounted(async () => {
     }
     
     const data = await response.json();
-    // Handle if the API wraps the worker data in a 'data' property
     worker.value = data.data || data;
+    
+    // Charger l'historique des suggestions IA
+    await loadWorkerAiSuggestions();
     
   } catch (err) {
     error.value = `Erreur lors du chargement du travailleur: ${err.message}`;
@@ -1064,11 +1086,123 @@ onMounted(async () => {
   }
 });
 
+// Fonctions pour l'historique des suggestions IA
+const loadWorkerAiSuggestions = async () => {
+  if (loadingWorkerSuggestions.value) return;
+  
+  loadingWorkerSuggestions.value = true;
+  try {
+    const response = await fetch(`/api/workers/${id.value}/ai-suggestions`);
+    if (response.ok) {
+      const suggestions = await response.json();
+      workerAiSuggestions.value = suggestions || [];
+    } else {
+      console.error('Erreur lors du chargement des suggestions IA');
+      workerAiSuggestions.value = [];
+    }
+  } catch (error) {
+    console.error('Erreur lors du chargement des suggestions IA:', error);
+    workerAiSuggestions.value = [];
+  } finally {
+    loadingWorkerSuggestions.value = false;
+  }
+};
+
+const formatAiSuggestionStatus = (status) => {
+  const statusMap = {
+    'pending': 'En attente',
+    'completed': 'Terminé',
+    'reviewed': 'Révisé',
+    'applied': 'Appliqué',
+    'rejected': 'Rejeté'
+  };
+  return statusMap[status] || status;
+};
+
+const formatAiSuggestionType = (type) => {
+  const typeMap = {
+    'job_recommendation': 'Recommandation emploi',
+    'skills_assessment': 'Évaluation compétences',
+    'training_plan': 'Plan de formation',
+    'career_guidance': 'Orientation professionnelle'
+  };
+  return typeMap[type] || type;
+};
+
+const formatAiSuggestionDate = (dateString) => {
+  if (!dateString) return '';
+  const date = new Date(dateString);
+  return date.toLocaleDateString('fr-FR', { 
+    day: '2-digit', 
+    month: '2-digit', 
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+};
+
+const getAiSuggestionStatusClass = (status) => {
+  const statusClasses = {
+    'pending': 'bg-orange-500/20 text-orange-400',
+    'completed': 'bg-blue-500/20 text-blue-400',
+    'reviewed': 'bg-green-500/20 text-green-400',
+    'applied': 'bg-purple-500/20 text-purple-400',
+    'rejected': 'bg-red-500/20 text-red-400'
+  };
+  return statusClasses[status] || 'bg-gray-500/20 text-gray-400';
+};
+
+const getAiSuggestionTypeClass = (type) => {
+  const typeClasses = {
+    'job_recommendation': 'bg-blue-500/10 text-blue-300',
+    'skills_assessment': 'bg-green-500/10 text-green-300',
+    'training_plan': 'bg-purple-500/10 text-purple-300',
+    'career_guidance': 'bg-yellow-500/10 text-yellow-300'
+  };
+  return typeClasses[type] || 'bg-gray-500/10 text-gray-300';
+};
+
+// Fonction pour basculer l'affichage des détails d'une suggestion
+const toggleWorkerSuggestionDetails = (suggestionId) => {
+  const expanded = new Set(expandedWorkerSuggestions.value)
+  if (expanded.has(suggestionId)) {
+    expanded.delete(suggestionId)
+  } else {
+    expanded.add(suggestionId)
+  }
+  expandedWorkerSuggestions.value = expanded
+}
+
+// Vérifier si une suggestion est dépliée
+const isWorkerSuggestionExpanded = (suggestionId) => {
+  return expandedWorkerSuggestions.value.has(suggestionId)
+}
+
+const updateWorkerSuggestionStatus = async (suggestionId, newStatus) => {
+  try {
+    const response = await fetch(`/api/ai-suggestions/${suggestionId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ status: newStatus })
+    });
+    
+    if (response.ok) {
+      // Recharger les suggestions pour refléter le changement
+      await loadWorkerAiSuggestions();
+    } else {
+      console.error('Erreur lors de la mise à jour du statut');
+    }
+  } catch (error) {
+    console.error('Erreur lors de la mise à jour du statut:', error);
+  }
+};
 
 // Method to suggest jobs using AI
 const suggestJobs = async () => {
   loadingSuggestions.value = true;
-  aiSuggestions.value = null; // Clear previous suggestions
+  aiSuggestions.value = null;
   try {
     const response = await fetch(`/api/workers/${id.value}/suggest-jobs`);
     if (!response.ok) {
@@ -1077,7 +1211,16 @@ const suggestJobs = async () => {
     const result = await response.json();
     if (result.status === 'success') {
       aiSuggestions.value = result.suggestions;
-      // Attendre que le DOM soit mis à jour avant de faire défiler
+      
+      // Sauvegarder la suggestion en base de données
+      await saveAiSuggestion({
+        worker_id: parseInt(id.value),
+        suggestion_type: 'job_recommendation',
+        prompt: 'Suggestion de métiers basée sur le profil du travailleur',
+        response: result.suggestions,
+        summary: 'Recommandations de métiers générées par IA'
+      });
+      
       await nextTick();
       scrollToAiSuggestions();
     } else {
@@ -1092,7 +1235,29 @@ const suggestJobs = async () => {
   }
 };
 
-// Fonction pour faire défiler jusqu'à la section des suggestions
+// Fonction pour sauvegarder une suggestion IA en base de données
+const saveAiSuggestion = async (suggestionData) => {
+  try {
+    const response = await fetch('/api/ai-suggestions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(suggestionData)
+    });
+    
+    if (response.ok) {
+      // Recharger l'historique des suggestions
+      await loadWorkerAiSuggestions();
+    } else {
+      console.error('Erreur lors de la sauvegarde de la suggestion IA');
+    }
+  } catch (error) {
+    console.error('Erreur lors de la sauvegarde de la suggestion IA:', error);
+  }
+};
+
+// Scroll to AI suggestions section
 const scrollToAiSuggestions = () => {
   if (aiSuggestionsSection.value) {
     aiSuggestionsSection.value.scrollIntoView({ 
@@ -1102,7 +1267,7 @@ const scrollToAiSuggestions = () => {
   }
 };
 
-// Surveiller les changements de suggestions pour faire défiler automatiquement
+// Watch for AI suggestions changes
 watch(aiSuggestions, (newValue) => {
   if (newValue) {
     nextTick(() => {
@@ -1113,6 +1278,88 @@ watch(aiSuggestions, (newValue) => {
 </script>
 
 <style>
-/* Styles supplémentaires pour la mise en forme des suggestions */
+.backdrop-blur-lg {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
 
+/* Grid Pattern Background */
+.grid-pattern {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(34, 197, 94, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 197, 94, 0.1) 1px, transparent 1px);
+  background-size: 80px 80px;
+  background-position: 0 0, 0 0;
+  animation: grid-move 20s linear infinite;
+}
+
+/* Grid fade overlay */
+.grid-fade-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    transparent 40%,
+    rgba(17, 24, 39, 0.3) 60%,
+    rgba(17, 24, 39, 0.7) 80%,
+    rgba(17, 24, 39, 0.9) 100%
+  );
+  pointer-events: none;
+}
+
+/* Optional animation for the grid */
+@keyframes grid-move {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(80px, 80px);
+  }
+}
+
+/* Light Halos */
+.light-halo {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.light-halo-1 {
+  top: -8%;
+  right: -8%;
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(
+    circle,
+    rgba(34, 197, 94, 0.25) 0%,
+    rgba(34, 197, 94, 0.15) 30%,
+    rgba(34, 197, 94, 0.08) 60%,
+    transparent 100%
+  );
+  filter: blur(60px);
+}
+
+.light-halo-2 {
+  top: 5%;
+  left: 5%;
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(
+    circle,
+    rgba(34, 197, 94, 0.20) 0%,
+    rgba(34, 197, 94, 0.12) 30%,
+    rgba(34, 197, 94, 0.06) 60%,
+    transparent 100%
+  );
+  filter: blur(50px);
+}
 </style>

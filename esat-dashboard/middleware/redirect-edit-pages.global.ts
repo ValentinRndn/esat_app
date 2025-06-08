@@ -1,22 +1,20 @@
-// Middleware pour rediriger les anciennes URLs d'édition vers les nouvelles
+// Middleware global pour rediriger les routes d'édition vers les bonnes pages
 export default defineNuxtRouteMiddleware((to, from) => {
-  // Matcher pour les pages d'édition comme /workers/123/edit
-  const editPageRegex = /^\/([^\/]+)\/([^\/]+)\/edit$/;
+  // Middleware désactivé temporairement pour déboguer la boucle infinie
+  return;
   
-  if (editPageRegex.test(to.path)) {
-    // Extraire l'entité et l'ID
-    const matches = to.path.match(editPageRegex);
-    if (matches && matches.length === 3) {
-      const entity = matches[1]; // workers, esats, users, etc.
-      const id = matches[2];
-      
-      // Construire la nouvelle URL
-      const newPath = `/${entity}/edit/${id}`;
-      
-      console.log(`Redirection de ${to.path} vers ${newPath}`);
-      
-      // Rediriger vers la nouvelle structure
-      return navigateTo(newPath, { redirectCode: 301 });
-    }
-  }
+  // Code original commenté :
+  // if (to.path.startsWith('/edit-worker/')) {
+  //   const workerId = to.path.split('/edit-worker/')[1];
+  //   if (workerId) {
+  //     return navigateTo(`/workers/detail/${workerId}/edit`);
+  //   }
+  // }
+  // 
+  // if (to.path.startsWith('/detail-worker/')) {
+  //   const workerId = to.path.split('/detail-worker/')[1];
+  //   if (workerId) {
+  //     return navigateTo(`/workers/detail/${workerId}`);
+  //   }
+  // }
 }); 
