@@ -110,6 +110,8 @@ export interface EsatTable {
   postal_code: string | null;
   phone: string | null;
   email: string | null;
+  latitude: number | null; // Coordonnée latitude pour la localisation
+  longitude: number | null; // Coordonnée longitude pour la localisation
   created_at: Date; // Kysely gère bien les objets Date pour les TIMESTAMPS
   updated_at: Date;
 }

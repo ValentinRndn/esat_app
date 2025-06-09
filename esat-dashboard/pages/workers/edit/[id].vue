@@ -17,7 +17,7 @@
         <div class="flex justify-between h-20 items-center">
           <div class="flex items-center">
             <NuxtLink to="/dashboard" class="text-2xl font-semibold text-white hover:text-green-400 transition-colors duration-200">BAYTH</NuxtLink>
-            <!-- <span class="ml-4 text-sm text-gray-400">/ Travailleurs / Éditer</span> -->
+            <span class="ml-4 text-sm text-gray-400">/ Travailleurs / Éditer</span>
           </div>
           <div class="flex items-center space-x-4">
             <NuxtLink :to="`/workers/${id}`" class="inline-flex items-center px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-full font-medium transition-all duration-200 shadow-lg hover:shadow-xl">

@@ -20,21 +20,17 @@
             <span class="ml-4 text-sm text-gray-400">/ Travailleurs / Détails</span>
           </div>
           <div class="flex items-center space-x-3">
-            <!-- Bouton Suggérer des métiers IA -->
-            <button 
-              @click="suggestJobs" 
-              class="inline-flex items-center px-4 py-2.5 bg-purple-500 hover:bg-purple-600 text-white rounded-full font-medium transition-all duration-200 shadow-lg hover:shadow-xl"
-              :disabled="loadingSuggestions"
+
+            <!-- Bouton Suggestions avancées avec carte -->
+            <NuxtLink 
+              :to="`/suggestions/${id}`"
+              class="inline-flex items-center px-4 py-2.5 bg-green-500 hover:bg-green-600 text-white rounded-full font-medium transition-all duration-200 shadow-lg hover:shadow-xl"
             >
-              <svg v-if="!loadingSuggestions" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+              <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-1.447-.894L15 9m0 10V9m0 0L9 7" />
               </svg>
-              <svg v-else class="animate-spin w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
-              {{ loadingSuggestions ? 'Suggestions IA...' : 'Suggérer métiers (IA)' }}
-            </button>
+              Suggestions avancées avec carte
+            </NuxtLink>
             
             <NuxtLink :to="`/workers/edit/${id}`" class="inline-flex items-center px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-full font-medium transition-all duration-200 shadow-lg hover:shadow-xl">
               <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -154,6 +150,8 @@
               </div>
             </div>
           </div>
+          
+
           
           <!-- Section Informations personnelles complètes -->
           <div class="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 p-8">
@@ -473,190 +471,6 @@
             </div>
           </div>
         </div>
-        
-        <!-- Section Suggestions IA -->
-        <div v-if="aiSuggestions" ref="aiSuggestionsSection" class="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 p-8">
-          <div class="flex items-center mb-6">
-            <div class="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center mr-4">
-              <svg class="w-6 h-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-              </svg>
-            </div>
-            <h3 class="text-xl font-semibold text-white">Suggestions de métiers (IA)</h3>
-            <div class="ml-auto">
-              <span class="px-3 py-1 bg-purple-500/20 text-purple-400 rounded-full text-sm font-medium">
-                Généré par IA
-              </span>
-            </div>
-          </div>
-          
-          <div class="prose prose-invert max-w-none">
-            <div class="text-gray-300 whitespace-pre-line leading-relaxed" v-html="formattedAiSuggestions">
-            </div>
-          </div>
-          
-          <!-- Disclaimer -->
-          <div class="mt-6 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
-            <div class="flex items-start">
-              <svg class="w-5 h-5 text-yellow-400 mr-3 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-              </svg>
-              <div class="text-yellow-300 text-sm">
-                <p class="font-medium mb-1">Informations générées par IA</p>
-                <p>Ces suggestions sont basées sur le profil du travailleur et servent d'aide à la décision. Un accompagnement personnalisé reste recommandé pour valider ces orientations professionnelles.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Section Historique des Suggestions IA -->
-        <div class="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 p-8 mt-8">
-          <div class="flex items-center justify-between mb-6">
-            <div class="flex items-center">
-              <div class="w-12 h-12 bg-yellow-500/20 rounded-xl flex items-center justify-center mr-4">
-                <svg class="w-6 h-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h3 class="text-xl font-semibold text-white">Historique des suggestions IA</h3>
-            </div>
-            <button @click="loadWorkerAiSuggestions" class="inline-flex items-center px-4 py-2 bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-400 rounded-lg transition-all duration-200 border border-yellow-500/20">
-              <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-              </svg>
-              Actualiser
-            </button>
-          </div>
-          
-          <!-- Loading state -->
-          <div v-if="loadingWorkerSuggestions" class="flex items-center justify-center py-8">
-            <div class="w-8 h-8 border-4 border-white/20 border-t-yellow-400 rounded-full animate-spin mr-3"></div>
-            <p class="text-gray-300">Chargement de l'historique...</p>
-          </div>
-          
-          <!-- Empty state -->
-          <div v-else-if="workerAiSuggestions.length === 0" class="text-center py-8">
-            <div class="w-16 h-16 mx-auto text-gray-400 mb-4">
-              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-              </svg>
-            </div>
-            <h4 class="text-lg font-semibold text-white mb-2">Aucune suggestion trouvée</h4>
-            <p class="text-gray-400">Aucune suggestion d'IA n'a encore été générée pour ce travailleur</p>
-          </div>
-          
-          <!-- Suggestions list -->
-          <div v-else class="space-y-4">
-            <div v-for="suggestion in workerAiSuggestions" :key="suggestion.id" class="bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-all duration-200">
-              <!-- En-tête de la suggestion -->
-              <div class="p-4">
-                <div class="flex items-start justify-between mb-3">
-                  <div class="flex items-center space-x-3">
-                    <span class="px-3 py-1 rounded-full text-xs font-semibold" :class="getAiSuggestionStatusClass(suggestion.status)">
-                      {{ formatAiSuggestionStatus(suggestion.status) }}
-                    </span>
-                    <span class="px-3 py-1 rounded-full text-xs font-semibold" :class="getAiSuggestionTypeClass(suggestion.suggestion_type)">
-                      {{ formatAiSuggestionType(suggestion.suggestion_type) }}
-                    </span>
-                    <span v-if="suggestion.confidence_score" class="text-xs text-gray-400">
-                      Confiance: {{ suggestion.confidence_score }}%
-                    </span>
-                  </div>
-                  <div class="flex items-center space-x-3">
-                    <span class="text-xs text-gray-400">{{ formatAiSuggestionDate(suggestion.created_at) }}</span>
-                    <button @click="toggleWorkerSuggestionDetails(suggestion.id)" class="text-yellow-400 hover:text-yellow-300 transition-colors duration-200">
-                      <svg class="w-4 h-4 transform transition-transform duration-200" :class="{ 'rotate-180': isWorkerSuggestionExpanded(suggestion.id) }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-                
-                <div class="mb-3">
-                  <h4 class="font-medium text-white mb-2">{{ suggestion.summary || 'Suggestion IA' }}</h4>
-                  <p class="text-sm text-gray-300 mb-2">
-                    <strong>Question:</strong> {{ suggestion.prompt.substring(0, 150) }}{{ suggestion.prompt.length > 150 ? '...' : '' }}
-                  </p>
-                </div>
-                
-                <div class="bg-white/5 rounded-lg p-3 mb-3">
-                  <p class="text-sm text-gray-300 whitespace-pre-line">
-                    {{ suggestion.response.substring(0, 300) }}{{ suggestion.response.length > 300 ? '...' : '' }}
-                  </p>
-                </div>
-                
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center space-x-2">
-                    <button @click="toggleWorkerSuggestionDetails(suggestion.id)" class="text-yellow-400 hover:text-yellow-300 transition-colors duration-200 text-sm">
-                      {{ isWorkerSuggestionExpanded(suggestion.id) ? 'Masquer' : 'Voir en détail' }}
-                    </button>
-                    <span class="text-gray-500">•</span>
-                    <button @click="updateWorkerSuggestionStatus(suggestion.id, 'reviewed')" v-if="suggestion.status === 'completed'" class="text-blue-400 hover:text-blue-300 transition-colors duration-200 text-sm">
-                      Marquer comme révisé
-                    </button>
-                  </div>
-                  <div v-if="suggestion.tags" class="flex flex-wrap gap-1">
-                    <span v-for="tag in suggestion.tags.split(',')" :key="tag" class="px-2 py-1 bg-gray-500/20 text-gray-300 rounded text-xs">
-                      {{ tag.trim() }}
-                    </span>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Détails déroulants -->
-              <div v-if="isWorkerSuggestionExpanded(suggestion.id)" class="px-4 pb-4 border-t border-white/10">
-                <div class="pt-4 space-y-4">
-                  <!-- Prompt complet -->
-                  <div>
-                    <h5 class="text-sm font-semibold text-gray-300 mb-2">Question complète :</h5>
-                    <div class="bg-white/5 rounded-lg p-3">
-                      <p class="text-sm text-gray-200 whitespace-pre-line">{{ suggestion.prompt }}</p>
-                    </div>
-                  </div>
-                  
-                  <!-- Réponse complète -->
-                  <div>
-                    <h5 class="text-sm font-semibold text-gray-300 mb-2">Réponse complète de l'IA :</h5>
-                    <div class="bg-gradient-to-r from-yellow-500/10 to-orange-500/10 rounded-lg p-4 border border-yellow-500/20">
-                      <p class="text-sm text-gray-100 whitespace-pre-line">{{ suggestion.response }}</p>
-                    </div>
-                  </div>
-                  
-                  <!-- Informations techniques -->
-                  <div class="grid grid-cols-2 gap-4 pt-2 border-t border-white/10">
-                    <div>
-                      <p class="text-xs text-gray-400">Type de suggestion</p>
-                      <p class="text-sm text-gray-200">{{ formatAiSuggestionType(suggestion.suggestion_type) }}</p>
-                    </div>
-                    <div>
-                      <p class="text-xs text-gray-400">Statut</p>
-                      <p class="text-sm text-gray-200">{{ formatAiSuggestionStatus(suggestion.status) }}</p>
-                    </div>
-                    <div>
-                      <p class="text-xs text-gray-400">Date de création</p>
-                      <p class="text-sm text-gray-200">{{ formatAiSuggestionDate(suggestion.created_at) }}</p>
-                    </div>
-                    <div v-if="suggestion.reviewed_at">
-                      <p class="text-xs text-gray-400">Date de révision</p>
-                      <p class="text-sm text-gray-200">{{ formatAiSuggestionDate(suggestion.reviewed_at) }}</p>
-                    </div>
-                  </div>
-                  
-                  <!-- Score de confiance en détail -->
-                  <div v-if="suggestion.confidence_score" class="bg-blue-500/10 rounded-lg p-3 border border-blue-500/20">
-                    <div class="flex items-center justify-between mb-2">
-                      <span class="text-sm font-medium text-blue-300">Score de confiance</span>
-                      <span class="text-lg font-bold text-blue-400">{{ suggestion.confidence_score }}%</span>
-                    </div>
-                    <div class="w-full bg-gray-700 rounded-full h-2">
-                      <div class="bg-gradient-to-r from-blue-500 to-green-500 h-2 rounded-full transition-all duration-300" :style="{ width: suggestion.confidence_score + '%' }"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -672,14 +486,36 @@ const id = computed(() => route.params.id);
 const worker = ref(null);
 const loading = ref(true);
 const error = ref(null);
-const loadingSuggestions = ref(false);
-const aiSuggestions = ref(null);
-const aiSuggestionsSection = ref(null);
 
-// Variables pour l'historique des suggestions IA
-const workerAiSuggestions = ref([]);
-const loadingWorkerSuggestions = ref(false);
-const expandedWorkerSuggestions = ref(new Set()); // Pour gérer les détails déroulants
+// Variables pour les suggestions IA supprimées car remplacées par la page dédiée
+
+// Statistiques calculées
+const stats = computed(() => {
+  if (!worker.value) return [];
+  
+  return [
+    {
+      label: 'Âge',
+      value: worker.value.age ? `${worker.value.age} ans` : 'Non renseigné',
+      icon: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z'
+    },
+    {
+      label: 'Sexe',
+      value: worker.value.gender === 'male' ? 'Homme' : worker.value.gender === 'female' ? 'Femme' : 'Non renseigné',
+      icon: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z'
+    },
+    {
+      label: 'ESAT',
+      value: worker.value.esat_name || 'Non renseigné',
+      icon: 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4'
+    },
+    {
+      label: 'Situation',
+      value: worker.value.current_situation || 'Non renseignée',
+      icon: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01'
+    }
+  ];
+});
 
 // Get initials helper
 const getInitials = (firstName, lastName) => {
@@ -1047,20 +883,6 @@ const formatCalculationSkills = (skills) => {
   return formattedSkills.join(', ');
 };
 
-// Computed for formatted AI suggestions
-const formattedAiSuggestions = computed(() => {
-  if (!aiSuggestions.value) return '';
-  
-  // Convert markdown-like formatting to HTML
-  let formatted = aiSuggestions.value
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.*?)\*/g, '<em>$1</em>')
-    .replace(/\n\n/g, '</p><p>')
-    .replace(/\n/g, '<br>');
-  
-  return `<p>${formatted}</p>`;
-});
-
 // Fetch Worker data
 onMounted(async () => {
   try {
@@ -1075,204 +897,11 @@ onMounted(async () => {
     const data = await response.json();
     worker.value = data.data || data;
     
-    // Charger l'historique des suggestions IA
-    await loadWorkerAiSuggestions();
-    
   } catch (err) {
     error.value = `Erreur lors du chargement du travailleur: ${err.message}`;
     console.error(err);
   } finally {
     loading.value = false;
-  }
-});
-
-// Fonctions pour l'historique des suggestions IA
-const loadWorkerAiSuggestions = async () => {
-  if (loadingWorkerSuggestions.value) return;
-  
-  loadingWorkerSuggestions.value = true;
-  try {
-    const response = await fetch(`/api/workers/${id.value}/ai-suggestions`);
-    if (response.ok) {
-      const suggestions = await response.json();
-      workerAiSuggestions.value = suggestions || [];
-    } else {
-      console.error('Erreur lors du chargement des suggestions IA');
-      workerAiSuggestions.value = [];
-    }
-  } catch (error) {
-    console.error('Erreur lors du chargement des suggestions IA:', error);
-    workerAiSuggestions.value = [];
-  } finally {
-    loadingWorkerSuggestions.value = false;
-  }
-};
-
-const formatAiSuggestionStatus = (status) => {
-  const statusMap = {
-    'pending': 'En attente',
-    'completed': 'Terminé',
-    'reviewed': 'Révisé',
-    'applied': 'Appliqué',
-    'rejected': 'Rejeté'
-  };
-  return statusMap[status] || status;
-};
-
-const formatAiSuggestionType = (type) => {
-  const typeMap = {
-    'job_recommendation': 'Recommandation emploi',
-    'skills_assessment': 'Évaluation compétences',
-    'training_plan': 'Plan de formation',
-    'career_guidance': 'Orientation professionnelle'
-  };
-  return typeMap[type] || type;
-};
-
-const formatAiSuggestionDate = (dateString) => {
-  if (!dateString) return '';
-  const date = new Date(dateString);
-  return date.toLocaleDateString('fr-FR', { 
-    day: '2-digit', 
-    month: '2-digit', 
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-  });
-};
-
-const getAiSuggestionStatusClass = (status) => {
-  const statusClasses = {
-    'pending': 'bg-orange-500/20 text-orange-400',
-    'completed': 'bg-blue-500/20 text-blue-400',
-    'reviewed': 'bg-green-500/20 text-green-400',
-    'applied': 'bg-purple-500/20 text-purple-400',
-    'rejected': 'bg-red-500/20 text-red-400'
-  };
-  return statusClasses[status] || 'bg-gray-500/20 text-gray-400';
-};
-
-const getAiSuggestionTypeClass = (type) => {
-  const typeClasses = {
-    'job_recommendation': 'bg-blue-500/10 text-blue-300',
-    'skills_assessment': 'bg-green-500/10 text-green-300',
-    'training_plan': 'bg-purple-500/10 text-purple-300',
-    'career_guidance': 'bg-yellow-500/10 text-yellow-300'
-  };
-  return typeClasses[type] || 'bg-gray-500/10 text-gray-300';
-};
-
-// Fonction pour basculer l'affichage des détails d'une suggestion
-const toggleWorkerSuggestionDetails = (suggestionId) => {
-  const expanded = new Set(expandedWorkerSuggestions.value)
-  if (expanded.has(suggestionId)) {
-    expanded.delete(suggestionId)
-  } else {
-    expanded.add(suggestionId)
-  }
-  expandedWorkerSuggestions.value = expanded
-}
-
-// Vérifier si une suggestion est dépliée
-const isWorkerSuggestionExpanded = (suggestionId) => {
-  return expandedWorkerSuggestions.value.has(suggestionId)
-}
-
-const updateWorkerSuggestionStatus = async (suggestionId, newStatus) => {
-  try {
-    const response = await fetch(`/api/ai-suggestions/${suggestionId}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ status: newStatus })
-    });
-    
-    if (response.ok) {
-      // Recharger les suggestions pour refléter le changement
-      await loadWorkerAiSuggestions();
-    } else {
-      console.error('Erreur lors de la mise à jour du statut');
-    }
-  } catch (error) {
-    console.error('Erreur lors de la mise à jour du statut:', error);
-  }
-};
-
-// Method to suggest jobs using AI
-const suggestJobs = async () => {
-  loadingSuggestions.value = true;
-  aiSuggestions.value = null;
-  try {
-    const response = await fetch(`/api/workers/${id.value}/suggest-jobs`);
-    if (!response.ok) {
-      throw new Error(`Erreur HTTP: ${response.status}`);
-    }
-    const result = await response.json();
-    if (result.status === 'success') {
-      aiSuggestions.value = result.suggestions;
-      
-      // Sauvegarder la suggestion en base de données
-      await saveAiSuggestion({
-        worker_id: parseInt(id.value),
-        suggestion_type: 'job_recommendation',
-        prompt: 'Suggestion de métiers basée sur le profil du travailleur',
-        response: result.suggestions,
-        summary: 'Recommandations de métiers générées par IA'
-      });
-      
-      await nextTick();
-      scrollToAiSuggestions();
-    } else {
-      throw new Error(result.message || 'Failed to get job suggestions from AI');
-    }
-  } catch (err) {
-    aiSuggestions.value = `Erreur lors de la suggestion de métiers: ${err.message}`;
-    await nextTick();
-    scrollToAiSuggestions();
-  } finally {
-    loadingSuggestions.value = false;
-  }
-};
-
-// Fonction pour sauvegarder une suggestion IA en base de données
-const saveAiSuggestion = async (suggestionData) => {
-  try {
-    const response = await fetch('/api/ai-suggestions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(suggestionData)
-    });
-    
-    if (response.ok) {
-      // Recharger l'historique des suggestions
-      await loadWorkerAiSuggestions();
-    } else {
-      console.error('Erreur lors de la sauvegarde de la suggestion IA');
-    }
-  } catch (error) {
-    console.error('Erreur lors de la sauvegarde de la suggestion IA:', error);
-  }
-};
-
-// Scroll to AI suggestions section
-const scrollToAiSuggestions = () => {
-  if (aiSuggestionsSection.value) {
-    aiSuggestionsSection.value.scrollIntoView({ 
-      behavior: 'smooth', 
-      block: 'start' 
-    });
-  }
-};
-
-// Watch for AI suggestions changes
-watch(aiSuggestions, (newValue) => {
-  if (newValue) {
-    nextTick(() => {
-      scrollToAiSuggestions();
-    });
   }
 });
 </script>
