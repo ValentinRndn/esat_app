@@ -10,10 +10,32 @@
       <div class="light-halo light-halo-2"></div>
     </div>
 
+    <!-- Bouton hamburger mobile -->
+    <button 
+      v-if="!isSidebarOpen"
+      @click="toggleSidebar"
+      class="fixed top-4 left-4 z-50 lg:hidden w-12 h-12 bg-gray-800/90 backdrop-blur-lg rounded-xl border border-white/20 flex items-center justify-center text-white hover:bg-gray-700/90 transition-all duration-300 shadow-xl"
+    >
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+      </svg>
+    </button>
+
+    <!-- Overlay mobile -->
+    <div 
+      v-if="isSidebarOpen" 
+      @click="closeSidebar"
+      class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden transition-opacity duration-300"
+      :class="isSidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'"
+    ></div>
+
     <!-- Sidebar Navigation -->
-    <aside class="sidebar-fixed bg-white/10 backdrop-blur-xl border-r border-white/20 shadow-2xl flex flex-col">
+    <aside 
+      class="sidebar-container bg-white/10 backdrop-blur-xl border-r border-white/20 shadow-2xl flex flex-col transition-transform duration-300 ease-out"
+      :class="isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'"
+    >
       <!-- Header avec logo -->
-      <div class="p-6 border-b border-white/20 flex-shrink-0">
+      <div class="p-6 border-b border-white/20 flex-shrink-0 flex items-center justify-between">
         <div class="flex items-center space-x-3">
           <div class="w-10 h-10 bg-gradient-to-br from-green-400 to-green-600 rounded-xl shadow-lg flex items-center justify-center">
             <span class="text-white font-bold text-lg">B</span>
@@ -25,6 +47,16 @@
             <p class="text-gray-400 text-xs">Dashboard ESAT</p>
           </div>
         </div>
+        
+        <!-- Bouton fermer mobile -->
+        <button 
+          @click="closeSidebar"
+          class="lg:hidden w-8 h-8 rounded-lg hover:bg-white/10 flex items-center justify-center text-white/80 hover:text-white transition-all duration-200"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
       </div>
       
       <nav class="p-4 flex-1">
@@ -33,6 +65,7 @@
           <li v-if="canAccessDashboard">
             <NuxtLink 
               to="/dashboard" 
+              @click="closeSidebarOnMobile"
               class="group flex items-center p-4 rounded-xl text-white hover:bg-white/10 transition-all duration-200 hover:shadow-lg border border-transparent hover:border-white/20"
               active-class="bg-green-500/20 border-green-500/30 text-green-300 shadow-lg"
             >
@@ -49,6 +82,7 @@
           <li v-if="canAccessMyEsat">
             <NuxtLink 
               to="/my-esat" 
+              @click="closeSidebarOnMobile"
               class="group flex items-center p-4 rounded-xl text-white hover:bg-white/10 transition-all duration-200 hover:shadow-lg border border-transparent hover:border-white/20"
               :class="isMyEsatActive ? 'bg-blue-500/20 border-blue-500/30 text-blue-300 shadow-lg' : ''"
             >
@@ -64,12 +98,13 @@
           <li v-if="canAccessUsers">
             <NuxtLink 
               to="/users" 
+              @click="closeSidebarOnMobile"
               class="group flex items-center p-4 rounded-xl text-white hover:bg-white/10 transition-all duration-200 hover:shadow-lg border border-transparent hover:border-white/20"
               active-class="bg-purple-500/20 border-purple-500/30 text-purple-300 shadow-lg"
             >
               <div class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center mr-3 group-hover:bg-white/20 transition-colors">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m9 5.197v0M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
                 </svg>
               </div>
               <span class="font-medium">Utilisateurs</span>
@@ -79,12 +114,13 @@
           <li v-if="canAccessWorkers">
             <NuxtLink 
               to="/workers" 
+              @click="closeSidebarOnMobile"
               class="group flex items-center p-4 rounded-xl text-white hover:bg-white/10 transition-all duration-200 hover:shadow-lg border border-transparent hover:border-white/20"
               active-class="bg-orange-500/20 border-orange-500/30 text-orange-300 shadow-lg"
             >
               <div class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center mr-3 group-hover:bg-white/20 transition-colors">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 515.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 919.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                 </svg>
               </div>
               <span class="font-medium">Travailleurs</span>
@@ -94,6 +130,7 @@
           <li v-if="canAccessEsats">
             <NuxtLink 
               to="/esats" 
+              @click="closeSidebarOnMobile"
               class="group flex items-center p-4 rounded-xl text-white hover:bg-white/10 transition-all duration-200 hover:shadow-lg border border-transparent hover:border-white/20"
               active-class="bg-green-500/20 border-green-500/30 text-green-300 shadow-lg"
             >
@@ -136,7 +173,7 @@
     </aside>
 
     <!-- Main Content -->
-    <div class="main-content-with-sidebar relative z-10">
+    <div class="main-content transition-all duration-300 ease-out" :class="isSidebarOpen ? 'main-content-with-sidebar' : 'main-content-full'">
       <slot />
     </div>
   </div>
@@ -150,6 +187,34 @@ const canAccessUsers = ref(false);
 const canAccessWorkers = ref(false);
 const canAccessEsats = ref(false);
 const canAccessMyEsat = ref(false);
+
+// État de la sidebar mobile
+const isSidebarOpen = ref(false);
+
+// Fonctions pour contrôler la sidebar
+const toggleSidebar = () => {
+  isSidebarOpen.value = !isSidebarOpen.value;
+};
+
+const closeSidebar = () => {
+  isSidebarOpen.value = false;
+};
+
+const closeSidebarOnMobile = () => {
+  // Fermer la sidebar seulement sur mobile
+  if (window.innerWidth < 1024) {
+    closeSidebar();
+  }
+};
+
+// Gérer le redimensionnement de la fenêtre
+const handleResize = () => {
+  if (window.innerWidth >= 1024) {
+    isSidebarOpen.value = true; // Toujours ouverte sur desktop
+  } else {
+    isSidebarOpen.value = false; // Fermée par défaut sur mobile
+  }
+};
 
 // Computed pour l'affichage utilisateur
 const userDisplayName = computed(() => {
@@ -208,6 +273,12 @@ onMounted(async () => {
   if (!process.client) return;
   
   try {
+    // Gérer la taille d'écran initiale
+    handleResize();
+    
+    // Écouter les changements de taille d'écran
+    window.addEventListener('resize', handleResize);
+    
     // Récupérer les composables d'authentification
     const { user: authUser, fetchUser } = useAuth();
     const { 
@@ -232,6 +303,13 @@ onMounted(async () => {
     
   } catch (error) {
     console.error("Erreur auth:", error);
+  }
+});
+
+// Nettoyer les événements
+onUnmounted(() => {
+  if (process.client) {
+    window.removeEventListener('resize', handleResize);
   }
 });
 </script>
@@ -309,28 +387,91 @@ onMounted(async () => {
   filter: blur(30px);
 }
 
-/* Sidebar avec hauteur fixe 100vh */
-.sidebar-fixed-height {
-  height: 100vh !important;
-  min-height: 100vh !important;
-  max-height: 100vh !important;
-}
-
-/* Sidebar en position fixed */
-.sidebar-fixed {
-  position: fixed !important;
+/* Sidebar Container */
+.sidebar-container {
+  position: fixed;
   top: 0;
   left: 0;
   width: 256px; /* w-64 = 16rem = 256px */
-  height: 100vh !important;
-  min-height: 100vh !important;
-  max-height: 100vh !important;
+  height: 100vh;
   z-index: 50;
 }
 
-/* Contenu principal avec marge pour la sidebar */
-.main-content-with-sidebar {
-  margin-left: 256px; /* w-64 = 16rem = 256px */
+/* Sidebar States */
+.sidebar-open {
+  transform: translateX(0);
+}
+
+.sidebar-closed {
+  transform: translateX(-100%);
+}
+
+/* Desktop - Sidebar toujours visible */
+@media (min-width: 1024px) {
+  .sidebar-container {
+    transform: translateX(0) !important;
+  }
+}
+
+/* Main Content */
+.main-content {
+  position: relative;
+  z-index: 10;
   min-height: 100vh;
+}
+
+/* Desktop - Contenu avec marge pour la sidebar */
+@media (min-width: 1024px) {
+  .main-content-with-sidebar {
+    margin-left: 256px; /* w-64 = 16rem = 256px */
+  }
+  
+  .main-content-full {
+    margin-left: 256px; /* Sur desktop, toujours avec marge */
+  }
+}
+
+/* Mobile - Contenu pleine largeur */
+@media (max-width: 1023px) {
+  .main-content-with-sidebar {
+    margin-left: 0;
+  }
+  
+  .main-content-full {
+    margin-left: 0;
+  }
+}
+
+/* Animations supplémentaires */
+.sidebar-container {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Animation du bouton hamburger */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.sidebar-closed ~ .main-content button:first-child {
+  animation: fadeInScale 0.3s ease-out;
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Empêcher le scroll du body quand la sidebar mobile est ouverte */
+@media (max-width: 1023px) {
+  body:has(.sidebar-open) {
+    overflow: hidden;
+  }
 }
 </style>

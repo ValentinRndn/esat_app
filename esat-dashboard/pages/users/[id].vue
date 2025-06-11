@@ -223,7 +223,7 @@
           </div>
           
           <!-- Actions avancées -->
-          <div class="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 p-8">
+          <!-- <div class="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 p-8">
             <div class="flex items-center mb-6">
               <div class="w-12 h-12 bg-yellow-500/20 rounded-xl flex items-center justify-center mr-4">
                 <svg class="w-6 h-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -263,7 +263,7 @@
                 <span class="font-medium text-sm">Désactiver</span>
               </button>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>

@@ -183,10 +183,9 @@
                     required
                     :disabled="submitting"
                   >
-                    <option value="admin">Administrateur</option>
-                    <option value="user">Utilisateur</option>
-                    <option value="moderator">Modérateur</option>
-                    <option value="superadmin">Super Administrateur</option>
+                    <option value="super_admin">Super Administrateur</option>
+                    <option value="admin_esat">Administrateur ESAT</option>
+                    <option value="user_esat">Utilisateur ESAT</option>
                   </select>
                 </div>
                 

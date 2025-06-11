@@ -254,6 +254,11 @@
 import { ref, computed, onMounted, nextTick, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
+// Import CSS de Leaflet une seule fois
+if (process.client) {
+  import('leaflet/dist/leaflet.css');
+}
+
 const route = useRoute();
 const workerId = computed(() => route.params.workerId);
 
@@ -415,11 +420,17 @@ const showSuggestionDetail = (suggestion) => {
 
 // Méthodes pour la carte et les entreprises
 const initializeMap = async () => {
-  if (!mapContainer.value || mapInitialized.value) return;
+  if (!mapContainer.value || mapInitialized.value || !process.client) return;
   
   try {
+    // Marquer comme initialisé immédiatement pour éviter les doublons
+    mapInitialized.value = true;
+    
     // Importer Leaflet dynamiquement
     const L = await import('leaflet');
+    
+    // Vérifier que le conteneur existe toujours
+    if (!mapContainer.value) return;
     
     // Créer la carte
     map.value = L.default.map(mapContainer.value).setView([46.603354, 1.888334], 6); // Centre de la France
@@ -429,9 +440,10 @@ const initializeMap = async () => {
       attribution: '© OpenStreetMap contributors'
     }).addTo(map.value);
     
-    mapInitialized.value = true;
   } catch (error) {
     console.error('Erreur lors de l\'initialisation de la carte:', error);
+    // Réinitialiser le flag en cas d'erreur
+    mapInitialized.value = false;
   }
 };
 
@@ -572,19 +584,9 @@ onMounted(async () => {
     await searchNearbyCompanies();
   }
 });
-
-// Watcher pour initialiser la carte quand le conteneur est prêt
-watch(mapContainer, async (newValue) => {
-  if (newValue && !mapInitialized.value) {
-    await nextTick();
-    await initializeMap();
-  }
-});
 </script>
 
 <style>
-@import 'leaflet/dist/leaflet.css';
-
 /* Corrections pour Leaflet avec Tailwind */
 .leaflet-container {
   background: #1f2937;
