@@ -1,4 +1,4 @@
-ï»¿<template>
+<template>
   <div class="min-h-screen main-gradient-bg relative overflow-hidden">
     
     <!-- Grid Background with fade effect -->
@@ -57,36 +57,36 @@
           </div>
         </div>
         
-        <!-- Message de succÃ¨s -->
+        <!-- Message de succès -->
         <div v-if="success" class="bg-pink-500/10 backdrop-blur-lg border border-pink-500/20 rounded-2xl p-6 mb-8">
           <div class="flex items-start">
             <svg class="h-6 w-6 text-pink-400 mr-3 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
             </svg>
             <div class="flex-1">
-              <span class="text-pink-300">ESAT crÃ©Ã© avec succÃ¨s !</span>
+              <span class="text-pink-300">ESAT créé avec succès !</span>
               <div class="mt-4 flex space-x-3">
                 <NuxtLink :to="`/esats/${createdEsatId}`" class="inline-flex items-center px-4 py-2 bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 rounded-lg transition-all duration-200 border border-blue-500/20">
                   <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                   </svg>
-                  Voir les dÃ©tails
+                  Voir les détails
                 </NuxtLink>
                 <NuxtLink to="/esats" class="inline-flex items-center px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-all duration-200 border border-white/20">
                   <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
                   </svg>
-                  Retour Ã  la liste
+                  Retour à la liste
                 </NuxtLink>
               </div>
             </div>
           </div>
         </div>
         
-        <!-- Formulaire de crÃ©ation -->
+        <!-- Formulaire de création -->
         <div v-if="!success" class="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 overflow-hidden">
-          <!-- En-tÃªte du formulaire -->
+          <!-- En-tête du formulaire -->
           <div class="flex items-center p-8 border-b border-white/10">
             <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center mr-4">
               <svg class="w-6 h-6 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -109,7 +109,7 @@
                 id="name" 
                 v-model="formData.name" 
                 class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" 
-                placeholder="Entrez le nom de l'Ã©tablissement"
+                placeholder="Entrez le nom de l'établissement"
                 required
                 :disabled="submitting"
               >
@@ -123,7 +123,7 @@
                 id="address" 
                 v-model="formData.address" 
                 class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                placeholder="Adresse complÃ¨te"
+                placeholder="Adresse complète"
                 :disabled="submitting"
               >
             </div>
@@ -155,7 +155,7 @@
               </div>
             </div>
             
-            <!-- Email et TÃ©lÃ©phone -->
+            <!-- Email et Téléphone -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email</label>
@@ -170,7 +170,7 @@
               </div>
               
               <div>
-                <label for="phone" class="block text-sm font-medium text-gray-300 mb-2">TÃ©lÃ©phone</label>
+                <label for="phone" class="block text-sm font-medium text-gray-300 mb-2">Téléphone</label>
                 <input 
                   type="tel" 
                   id="phone" 
@@ -199,7 +199,7 @@
                 <svg v-else class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                 </svg>
-                {{ submitting ? 'CrÃ©ation...' : 'CrÃ©er l\'ESAT' }}
+                {{ submitting ? 'Création...' : 'Créer l\'ESAT' }}
               </button>
             </div>
           </form>
@@ -239,7 +239,7 @@ const submitForm = async () => {
     // Clean data for submission
     const dataToSend = { ...formData.value };
     
-    console.log('DonnÃ©es envoyÃ©es:', dataToSend);
+    console.log('Données envoyées:', dataToSend);
     
     const response = await fetch('/api/esats', {
       method: 'POST',
@@ -260,8 +260,8 @@ const submitForm = async () => {
     success.value = true;
     
   } catch (err) {
-    console.error('Erreur lors de la crÃ©ation de l\'ESAT:', err);
-    error.value = `Erreur lors de la crÃ©ation: ${err.message}`;
+    console.error('Erreur lors de la création de l\'ESAT:', err);
+    error.value = `Erreur lors de la création: ${err.message}`;
   } finally {
     submitting.value = false;
   }
@@ -281,7 +281,7 @@ const submitForm = async () => {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: 
+  background-image: linear-gradient(rgba(236, 72, 153, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(236, 72, 153, 0.1) 1px, transparent 1px);
     
   background-size: 80px 80px;
   background-position: 0 0, 0 0;

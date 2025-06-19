@@ -1,4 +1,4 @@
-ï»¿<template>
+<template>
   <div class="min-h-screen main-gradient-bg relative overflow-hidden">
     
     <!-- Grid Background with fade effect -->
@@ -39,14 +39,14 @@
         <div class="mb-12">
           <div class="inline-flex items-center pl-1 pr-4 py-1 rounded-full bg-orange-500/10 mb-4">
             <span class="text-sm font-semibold text-gray-800 mr-2 rounded-full py-2 px-4 bg-orange-400">Travailleurs</span>
-            <span class="text-sm text-gray-300">Gestion des employÃ©s</span>
+            <span class="text-sm text-gray-300">Gestion des employés</span>
           </div>
           <h1 class="text-4xl font-bold text-white mb-4">
             Gestion des 
             <span class="text-orange-400">travailleurs</span>
           </h1>
           <p class="text-gray-300 text-lg max-w-2xl">
-            Consultez et gÃ©rez la liste complÃ¨te de vos travailleurs enregistrÃ©s dans le systÃ¨me.
+            Consultez et gérez la liste complète de vos travailleurs enregistrés dans le système.
           </p>
         </div>
 
@@ -84,7 +84,7 @@
             <div class="flex items-center justify-between">
               <div>
                 <div class="text-2xl font-bold text-white">{{ workers.filter(w => w.esat_id).length }}</div>
-                <div class="text-sm text-gray-300">Avec ESAT assignÃ©</div>
+                <div class="text-sm text-gray-300">Avec ESAT assigné</div>
               </div>
               <div class="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center">
                 <svg class="w-6 h-6 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -95,10 +95,10 @@
           </div>
         </div>
 
-        <!-- Ã‰tat de chargement -->
+        <!-- État de chargement -->
         <div v-if="loading" class="flex flex-col items-center justify-center py-20 bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20">
           <div class="w-12 h-12 border-4 border-white/20 border-t-orange-400 rounded-full animate-spin mb-4"></div>
-          <p class="text-gray-300">Chargement des donnÃ©es...</p>
+          <p class="text-gray-300">Chargement des données...</p>
         </div>
         
         <!-- Message d'erreur -->
@@ -111,15 +111,15 @@
           </div>
         </div>
         
-        <!-- Ã‰tat vide -->
+        <!-- État vide -->
         <div v-else-if="workers.length === 0" class="flex flex-col items-center justify-center py-20 bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20">
           <div class="w-20 h-20 text-gray-400 mb-6">
             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 515.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 919.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
             </svg>
           </div>
-          <h3 class="text-xl font-semibold text-white mb-4">Aucun travailleur trouvÃ©</h3>
-          <p class="text-gray-400 mb-8 max-w-sm text-center">Commencez par ajouter votre premier travailleur au systÃ¨me</p>
+          <h3 class="text-xl font-semibold text-white mb-4">Aucun travailleur trouvé</h3>
+          <p class="text-gray-400 mb-8 max-w-sm text-center">Commencez par ajouter votre premier travailleur au système</p>
           <NuxtLink to="/workers/create" class="inline-flex items-center px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-full font-medium transition-all duration-200">
             <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -172,10 +172,10 @@
                     ESAT
                   </th>
                   <th class="px-4 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                    Secteurs d'activitÃ©
+                    Secteurs d'activité
                   </th>
                   <th class="px-4 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                    RÃ©gime
+                    Régime
                   </th>
                   <th class="px-4 py-4 text-center text-xs font-medium text-gray-300 uppercase tracking-wider">
                     Actions
@@ -207,10 +207,10 @@
                       </div>
                       <div>
                         <div class="text-sm font-medium text-white">{{ worker.esat_name }}</div>
-                        <div class="text-xs text-gray-400">ESAT assignÃ©</div>
+                        <div class="text-xs text-gray-400">ESAT assigné</div>
                       </div>
                     </div>
-                    <div v-else class="text-sm text-gray-500 italic">Non assignÃ©</div>
+                    <div v-else class="text-sm text-gray-500 italic">Non assigné</div>
                   </td>
                   <td class="px-4 py-4">
                     <div v-if="worker.activity_sectors" class="flex flex-wrap gap-1">
@@ -220,7 +220,7 @@
                         {{ sector.trim() }}
                       </span>
                     </div>
-                    <div v-else class="text-sm text-gray-500 italic">Non spÃ©cifiÃ©</div>
+                    <div v-else class="text-sm text-gray-500 italic">Non spécifié</div>
                   </td>
                   <td class="px-4 py-4 whitespace-nowrap">
                     <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full"
@@ -233,7 +233,7 @@
                     <div class="flex items-center justify-center space-x-2">
                       <NuxtLink :to="`/workers/${worker.id}`" 
                                 class="p-2 rounded-lg hover:bg-blue-500/20 text-blue-400 hover:text-blue-300 transition-all duration-200" 
-                                title="Voir les dÃ©tails">
+                                title="Voir les détails">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
@@ -271,7 +271,7 @@
                   <svg class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                   </svg>
-                  PrÃ©cÃ©dent
+                  Précédent
                 </button>
                 <button class="inline-flex items-center px-4 py-2 border border-white/20 text-sm font-medium rounded-lg text-gray-400 bg-white/5 hover:bg-white/10 transition-all duration-200">
                   Suivant
@@ -298,11 +298,11 @@
             </div>
             <div>
               <h3 class="text-lg font-semibold text-white">Confirmer la suppression</h3>
-              <p class="text-gray-400 text-sm">Cette action ne peut pas Ãªtre annulÃ©e</p>
+              <p class="text-gray-400 text-sm">Cette action ne peut pas être annulée</p>
             </div>
           </div>
           <p class="text-gray-300 mb-6">
-            ÃŠtes-vous sÃ»r de vouloir supprimer le travailleur <strong class="text-white">{{ workerToDelete?.first_name }} {{ workerToDelete?.last_name }}</strong> ?
+            Êtes-vous sûr de vouloir supprimer le travailleur <strong class="text-white">{{ workerToDelete?.first_name }} {{ workerToDelete?.last_name }}</strong> ?
           </p>
           <div class="flex justify-end space-x-3">
             <button @click="cancelDelete" class="px-4 py-2 bg-white/10 hover:bg-white/20 text-gray-300 rounded-lg transition-all duration-200">
@@ -355,7 +355,7 @@ const formatDate = (dateString) => {
 
 // Format work regime helper
 const formatWorkRegime = (regime) => {
-  if (!regime) return 'Non spÃ©cifiÃ©';
+  if (!regime) return 'Non spécifié';
   const regimeMap = {
     'temps_plein': 'Temps plein',
     'temps_partiel': 'Temps partiel',
@@ -370,13 +370,13 @@ const getActivitySectors = (sectorsString) => {
   if (!sectorsString) return [];
   
   try {
-    // Si c'est dÃ©jÃ  un tableau JSON, le parser
+    // Si c'est déjà un tableau JSON, le parser
     const parsed = JSON.parse(sectorsString);
     if (Array.isArray(parsed)) {
-      return parsed.slice(0, 3); // Limite Ã  3 secteurs
+      return parsed.slice(0, 3); // Limite à 3 secteurs
     }
   } catch (e) {
-    // Si ce n'est pas du JSON valide, traiter comme une chaÃ®ne sÃ©parÃ©e par des virgules
+    // Si ce n'est pas du JSON valide, traiter comme une chaîne séparée par des virgules
     return sectorsString.split(',').filter(s => s.trim()).slice(0, 3);
   }
   
@@ -399,10 +399,10 @@ onMounted(async () => {
     }
     const data = await response.json();
     
-    // L'API peut retourner soit directement un tableau, soit un objet avec une propriÃ©tÃ© data
+    // L'API peut retourner soit directement un tableau, soit un objet avec une propriété data
     const workersData = Array.isArray(data) ? data : (data.data || []);
     
-    // Charger les ESATs pour enrichir les donnÃ©es
+    // Charger les ESATs pour enrichir les données
     const esatsResponse = await fetch('/api/esats').catch(() => null);
     let esatsMap = {};
     
@@ -415,7 +415,7 @@ onMounted(async () => {
       }, {});
     }
     
-    // Enrichir les donnÃ©es des travailleurs avec le nom de l'ESAT
+    // Enrichir les données des travailleurs avec le nom de l'ESAT
     workers.value = workersData.map(worker => ({
       ...worker,
       esat_name: worker.esat_id ? esatsMap[worker.esat_id] : null
@@ -477,7 +477,7 @@ const deleteWorker = async () => {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: 
+  background-image: linear-gradient(rgba(236, 72, 153, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(236, 72, 153, 0.1) 1px, transparent 1px);
     
   background-size: 80px 80px;
   background-position: 0 0, 0 0;

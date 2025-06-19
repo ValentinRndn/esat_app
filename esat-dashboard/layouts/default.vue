@@ -61,7 +61,7 @@
       
       <nav class="p-4 flex-1">
         <ul class="space-y-2">
-          <!-- Navigation conditionnelle basée sur les permissions -->
+          <!-- Navigation conditionnelle basï¿½e sur les permissions -->
           <li v-if="canAccessDashboard">
             <NuxtLink 
               to="/dashboard" 
@@ -158,11 +158,11 @@
             </div>
           </div>
           
-          <!-- Bouton de déconnexion -->
+          <!-- Bouton de dï¿½connexion -->
           <button 
             @click="handleLogout"
             class="ml-3 p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200 border border-transparent hover:border-white/20"
-            title="Se déconnecter"
+            title="Se dï¿½connecter"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
@@ -188,10 +188,10 @@ const canAccessWorkers = ref(false);
 const canAccessEsats = ref(false);
 const canAccessMyEsat = ref(false);
 
-// État de la sidebar mobile
+// ï¿½tat de la sidebar mobile
 const isSidebarOpen = ref(false);
 
-// Fonctions pour contrôler la sidebar
+// Fonctions pour contrï¿½ler la sidebar
 const toggleSidebar = () => {
   isSidebarOpen.value = !isSidebarOpen.value;
 };
@@ -207,12 +207,12 @@ const closeSidebarOnMobile = () => {
   }
 };
 
-// Gérer le redimensionnement de la fenêtre
+// Gï¿½rer le redimensionnement de la fenï¿½tre
 const handleResize = () => {
   if (window.innerWidth >= 1024) {
     isSidebarOpen.value = true; // Toujours ouverte sur desktop
   } else {
-    isSidebarOpen.value = false; // Fermée par défaut sur mobile
+    isSidebarOpen.value = false; // Fermï¿½e par dï¿½faut sur mobile
   }
 };
 
@@ -237,14 +237,14 @@ const userRoleDisplay = computed(() => {
   return roleMap[user.value.role] || user.value.role;
 });
 
-// Computed pour vérifier si l'onglet "Mon ESAT" doit être actif
+// Computed pour vï¿½rifier si l'onglet "Mon ESAT" doit ï¿½tre actif
 const isMyEsatActive = computed(() => {
   if (!user.value?.esat_id) return false;
   
   const route = useRoute();
   const currentPath = route.path;
   
-  // Actif si on est sur /my-esat ou sur la page de détails de son propre ESAT
+  // Actif si on est sur /my-esat ou sur la page de dï¿½tails de son propre ESAT
   if (currentPath === '/my-esat') return true;
   
   const esatIdMatch = currentPath.match(/^\/esats\/(\d+)/);
@@ -256,30 +256,30 @@ const isMyEsatActive = computed(() => {
   return false;
 });
 
-// Fonction de déconnexion
+// Fonction de dï¿½connexion
 const handleLogout = async () => {
   try {
     const { logout } = useAuth();
     await logout();
   } catch (error) {
-    console.error('Erreur lors de la déconnexion:', error);
-    // Forcer la redirection vers login même en cas d'erreur
+    console.error('Erreur lors de la dï¿½connexion:', error);
+    // Forcer la redirection vers login mï¿½me en cas d'erreur
     await navigateTo('/login');
   }
 };
 
-// Initialisation côté client seulement
+// Initialisation cï¿½tï¿½ client seulement
 onMounted(async () => {
   if (!process.client) return;
   
   try {
-    // Gérer la taille d'écran initiale
+    // Gï¿½rer la taille d'ï¿½cran initiale
     handleResize();
     
-    // Écouter les changements de taille d'écran
+    // ï¿½couter les changements de taille d'ï¿½cran
     window.addEventListener('resize', handleResize);
     
-    // Récupérer les composables d'authentification
+    // Rï¿½cupï¿½rer les composables d'authentification
     const { user: authUser, fetchUser } = useAuth();
     const { 
       canAccessDashboard: dashboard, 
@@ -289,7 +289,7 @@ onMounted(async () => {
       canAccessMyEsat: myEsat
     } = usePermissions();
     
-    // Récupérer l'utilisateur connecté
+    // Rï¿½cupï¿½rer l'utilisateur connectï¿½
     await fetchUser();
     await nextTick();
     
@@ -306,7 +306,7 @@ onMounted(async () => {
   }
 });
 
-// Nettoyer les événements
+// Nettoyer les ï¿½vï¿½nements
 onUnmounted(() => {
   if (process.client) {
     window.removeEventListener('resize', handleResize);
@@ -442,7 +442,7 @@ onUnmounted(() => {
   }
 }
 
-/* Animations supplémentaires */
+/* Animations supplï¿½mentaires */
 .sidebar-container {
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -468,7 +468,7 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Empêcher le scroll du body quand la sidebar mobile est ouverte */
+/* Empï¿½cher le scroll du body quand la sidebar mobile est ouverte */
 @media (max-width: 1023px) {
   body:has(.sidebar-open) {
     overflow: hidden;

@@ -1,4 +1,4 @@
-ï»¿<template>
+<template>
   <div class="min-h-screen main-gradient-bg relative overflow-hidden">
     
     <!-- Grid Background with fade effect -->
@@ -67,36 +67,36 @@
           </div>
         </div>
         
-        <!-- Message de succÃ¨s -->
+        <!-- Message de succès -->
         <div v-if="success" class="bg-pink-500/10 backdrop-blur-lg border border-pink-500/20 rounded-2xl p-6 mb-8">
           <div class="flex items-start">
             <svg class="h-6 w-6 text-pink-400 mr-3 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
             </svg>
             <div class="flex-1">
-              <span class="text-pink-300">Utilisateur crÃ©Ã© avec succÃ¨s !</span>
+              <span class="text-pink-300">Utilisateur créé avec succès !</span>
               <div class="mt-4 flex space-x-3">
                 <NuxtLink :to="`/users/${createdUserId}`" class="inline-flex items-center px-4 py-2 bg-purple-500/20 hover:bg-purple-500/30 text-purple-400 rounded-lg transition-all duration-200 border border-purple-500/20">
                   <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                   </svg>
-                  Voir les dÃ©tails
+                  Voir les détails
                 </NuxtLink>
                 <NuxtLink to="/users" class="inline-flex items-center px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-all duration-200 border border-white/20">
                   <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
                   </svg>
-                  Retour Ã  la liste
+                  Retour à la liste
                 </NuxtLink>
               </div>
             </div>
           </div>
         </div>
         
-        <!-- Formulaire de crÃ©ation -->
+        <!-- Formulaire de création -->
         <div v-if="!success" class="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 overflow-hidden">
-          <!-- En-tÃªte du formulaire -->
+          <!-- En-tête du formulaire -->
           <div class="flex items-center p-8 border-b border-white/10">
             <div class="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center mr-4">
               <svg class="w-6 h-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -111,16 +111,16 @@
           
           <!-- Formulaire -->
           <form @submit.prevent="submitForm" class="p-8 space-y-8">
-            <!-- Nom et prÃ©nom -->
+            <!-- Nom et prénom -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label for="first_name" class="block text-sm font-medium text-gray-300 mb-2">PrÃ©nom *</label>
+                <label for="first_name" class="block text-sm font-medium text-gray-300 mb-2">Prénom *</label>
                 <input 
                   type="text" 
                   id="first_name" 
                   v-model="formData.first_name" 
                   class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200" 
-                  placeholder="Entrez le prÃ©nom"
+                  placeholder="Entrez le prénom"
                   required
                   :disabled="submitting"
                 >
@@ -162,17 +162,17 @@
                 id="password" 
                 v-model="formData.password" 
                 class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200" 
-                placeholder="Entrez un mot de passe sÃ©curisÃ©"
+                placeholder="Entrez un mot de passe sécurisé"
                 required
                 :disabled="submitting"
               >
-              <p class="mt-2 text-sm text-gray-400">Le mot de passe doit contenir au moins 8 caractÃ¨res.</p>
+              <p class="mt-2 text-sm text-gray-400">Le mot de passe doit contenir au moins 8 caractères.</p>
             </div>
             
-            <!-- RÃ´le et ESAT -->
+            <!-- Rôle et ESAT -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label for="role" class="block text-sm font-medium text-gray-300 mb-2">RÃ´le *</label>
+                <label for="role" class="block text-sm font-medium text-gray-300 mb-2">Rôle *</label>
                 <select 
                   id="role" 
                   v-model="formData.role" 
@@ -194,7 +194,7 @@
                   class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200" 
                   :disabled="submitting || loadingEsats"
                 >
-                  <option :value="null">Aucun ESAT assignÃ©</option>
+                  <option :value="null">Aucun ESAT assigné</option>
                   <option v-if="loadingEsats" disabled>Chargement des ESATs...</option>
                   <option v-for="esat in esats" :key="esat.id" :value="esat.id">
                     {{ esat.name }}
@@ -224,7 +224,7 @@
                 >
                 <div class="ml-3">
                   <label for="is_active" class="block text-sm font-medium text-white">Activer le compte</label>
-                  <p class="mt-1 text-sm text-gray-400">Cochez pour activer immÃ©diatement le compte utilisateur</p>
+                  <p class="mt-1 text-sm text-gray-400">Cochez pour activer immédiatement le compte utilisateur</p>
                 </div>
               </div>
             </div>
@@ -246,7 +246,7 @@
                 <svg v-else class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                 </svg>
-                {{ submitting ? 'CrÃ©ation...' : 'CrÃ©er l\'utilisateur' }}
+                {{ submitting ? 'Création...' : 'Créer l\'utilisateur' }}
               </button>
             </div>
           </form>
@@ -305,7 +305,7 @@ onMounted(async () => {
 // Validate password
 const validatePassword = (password) => {
   if (password.length < 8) {
-    return 'Le mot de passe doit contenir au moins 8 caractÃ¨res.';
+    return 'Le mot de passe doit contenir au moins 8 caractères.';
   }
   return null;
 };
@@ -331,7 +331,7 @@ const submitForm = async () => {
       dataToSend.esat_id = Number(dataToSend.esat_id);
     }
 
-    console.log('DonnÃ©es envoyÃ©es:', dataToSend);
+    console.log('Données envoyées:', dataToSend);
 
     const response = await fetch('/api/users', {
       method: 'POST',
@@ -352,8 +352,8 @@ const submitForm = async () => {
     success.value = true;
 
   } catch (err) {
-    console.error('Erreur lors de la crÃ©ation de l\'utilisateur:', err);
-    error.value = `Erreur lors de la crÃ©ation: ${err.message}`;
+    console.error('Erreur lors de la création de l\'utilisateur:', err);
+    error.value = `Erreur lors de la création: ${err.message}`;
   } finally {
     submitting.value = false;
   }
@@ -373,7 +373,7 @@ const submitForm = async () => {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: 
+  background-image: linear-gradient(rgba(236, 72, 153, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(236, 72, 153, 0.1) 1px, transparent 1px);
     
   background-size: 80px 80px;
   background-position: 0 0, 0 0;

@@ -1,4 +1,4 @@
-ï»¿<template>
+<template>
   <div class="min-h-screen main-gradient-bg relative overflow-hidden">
     
     <!-- Grid Background with fade effect -->
@@ -57,36 +57,36 @@
           </div>
         </div>
         
-        <!-- Message de succÃ¨s -->
+        <!-- Message de succès -->
         <div v-if="success" class="bg-pink-500/10 backdrop-blur-lg border border-pink-500/20 rounded-2xl p-6 mb-8">
           <div class="flex items-start">
             <svg class="h-6 w-6 text-pink-400 mr-3 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
             </svg>
             <div class="flex-1">
-              <span class="text-pink-300">Travailleur crÃ©Ã© avec succÃ¨s !</span>
+              <span class="text-pink-300">Travailleur créé avec succès !</span>
               <div class="mt-4 flex space-x-3">
                 <NuxtLink :to="`/workers/${createdWorkerId}`" class="inline-flex items-center px-4 py-2 bg-orange-500/20 hover:bg-orange-500/30 text-orange-400 rounded-lg transition-all duration-200 border border-orange-500/20">
                   <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                   </svg>
-                  Voir les dÃ©tails
+                  Voir les détails
                 </NuxtLink>
                 <NuxtLink to="/workers" class="inline-flex items-center px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-all duration-200 border border-white/20">
                   <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
                   </svg>
-                  Retour Ã  la liste
+                  Retour à la liste
                 </NuxtLink>
               </div>
             </div>
           </div>
         </div>
         
-        <!-- Formulaire de crÃ©ation -->
+        <!-- Formulaire de création -->
         <div v-if="!success" class="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 overflow-hidden">
-          <!-- En-tÃªte du formulaire -->
+          <!-- En-tête du formulaire -->
           <div class="flex items-center p-8 border-b border-white/10">
             <div class="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center mr-4">
               <svg class="w-6 h-6 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -136,7 +136,7 @@
                   'px-6 py-4 border-b-2 font-medium text-sm transition-colors duration-200'
                 ]"
               >
-                CompÃ©tences et Ã©valuations
+                Compétences et évaluations
               </button>
               <button 
                 type="button"
@@ -159,13 +159,13 @@
             <div v-if="activeTab === 'personal'" class="space-y-8">
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label for="first_name" class="block text-sm font-medium text-gray-300 mb-2">PrÃ©nom *</label>
+                  <label for="first_name" class="block text-sm font-medium text-gray-300 mb-2">Prénom *</label>
                   <input 
                     type="text" 
                     id="first_name" 
                     v-model="formData.first_name" 
                     class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200" 
-                    placeholder="Entrez le prÃ©nom"
+                    placeholder="Entrez le prénom"
                     required
                     :disabled="submitting"
                   >
@@ -217,7 +217,7 @@
                   id="contact_info" 
                   v-model="formData.contact_info" 
                   class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200"
-                  placeholder="Email, tÃ©lÃ©phone, etc."
+                  placeholder="Email, téléphone, etc."
                   :disabled="submitting"
                 >
               </div>
@@ -230,18 +230,18 @@
                   class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200"
                   :disabled="submitting"
                 >
-                  <option value="">SÃ©lectionner une mesure</option>
+                  <option value="">Sélectionner une mesure</option>
                   <option value="pas_de_mesure">Pas de mesure</option>
                   <option value="tutelle">Tutelle</option>
                   <option value="curatelle_simple">Curatelle simple</option>
-                  <option value="curatelle_renforcee">Curatelle renforcÃ©e</option>
+                  <option value="curatelle_renforcee">Curatelle renforcée</option>
                   <option value="autre">Autre</option>
                 </select>
               </div>
               
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label for="legal_guardian" class="block text-sm font-medium text-gray-300 mb-2">Tuteur lÃ©gal</label>
+                  <label for="legal_guardian" class="block text-sm font-medium text-gray-300 mb-2">Tuteur légal</label>
                   <input 
                     type="text" 
                     id="legal_guardian" 
@@ -259,7 +259,7 @@
                     id="emergency_contact" 
                     v-model="formData.emergency_contact" 
                     class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200"
-                    placeholder="Personne Ã  contacter en urgence"
+                    placeholder="Personne à contacter en urgence"
                     :disabled="submitting"
                   >
                 </div>
@@ -273,13 +273,13 @@
                     v-model="formData.living_situation" 
                     rows="3"
                     class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200"
-                    placeholder="DÃ©crivez la situation de logement"
+                    placeholder="Décrivez la situation de logement"
                     :disabled="submitting"
                   ></textarea>
                 </div>
                 
                 <div>
-                  <label for="mobility_info" class="block text-sm font-medium text-gray-300 mb-2">Informations de mobilitÃ©</label>
+                  <label for="mobility_info" class="block text-sm font-medium text-gray-300 mb-2">Informations de mobilité</label>
                   <textarea 
                     id="mobility_info" 
                     v-model="formData.mobility_info" 
@@ -292,13 +292,13 @@
               </div>
               
               <div>
-                <label for="health_info_summary" class="block text-sm font-medium text-gray-300 mb-2">RÃ©sumÃ© informations de santÃ©</label>
+                <label for="health_info_summary" class="block text-sm font-medium text-gray-300 mb-2">Résumé informations de santé</label>
                 <textarea 
                   id="health_info_summary" 
                   v-model="formData.health_info_summary" 
                   rows="3"
                   class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200"
-                  placeholder="Informations mÃ©dicales pertinentes"
+                  placeholder="Informations médicales pertinentes"
                   :disabled="submitting"
                 ></textarea>
               </div>
@@ -310,7 +310,7 @@
                   v-model="formData.educational_background" 
                   rows="3"
                   class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200"
-                  placeholder="Niveau d'Ã©tudes, formations suivies..."
+                  placeholder="Niveau d'études, formations suivies..."
                   :disabled="submitting"
                 ></textarea>
               </div>
@@ -319,14 +319,14 @@
             <!-- Onglet Situation professionnelle -->
             <div v-if="activeTab === 'professional'" class="space-y-8">
               <div>
-                <label for="esat_id" class="block text-sm font-medium text-gray-300 mb-2">ESAT assignÃ©</label>
+                <label for="esat_id" class="block text-sm font-medium text-gray-300 mb-2">ESAT assigné</label>
                 <select 
                   id="esat_id" 
                   v-model="formData.esat_id" 
                   class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200" 
                   :disabled="submitting || loadingEsats"
                 >
-                  <option :value="null">Aucun ESAT assignÃ©</option>
+                  <option :value="null">Aucun ESAT assigné</option>
                   <option v-if="loadingEsats" disabled>Chargement des ESATs...</option>
                   <option v-for="esatOption in esats" :key="esatOption.id" :value="esatOption.id">
                     {{ esatOption.name }}
@@ -335,7 +335,7 @@
               </div>
               
               <div>
-                <label for="entry_date_esat" class="block text-sm font-medium text-gray-300 mb-2">Date d'entrÃ©e ESAT</label>
+                <label for="entry_date_esat" class="block text-sm font-medium text-gray-300 mb-2">Date d'entrée ESAT</label>
                 <input 
                   type="date" 
                   id="entry_date_esat" 
@@ -347,14 +347,14 @@
               
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label for="work_regime" class="block text-sm font-medium text-gray-300 mb-2">RÃ©gime de travail</label>
+                  <label for="work_regime" class="block text-sm font-medium text-gray-300 mb-2">Régime de travail</label>
                   <select 
                     id="work_regime" 
                     v-model="formData.work_regime" 
                     class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200"
                     :disabled="submitting"
                   >
-                    <option value="">SÃ©lectionner un rÃ©gime</option>
+                    <option value="">Sélectionner un régime</option>
                     <option value="full-time">Temps plein</option>
                     <option value="part-time">Temps partiel</option>
                   </select>
@@ -388,29 +388,29 @@
               </div>
               
               <div>
-                <label for="professional_background_summary" class="block text-sm font-medium text-gray-300 mb-2">RÃ©sumÃ© du parcours professionnel</label>
+                <label for="professional_background_summary" class="block text-sm font-medium text-gray-300 mb-2">Résumé du parcours professionnel</label>
                 <textarea 
                   id="professional_background_summary" 
                   v-model="formData.professional_background_summary" 
                   rows="4"
                   class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200"
-                  placeholder="ExpÃ©riences professionnelles passÃ©es, compÃ©tences..."
+                  placeholder="Expériences professionnelles passées, compétences..."
                   :disabled="submitting"
                 ></textarea>
               </div>
               
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label for="activity_sectors" class="block text-sm font-medium text-gray-300 mb-2">Secteurs d'activitÃ©</label>
+                  <label for="activity_sectors" class="block text-sm font-medium text-gray-300 mb-2">Secteurs d'activité</label>
                   <input 
                     type="text" 
                     id="activity_sectors" 
                     v-model="formData.activity_sectors" 
                     class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200"
-                    placeholder="Ex: Espaces verts, Restauration, MÃ©canique..."
+                    placeholder="Ex: Espaces verts, Restauration, Mécanique..."
                     :disabled="submitting"
                   >
-                  <p class="mt-1 text-xs text-gray-400">SÃ©parez les secteurs par des virgules</p>
+                  <p class="mt-1 text-xs text-gray-400">Séparez les secteurs par des virgules</p>
                 </div>
                 
                 <div>
@@ -420,7 +420,7 @@
                     id="activity_sectors_other" 
                     v-model="formData.activity_sectors_other" 
                     class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200"
-                    placeholder="Autres secteurs d'intÃ©rÃªt..."
+                    placeholder="Autres secteurs d'intérêt..."
                     :disabled="submitting"
                   >
                 </div>
@@ -434,7 +434,7 @@
                     v-model="formData.vigilance_points" 
                     rows="3"
                     class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200"
-                    placeholder="Points Ã  surveiller, difficultÃ©s particuliÃ¨res..."
+                    placeholder="Points à surveiller, difficultés particulières..."
                     :disabled="submitting"
                   ></textarea>
                 </div>
@@ -446,40 +446,40 @@
                     v-model="formData.vigilance_actions" 
                     rows="3"
                     class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200"
-                    placeholder="Actions Ã  mettre en place..."
+                    placeholder="Actions à mettre en place..."
                     :disabled="submitting"
                   ></textarea>
                 </div>
               </div>
             </div>
             
-            <!-- Onglet CompÃ©tences et Ã©valuations -->
+            <!-- Onglet Compétences et évaluations -->
             <div v-if="activeTab === 'skills'" class="space-y-8">
-              <!-- CompÃ©tences de base -->
+              <!-- Compétences de base -->
               <div class="bg-white/5 rounded-lg p-6 border border-white/10">
-                <h4 class="text-lg font-semibold text-white mb-4">CompÃ©tences de base</h4>
+                <h4 class="text-lg font-semibold text-white mb-4">Compétences de base</h4>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label for="reading_skills" class="block text-sm font-medium text-gray-300 mb-2">CompÃ©tences en lecture</label>
+                    <label for="reading_skills" class="block text-sm font-medium text-gray-300 mb-2">Compétences en lecture</label>
                     <select 
                       id="reading_skills" 
                       v-model="formData.reading_skills" 
                       class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200"
                       :disabled="submitting"
                     >
-                      <option value="">SÃ©lectionner un niveau</option>
+                      <option value="">Sélectionner un niveau</option>
                       <option value="cannot_read">Ne sait pas lire</option>
-                      <option value="can_read_letters">ReconnaÃ®t les lettres</option>
+                      <option value="can_read_letters">Reconnaît les lettres</option>
                       <option value="can_read_words">Peut lire des mots simples</option>
                       <option value="can_read_sentences">Peut lire des phrases</option>
-                      <option value="can_read_with_comprehension">Peut lire avec comprÃ©hension</option>
+                      <option value="can_read_with_comprehension">Peut lire avec compréhension</option>
                       <option value="can_read_complex_texts">Peut lire des textes complexes</option>
                     </select>
                   </div>
                   
                   <div>
-                    <label for="writing_skills" class="block text-sm font-medium text-gray-300 mb-2">CompÃ©tences en Ã©criture</label>
+                    <label for="writing_skills" class="block text-sm font-medium text-gray-300 mb-2">Compétences en écriture</label>
                     <div class="space-y-2">
                       <div class="flex items-center">
                         <input type="checkbox" id="create_can_copy" value="can_copy" v-model="writingSkillsArray" class="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded">
@@ -487,19 +487,19 @@
                       </div>
                       <div class="flex items-center">
                         <input type="checkbox" id="create_can_write_letters" value="can_write_letters" v-model="writingSkillsArray" class="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded">
-                        <label for="create_can_write_letters" class="ml-2 text-sm text-gray-300">Peut Ã©crire des lettres</label>
+                        <label for="create_can_write_letters" class="ml-2 text-sm text-gray-300">Peut écrire des lettres</label>
                       </div>
                       <div class="flex items-center">
                         <input type="checkbox" id="create_can_write_words" value="can_write_words" v-model="writingSkillsArray" class="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded">
-                        <label for="create_can_write_words" class="ml-2 text-sm text-gray-300">Peut Ã©crire des mots</label>
+                        <label for="create_can_write_words" class="ml-2 text-sm text-gray-300">Peut écrire des mots</label>
                       </div>
                       <div class="flex items-center">
                         <input type="checkbox" id="create_can_write_sentences" value="can_write_sentences" v-model="writingSkillsArray" class="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded">
-                        <label for="create_can_write_sentences" class="ml-2 text-sm text-gray-300">Peut Ã©crire des phrases</label>
+                        <label for="create_can_write_sentences" class="ml-2 text-sm text-gray-300">Peut écrire des phrases</label>
                       </div>
                       <div class="flex items-center">
                         <input type="checkbox" id="create_can_write_texts" value="can_write_texts" v-model="writingSkillsArray" class="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded">
-                        <label for="create_can_write_texts" class="ml-2 text-sm text-gray-300">Peut Ã©crire des textes</label>
+                        <label for="create_can_write_texts" class="ml-2 text-sm text-gray-300">Peut écrire des textes</label>
                       </div>
                     </div>
                   </div>
@@ -507,7 +507,7 @@
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
                   <div>
-                    <label for="calculation_skills" class="block text-sm font-medium text-gray-300 mb-2">CompÃ©tences en calcul</label>
+                    <label for="calculation_skills" class="block text-sm font-medium text-gray-300 mb-2">Compétences en calcul</label>
                     <div class="space-y-2">
                       <div class="flex items-center">
                         <input type="checkbox" id="create_can_count" value="can_count" v-model="calculationSkillsArray" class="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded">
@@ -515,7 +515,7 @@
                       </div>
                       <div class="flex items-center">
                         <input type="checkbox" id="create_can_perform_operations" value="can_perform_operations" v-model="calculationSkillsArray" class="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded">
-                        <label for="create_can_perform_operations" class="ml-2 text-sm text-gray-300">Peut effectuer des opÃ©rations</label>
+                        <label for="create_can_perform_operations" class="ml-2 text-sm text-gray-300">Peut effectuer des opérations</label>
                       </div>
                       <div class="flex items-center">
                         <input type="checkbox" id="create_can_add" value="can_add" v-model="calculationSkillsArray" class="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded">
@@ -535,13 +535,13 @@
                       </div>
                       <div class="flex items-center">
                         <input type="checkbox" id="create_can_solve_problems" value="can_solve_problems" v-model="calculationSkillsArray" class="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded">
-                        <label for="create_can_solve_problems" class="ml-2 text-sm text-gray-300">Peut rÃ©soudre des problÃ¨mes</label>
+                        <label for="create_can_solve_problems" class="ml-2 text-sm text-gray-300">Peut résoudre des problèmes</label>
                       </div>
                     </div>
                   </div>
                   
                   <div>
-                    <label for="computer_skills" class="block text-sm font-medium text-gray-300 mb-2">CompÃ©tences informatiques</label>
+                    <label for="computer_skills" class="block text-sm font-medium text-gray-300 mb-2">Compétences informatiques</label>
                     <input 
                       type="text" 
                       id="computer_skills" 
@@ -554,31 +554,31 @@
                 </div>
                 
                 <div class="mt-6">
-                  <label for="computer_skills_comments" class="block text-sm font-medium text-gray-300 mb-2">Commentaires sur les compÃ©tences informatiques</label>
+                  <label for="computer_skills_comments" class="block text-sm font-medium text-gray-300 mb-2">Commentaires sur les compétences informatiques</label>
                   <textarea 
                     id="computer_skills_comments" 
                     v-model="formData.computer_skills_comments" 
                     rows="3"
                     class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200"
-                    placeholder="DÃ©tails sur l'utilisation de l'informatique..."
+                    placeholder="Détails sur l'utilisation de l'informatique..."
                     :disabled="submitting"
                   ></textarea>
                 </div>
               </div>
               
-              <!-- Ã‰valuations -->
+              <!-- Évaluations -->
               <div class="bg-white/5 rounded-lg p-6 border border-white/10">
-                <h4 class="text-lg font-semibold text-white mb-4">Ã‰valuations</h4>
+                <h4 class="text-lg font-semibold text-white mb-4">Évaluations</h4>
                 
                 <div class="space-y-6">
                   <div>
-                    <label for="professional_evaluation_comments" class="block text-sm font-medium text-gray-300 mb-2">Commentaires Ã©valuation professionnelle</label>
+                    <label for="professional_evaluation_comments" class="block text-sm font-medium text-gray-300 mb-2">Commentaires évaluation professionnelle</label>
                     <textarea 
                       id="professional_evaluation_comments" 
                       v-model="formData.professional_evaluation_comments" 
                       rows="4"
                       class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200"
-                      placeholder="Observations sur les capacitÃ©s professionnelles..."
+                      placeholder="Observations sur les capacités professionnelles..."
                       :disabled="submitting"
                     ></textarea>
                   </div>
@@ -590,20 +590,20 @@
                       v-model="formData.social_relations_comments" 
                       rows="4"
                       class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200"
-                      placeholder="Observations sur les relations avec les collÃ¨gues, encadrement..."
+                      placeholder="Observations sur les relations avec les collègues, encadrement..."
                       :disabled="submitting"
                     ></textarea>
                   </div>
                 </div>
               </div>
               
-              <!-- CapacitÃ©s -->
+              <!-- Capacités -->
               <div class="bg-white/5 rounded-lg p-6 border border-white/10">
-                <h4 class="text-lg font-semibold text-white mb-4">CapacitÃ©s et clartÃ© du projet</h4>
+                <h4 class="text-lg font-semibold text-white mb-4">Capacités et clarté du projet</h4>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label for="professional_project_clarity" class="block text-sm font-medium text-gray-300 mb-2">ClartÃ© du projet professionnel (1-10)</label>
+                    <label for="professional_project_clarity" class="block text-sm font-medium text-gray-300 mb-2">Clarté du projet professionnel (1-10)</label>
                     <input 
                       type="number" 
                       id="professional_project_clarity" 
@@ -611,13 +611,13 @@
                       min="1"
                       max="10"
                       class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200"
-                      placeholder="Note de 1 Ã  10"
+                      placeholder="Note de 1 à 10"
                       :disabled="submitting"
                     >
                   </div>
                   
                   <div>
-                    <label for="ordinary_work_capacity" class="block text-sm font-medium text-gray-300 mb-2">CapacitÃ© de travail en milieu ordinaire (1-10)</label>
+                    <label for="ordinary_work_capacity" class="block text-sm font-medium text-gray-300 mb-2">Capacité de travail en milieu ordinaire (1-10)</label>
                     <input 
                       type="number" 
                       id="ordinary_work_capacity" 
@@ -625,7 +625,7 @@
                       min="1"
                       max="10"
                       class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200"
-                      placeholder="Note de 1 Ã  10"
+                      placeholder="Note de 1 à 10"
                       :disabled="submitting"
                     >
                   </div>
@@ -659,7 +659,7 @@
                       <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                       </svg>
-                      <p class="text-white font-medium mb-2">Cliquez pour sÃ©lectionner un fichier PDF</p>
+                      <p class="text-white font-medium mb-2">Cliquez pour sélectionner un fichier PDF</p>
                       <p class="text-gray-400 text-sm">L'IA extraira automatiquement les informations du travailleur</p>
                       <button
                         type="button"
@@ -670,7 +670,7 @@
                         <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                         </svg>
-                        SÃ©lectionner un PDF
+                        Sélectionner un PDF
                       </button>
                     </div>
                     
@@ -684,7 +684,7 @@
                       </div>
                     </div>
                     
-                    <!-- Message de succÃ¨s PDF -->
+                    <!-- Message de succès PDF -->
                     <div v-if="pdfSuccess" class="bg-pink-500/10 border border-pink-500/20 rounded-lg p-4">
                       <div class="flex items-start">
                         <svg class="h-5 w-5 text-pink-400 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -758,7 +758,7 @@
                 
                 <div class="space-y-6">
                   <div>
-                    <label for="employer_work_willingness" class="block text-sm font-medium text-gray-300 mb-2">VolontÃ© de travail chez un employeur</label>
+                    <label for="employer_work_willingness" class="block text-sm font-medium text-gray-300 mb-2">Volonté de travail chez un employeur</label>
                     <textarea 
                       id="employer_work_willingness" 
                       v-model="formData.employer_work_willingness" 
@@ -771,19 +771,19 @@
                   
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label for="desired_job_field" class="block text-sm font-medium text-gray-300 mb-2">Domaine professionnel souhaitÃ©</label>
+                      <label for="desired_job_field" class="block text-sm font-medium text-gray-300 mb-2">Domaine professionnel souhaité</label>
                       <input 
                         type="text" 
                         id="desired_job_field" 
                         v-model="formData.desired_job_field" 
                         class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200"
-                        placeholder="Ex: Espaces verts, Cuisine, MÃ©canique..."
+                        placeholder="Ex: Espaces verts, Cuisine, Mécanique..."
                         :disabled="submitting"
                       >
                     </div>
                     
                     <div>
-                      <label for="desired_companies" class="block text-sm font-medium text-gray-300 mb-2">Entreprises souhaitÃ©es</label>
+                      <label for="desired_companies" class="block text-sm font-medium text-gray-300 mb-2">Entreprises souhaitées</label>
                       <input 
                         type="text" 
                         id="desired_companies" 
@@ -797,30 +797,30 @@
                   
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label for="geographic_mobility" class="block text-sm font-medium text-gray-300 mb-2">MobilitÃ© gÃ©ographique</label>
+                      <label for="geographic_mobility" class="block text-sm font-medium text-gray-300 mb-2">Mobilité géographique</label>
                       <select 
                         id="geographic_mobility" 
                         v-model="formData.geographic_mobility" 
                         class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200"
                         :disabled="submitting"
                       >
-                        <option value="">SÃ©lectionner</option>
+                        <option value="">Sélectionner</option>
                         <option value="locale">Locale uniquement</option>
-                        <option value="departement">Ã€ l'Ã©chelle du dÃ©partement</option>
-                        <option value="region">Ã€ l'Ã©chelle de la rÃ©gion</option>
+                        <option value="departement">À l'échelle du département</option>
+                        <option value="region">À l'échelle de la région</option>
                         <option value="nationale">Nationale</option>
                         <option value="autre">Autre</option>
                       </select>
                     </div>
                     
                     <div v-if="formData.geographic_mobility === 'autre'">
-                      <label for="geographic_mobility_other" class="block text-sm font-medium text-gray-300 mb-2">PrÃ©ciser la mobilitÃ©</label>
+                      <label for="geographic_mobility_other" class="block text-sm font-medium text-gray-300 mb-2">Préciser la mobilité</label>
                       <input 
                         type="text" 
                         id="geographic_mobility_other" 
                         v-model="formData.geographic_mobility_other" 
                         class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200"
-                        placeholder="PrÃ©cisez..."
+                        placeholder="Précisez..."
                         :disabled="submitting"
                       >
                     </div>
@@ -828,25 +828,25 @@
                   
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label for="exceptional_experiences" class="block text-sm font-medium text-gray-300 mb-2">ExpÃ©riences exceptionnelles</label>
+                      <label for="exceptional_experiences" class="block text-sm font-medium text-gray-300 mb-2">Expériences exceptionnelles</label>
                       <textarea 
                         id="exceptional_experiences" 
                         v-model="formData.exceptional_experiences" 
                         rows="3"
                         class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200"
-                        placeholder="ExpÃ©riences marquantes, rÃ©ussites..."
+                        placeholder="Expériences marquantes, réussites..."
                         :disabled="submitting"
                       ></textarea>
                     </div>
                     
                     <div>
-                      <label for="project_difficulties" class="block text-sm font-medium text-gray-300 mb-2">DifficultÃ©s du projet</label>
+                      <label for="project_difficulties" class="block text-sm font-medium text-gray-300 mb-2">Difficultés du projet</label>
                       <textarea 
                         id="project_difficulties" 
                         v-model="formData.project_difficulties" 
                         rows="3"
                         class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200"
-                        placeholder="Obstacles, dÃ©fis Ã  surmonter..."
+                        placeholder="Obstacles, défis à surmonter..."
                         :disabled="submitting"
                       ></textarea>
                     </div>
@@ -872,7 +872,7 @@
                 <svg v-else class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                 </svg>
-                {{ submitting ? 'CrÃ©ation...' : 'CrÃ©er le travailleur' }}
+                {{ submitting ? 'Création...' : 'Créer le travailleur' }}
               </button>
             </div>
           </form>
@@ -955,7 +955,7 @@ const pdfError = ref(null);
 const pdfSuccess = ref(null);
 const fileInput = ref(null);
 
-// CompÃ©tences en tableaux pour les checkboxes
+// Compétences en tableaux pour les checkboxes
 const writingSkillsArray = ref([]);
 const calculationSkillsArray = ref([]);
 
@@ -989,10 +989,10 @@ const submitForm = async () => {
     submitting.value = true;
     error.value = null;
     
-    // Copie des donnÃ©es pour Ã©viter de modifier l'original
+    // Copie des données pour éviter de modifier l'original
     const dataToSend = { ...formData.value };
     
-    // Conversion explicite des types numÃ©riques si nÃ©cessaire
+    // Conversion explicite des types numériques si nécessaire
     if (dataToSend.esat_id) {
       dataToSend.esat_id = Number(dataToSend.esat_id);
     }
@@ -1000,7 +1000,7 @@ const submitForm = async () => {
       dataToSend.part_time_percentage = Number(dataToSend.part_time_percentage);
     }
     
-    console.log('DonnÃ©es envoyÃ©es:', dataToSend);
+    console.log('Données envoyées:', dataToSend);
     
     const response = await fetch('/api/workers', {
       method: 'POST',
@@ -1021,8 +1021,8 @@ const submitForm = async () => {
     success.value = true;
     
   } catch (err) {
-    console.error('Erreur lors de la crÃ©ation du travailleur:', err);
-    error.value = `Erreur lors de la crÃ©ation: ${err.message}`;
+    console.error('Erreur lors de la création du travailleur:', err);
+    error.value = `Erreur lors de la création: ${err.message}`;
   } finally {
     submitting.value = false;
   }
@@ -1034,12 +1034,12 @@ const handleFileSelect = async (event) => {
   if (!file) return;
   
   if (file.type !== 'application/pdf') {
-    pdfError.value = 'Veuillez sÃ©lectionner un fichier PDF valide.';
+    pdfError.value = 'Veuillez sélectionner un fichier PDF valide.';
     return;
   }
   
   if (file.size > 10 * 1024 * 1024) { // 10MB limit
-    pdfError.value = 'Le fichier PDF ne doit pas dÃ©passer 10MB.';
+    pdfError.value = 'Le fichier PDF ne doit pas dépasser 10MB.';
     return;
   }
   
@@ -1102,12 +1102,12 @@ const extractPdfData = async (file) => {
         }
       });
       
-      pdfSuccess.value = 'DonnÃ©es extraites avec succÃ¨s ! VÃ©rifiez et complÃ©tez les informations si nÃ©cessaire.';
+      pdfSuccess.value = 'Données extraites avec succès ! Vérifiez et complétez les informations si nécessaire.';
       
       // Switch to first tab to show extracted data
       activeTab.value = 'personal';
     } else {
-      pdfError.value = 'Aucune donnÃ©e n\'a pu Ãªtre extraite du PDF.';
+      pdfError.value = 'Aucune donnée n\'a pu être extraite du PDF.';
     }
     
   } catch (err) {
@@ -1132,7 +1132,7 @@ const extractPdfData = async (file) => {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: 
+  background-image: linear-gradient(rgba(236, 72, 153, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(236, 72, 153, 0.1) 1px, transparent 1px);
     
   background-size: 80px 80px;
   background-position: 0 0, 0 0;

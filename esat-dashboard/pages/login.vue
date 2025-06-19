@@ -26,7 +26,7 @@
       <div class="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 p-8 shadow-2xl">
         <div class="mb-6">
           <h2 class="text-2xl font-semibold text-white text-center">Connexion</h2>
-          <p class="text-gray-400 text-center mt-2">Connectez-vous à votre espace</p>
+          <p class="text-gray-400 text-center mt-2">Connectez-vous ï¿½ votre espace</p>
         </div>
 
         <!-- Message d'erreur -->
@@ -83,7 +83,7 @@
           </button>
         </form>
 
-        <!-- Informations de test (à supprimer en production) -->
+        <!-- Informations de test (ï¿½ supprimer en production) -->
         <div v-if="showTestInfo" class="mt-8 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
           <h4 class="text-blue-400 font-medium mb-2">Comptes de test</h4>
           <div class="text-sm text-blue-300 space-y-1">
@@ -95,7 +95,7 @@
 
       <!-- Footer -->
       <div class="text-center mt-8 text-gray-400 text-sm">
-        <p>&copy; 2024 BAYTH Dashboard. Tous droits réservés.</p>
+        <p>&copy; 2024 BAYTH Dashboard. Tous droits rï¿½servï¿½s.</p>
       </div>
     </div>
   </div>
@@ -135,7 +135,7 @@ const login = async () => {
     });
 
     if (response.success) {
-      // Redirection selon le rôle
+      // Redirection selon le rï¿½le
       if (response.user.role === 'super_admin') {
         await router.push('/dashboard');
       } else {
@@ -145,7 +145,7 @@ const login = async () => {
 
   } catch (err) {
     console.error('Erreur de connexion:', err);
-    error.value = err.data?.message || 'Erreur de connexion. Vérifiez vos identifiants.';
+    error.value = err.data?.message || 'Erreur de connexion. Vï¿½rifiez vos identifiants.';
   } finally {
     loading.value = false;
   }

@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div class="min-h-screen main-gradient-bg relative overflow-hidden">
     
     <!-- Grid Background with fade effect -->
@@ -39,14 +39,14 @@
         <div class="mb-12">
           <div class="inline-flex items-center pl-1 pr-4 py-1 rounded-full bg-blue-500/10 mb-4">
             <span class="text-sm font-semibold text-gray-800 mr-2 rounded-full py-2 px-4 bg-blue-400">ESATs</span>
-            <span class="text-sm text-gray-300">Gestion des établissements</span>
+            <span class="text-sm text-gray-300">Gestion des �tablissements</span>
           </div>
           <h1 class="text-4xl font-bold text-white mb-4">
             Gestion des 
             <span class="text-blue-400">ESATs</span>
           </h1>
           <p class="text-gray-300 text-lg max-w-2xl">
-            Consultez et gérez la liste complète des établissements et services d'aide par le travail.
+            Consultez et g�rez la liste compl�te des �tablissements et services d'aide par le travail.
           </p>
         </div>
 
@@ -84,7 +84,7 @@
             <div class="flex items-center justify-between">
               <div>
                 <div class="text-2xl font-bold text-white">{{ esats.filter(e => e.phone).length }}</div>
-                <div class="text-sm text-gray-300">Avec téléphone</div>
+                <div class="text-sm text-gray-300">Avec t�l�phone</div>
               </div>
               <div class="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center">
                 <svg class="w-6 h-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -110,10 +110,10 @@
           </div>
         </div>
 
-        <!-- État de chargement -->
+        <!-- �tat de chargement -->
         <div v-if="loading" class="flex flex-col items-center justify-center py-20 bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20">
           <div class="w-12 h-12 border-4 border-white/20 border-t-blue-400 rounded-full animate-spin mb-4"></div>
-          <p class="text-gray-300">Chargement des données...</p>
+          <p class="text-gray-300">Chargement des donn�es...</p>
         </div>
         
         <!-- Message d'erreur -->
@@ -126,15 +126,15 @@
           </div>
         </div>
         
-        <!-- État vide -->
+        <!-- �tat vide -->
         <div v-else-if="esats.length === 0" class="flex flex-col items-center justify-center py-20 bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20">
           <div class="w-20 h-20 text-gray-400 mb-6">
             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
             </svg>
           </div>
-          <h3 class="text-xl font-semibold text-white mb-4">Aucun ESAT trouvé</h3>
-          <p class="text-gray-400 mb-8 max-w-sm text-center">Commencez par ajouter votre premier établissement au système</p>
+          <h3 class="text-xl font-semibold text-white mb-4">Aucun ESAT trouv�</h3>
+          <p class="text-gray-400 mb-8 max-w-sm text-center">Commencez par ajouter votre premier �tablissement au syst�me</p>
           <NuxtLink to="/esats/create" class="inline-flex items-center px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-full font-medium transition-all duration-200">
             <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -181,7 +181,7 @@
                     </div>
                   </th>
                   <th class="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                    Établissement
+                    �tablissement
                   </th>
                   <th class="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                     Localisation
@@ -206,7 +206,7 @@
                       </div>
                       <div>
                         <div class="font-medium text-white">{{ esat.name }}</div>
-                        <div class="text-sm text-gray-400">Établissement ESAT</div>
+                        <div class="text-sm text-gray-400">�tablissement ESAT</div>
                       </div>
                     </div>
                   </td>
@@ -216,7 +216,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                       </svg>
-                      {{ esat.city || 'Non spécifiée' }}
+                      {{ esat.city || 'Non sp�cifi�e' }}
                     </div>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
@@ -246,7 +246,7 @@
                     <div class="flex items-center justify-center space-x-2">
                       <NuxtLink :to="`/esats/${esat.id}`" 
                                 class="p-2 rounded-lg hover:bg-blue-500/20 text-blue-400 hover:text-blue-300 transition-all duration-200" 
-                                title="Voir les détails">
+                                title="Voir les d�tails">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
@@ -284,7 +284,7 @@
                   <svg class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                   </svg>
-                  Précédent
+                  Pr�c�dent
                 </button>
                 <button class="inline-flex items-center px-4 py-2 border border-white/20 text-sm font-medium rounded-lg text-gray-400 bg-white/5 hover:bg-white/10 transition-all duration-200">
                   Suivant
@@ -311,11 +311,11 @@
             </div>
             <div>
               <h3 class="text-lg font-semibold text-white">Confirmer la suppression</h3>
-              <p class="text-gray-400 text-sm">Cette action ne peut pas être annulée</p>
+              <p class="text-gray-400 text-sm">Cette action ne peut pas �tre annul�e</p>
             </div>
           </div>
           <p class="text-gray-300 mb-6">
-            Êtes-vous sûr de vouloir supprimer l'ESAT <strong class="text-white">"{{ esatToDelete?.name }}"</strong> ?
+            �tes-vous s�r de vouloir supprimer l'ESAT <strong class="text-white">"{{ esatToDelete?.name }}"</strong> ?
           </p>
           <div class="flex justify-end space-x-3">
             <button @click="cancelDelete" class="px-4 py-2 bg-white/10 hover:bg-white/20 text-gray-300 rounded-lg transition-all duration-200">
@@ -366,7 +366,7 @@ onMounted(async () => {
     }
     
     const data = await response.json();
-    // L'API peut retourner soit directement un tableau, soit un objet avec une propriété data
+    // L'API peut retourner soit directement un tableau, soit un objet avec une propri�t� data
     const esatsData = Array.isArray(data) ? data : (data.data || []);
     esats.value = esatsData;
     
@@ -427,7 +427,8 @@ const deleteEsat = async () => {
   width: 100%;
   height: 100%;
   background-image: 
-    
+    linear-gradient(rgba(236, 72, 153, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(236, 72, 153, 0.1) 1px, transparent 1px);
   background-size: 80px 80px;
   background-position: 0 0, 0 0;
   animation: grid-move 20s linear infinite;
@@ -473,7 +474,13 @@ const deleteEsat = async () => {
   right: -8%;
   width: 700px;
   height: 700px;
-  
+  background: radial-gradient(
+    circle,
+    rgba(236, 72, 153, 0.25) 0%,
+    rgba(236, 72, 153, 0.15) 30%,
+    rgba(236, 72, 153, 0.08) 60%,
+    transparent 100%
+  );
   filter: blur(60px);
 }
 
@@ -482,7 +489,13 @@ const deleteEsat = async () => {
   left: 5%;
   width: 700px;
   height: 700px;
-  
+  background: radial-gradient(
+    circle,
+    rgba(236, 72, 153, 0.20) 0%,
+    rgba(236, 72, 153, 0.12) 30%,
+    rgba(236, 72, 153, 0.06) 60%,
+    transparent 100%
+  );
   filter: blur(50px);
 }
 </style>

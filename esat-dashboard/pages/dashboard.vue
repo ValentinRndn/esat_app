@@ -45,7 +45,7 @@
             <span class="text-pink-400">espace de gestion</span>
           </div>
           <p class="text-gray-300 text-lg max-w-2xl">
-            Gérez efficacement vos travailleurs, ESATs et utilisateurs depuis cette interface centralisée.
+            Gï¿½rez efficacement vos travailleurs, ESATs et utilisateurs depuis cette interface centralisï¿½e.
           </p>
         </div>
 
@@ -67,7 +67,7 @@
             </div>
             <div class="mb-4">
               <h3 class="text-lg font-semibold text-white mb-1">Travailleurs</h3>
-              <p class="text-gray-400 text-sm">Travailleurs actifs dans le système</p>
+              <p class="text-gray-400 text-sm">Travailleurs actifs dans le systï¿½me</p>
             </div>
             <NuxtLink to="/workers" class="inline-flex items-center text-sm text-pink-400 hover:text-pink-300 font-medium transition-colors duration-200">
               Voir tous les travailleurs
@@ -92,7 +92,7 @@
             </div>
             <div class="mb-4">
               <h3 class="text-lg font-semibold text-white mb-1">ESATs</h3>
-              <p class="text-gray-400 text-sm">Établissements partenaires</p>
+              <p class="text-gray-400 text-sm">ï¿½tablissements partenaires</p>
             </div>
             <NuxtLink to="/esats" class="inline-flex items-center text-sm text-blue-400 hover:text-blue-300 font-medium transition-colors duration-200">
               Voir tous les ESATs
@@ -117,7 +117,7 @@
             </div>
             <div class="mb-4">
               <h3 class="text-lg font-semibold text-white mb-1">Utilisateurs</h3>
-              <p class="text-gray-400 text-sm">Utilisateurs du système</p>
+              <p class="text-gray-400 text-sm">Utilisateurs du systï¿½me</p>
             </div>
             <NuxtLink to="/users" class="inline-flex items-center text-sm text-pink-400 hover:text-pink-300 font-medium transition-colors duration-200">
               Voir tous les utilisateurs
@@ -137,12 +137,12 @@
               </div>
               <div class="text-right">
                 <div class="text-3xl font-bold text-white">{{ aiSuggestionsCount || 0 }}</div>
-                <div class="text-sm text-yellow-400 font-medium">{{ pendingReviewCount }} à réviser</div>
+                <div class="text-sm text-yellow-400 font-medium">{{ pendingReviewCount }} ï¿½ rï¿½viser</div>
               </div>
             </div>
             <div class="mb-4">
               <h3 class="text-lg font-semibold text-white mb-1">Suggestions IA</h3>
-              <p class="text-gray-400 text-sm">Recommandations générées</p>
+              <p class="text-gray-400 text-sm">Recommandations gï¿½nï¿½rï¿½es</p>
             </div>
             <button @click="showAiSuggestions = !showAiSuggestions" class="inline-flex items-center text-sm text-yellow-400 hover:text-yellow-300 font-medium transition-colors duration-200">
               {{ showAiSuggestions ? 'Masquer' : 'Voir les suggestions' }}
@@ -157,20 +157,20 @@
         <div v-if="showAiSuggestions" class="mt-8">
           <div class="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 p-8">
             <div class="flex items-center justify-between mb-6">
-              <h2 class="text-xl font-semibold text-white">Suggestions IA récentes</h2>
+              <h2 class="text-xl font-semibold text-white">Suggestions IA rï¿½centes</h2>
               <div class="flex items-center space-x-3">
                 <select v-model="selectedStatus" @change="loadAiSuggestions" class="bg-white/10 border border-white/20 text-white rounded-lg px-3 py-2 text-sm">
                   <option value="">Tous les statuts</option>
                   <option value="pending">En attente</option>
-                  <option value="completed">Terminé</option>
-                  <option value="reviewed">Révisé</option>
-                  <option value="applied">Appliqué</option>
-                  <option value="rejected">Rejeté</option>
+                  <option value="completed">Terminï¿½</option>
+                  <option value="reviewed">Rï¿½visï¿½</option>
+                  <option value="applied">Appliquï¿½</option>
+                  <option value="rejected">Rejetï¿½</option>
                 </select>
                 <select v-model="selectedType" @change="loadAiSuggestions" class="bg-white/10 border border-white/20 text-white rounded-lg px-3 py-2 text-sm">
                   <option value="">Tous les types</option>
                   <option value="job_recommendation">Recommandation emploi</option>
-                  <option value="skills_assessment">Évaluation compétences</option>
+                  <option value="skills_assessment">ï¿½valuation compï¿½tences</option>
                   <option value="training_plan">Plan de formation</option>
                   <option value="career_guidance">Orientation professionnelle</option>
                 </select>
@@ -190,14 +190,14 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                 </svg>
               </div>
-              <h4 class="text-lg font-semibold text-white mb-2">Aucune suggestion trouvée</h4>
-              <p class="text-gray-400">Il n'y a pas encore de suggestions d'IA générées</p>
+              <h4 class="text-lg font-semibold text-white mb-2">Aucune suggestion trouvï¿½e</h4>
+              <p class="text-gray-400">Il n'y a pas encore de suggestions d'IA gï¿½nï¿½rï¿½es</p>
             </div>
             
             <!-- Suggestions list -->
             <div v-else class="space-y-4">
               <div v-for="suggestion in aiSuggestions" :key="suggestion.id" class="bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-all duration-200">
-                <!-- En-tête de la suggestion -->
+                <!-- En-tï¿½te de la suggestion -->
                 <div class="p-4">
                   <div class="flex items-start justify-between">
                     <div class="flex-1">
@@ -238,20 +238,20 @@
                   </div>
                 </div>
                 
-                <!-- Détails déroulants -->
+                <!-- Dï¿½tails dï¿½roulants -->
                 <div v-if="isSuggestionExpanded(suggestion.id)" class="px-4 pb-4 border-t border-white/10">
                   <div class="pt-4 space-y-4">
                     <!-- Prompt -->
                     <div>
-                      <h5 class="text-sm font-semibold text-gray-300 mb-2">Question posée :</h5>
+                      <h5 class="text-sm font-semibold text-gray-300 mb-2">Question posï¿½e :</h5>
                       <div class="bg-white/5 rounded-lg p-3">
                         <p class="text-sm text-gray-200 whitespace-pre-line">{{ suggestion.prompt }}</p>
                       </div>
                     </div>
                     
-                    <!-- Réponse complète -->
+                    <!-- Rï¿½ponse complï¿½te -->
                     <div>
-                      <h5 class="text-sm font-semibold text-gray-300 mb-2">Réponse de l'IA :</h5>
+                      <h5 class="text-sm font-semibold text-gray-300 mb-2">Rï¿½ponse de l'IA :</h5>
                       <div class="bg-gradient-to-r from-yellow-500/10 to-orange-500/10 rounded-lg p-4 border border-yellow-500/20">
                         <p class="text-sm text-gray-100 whitespace-pre-line">{{ suggestion.response }}</p>
                       </div>
@@ -267,11 +267,11 @@
                     <!-- Informations additionnelles -->
                     <div class="grid grid-cols-2 gap-4 pt-2 border-t border-white/10">
                       <div>
-                        <p class="text-xs text-gray-400">Date de création</p>
+                        <p class="text-xs text-gray-400">Date de crï¿½ation</p>
                         <p class="text-sm text-gray-200">{{ formatDate(suggestion.created_at) }}</p>
                       </div>
                       <div v-if="suggestion.reviewed_at">
-                        <p class="text-xs text-gray-400">Date de révision</p>
+                        <p class="text-xs text-gray-400">Date de rï¿½vision</p>
                         <p class="text-sm text-gray-200">{{ formatDate(suggestion.reviewed_at) }}</p>
                       </div>
                     </div>
@@ -299,7 +299,7 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue'
 
-// États pour les compteurs
+// ï¿½tats pour les compteurs
 const workersCount = ref(0)
 const esatsCount = ref(0)
 const usersCount = ref(0)
@@ -311,9 +311,9 @@ const selectedType = ref('')
 const loadingAiSuggestions = ref(false)
 const aiSuggestions = ref([])
 const aiSuggestionsPagination = ref({})
-const expandedSuggestions = ref(new Set()) // Pour gérer les détails déroulants
+const expandedSuggestions = ref(new Set()) // Pour gï¿½rer les dï¿½tails dï¿½roulants
 
-// Charger les données au montage du composant
+// Charger les donnï¿½es au montage du composant
 onMounted(async () => {
   try {
     // Charger le nombre de travailleurs
@@ -344,25 +344,25 @@ onMounted(async () => {
       aiSuggestionsCount.value = aiSuggestionsData.count
     }
 
-    // Charger le nombre de suggestions IA en attente de révision
+    // Charger le nombre de suggestions IA en attente de rï¿½vision
     const pendingReviewResponse = await fetch('/api/ai-suggestions/pending-review-count')
     if (pendingReviewResponse.ok) {
       const pendingReviewData = await pendingReviewResponse.json()
       pendingReviewCount.value = pendingReviewData.count
     }
   } catch (error) {
-    console.error('Erreur lors du chargement des données:', error)
+    console.error('Erreur lors du chargement des donnï¿½es:', error)
   }
 })
 
-// Fonctions pour formater les données
+// Fonctions pour formater les donnï¿½es
 const formatStatus = (status) => {
   const statusMap = {
     'pending': 'En attente',
-    'completed': 'Terminé',
-    'reviewed': 'Révisé',
-    'applied': 'Appliqué',
-    'rejected': 'Rejeté'
+    'completed': 'Terminï¿½',
+    'reviewed': 'Rï¿½visï¿½',
+    'applied': 'Appliquï¿½',
+    'rejected': 'Rejetï¿½'
   };
   return statusMap[status] || status;
 }
@@ -370,7 +370,7 @@ const formatStatus = (status) => {
 const formatType = (type) => {
   const typeMap = {
     'job_recommendation': 'Recommandation emploi',
-    'skills_assessment': 'Évaluation compétences',
+    'skills_assessment': 'ï¿½valuation compï¿½tences',
     'training_plan': 'Plan de formation',
     'career_guidance': 'Orientation professionnelle'
   };
@@ -446,7 +446,7 @@ const loadAiSuggestions = async () => {
   }
 }
 
-// Fonction pour mettre à jour le statut d'une suggestion
+// Fonction pour mettre ï¿½ jour le statut d'une suggestion
 const updateSuggestionStatus = async (id, newStatus) => {
   try {
     const response = await fetch(`/api/ai-suggestions/${id}`, {
@@ -458,22 +458,22 @@ const updateSuggestionStatus = async (id, newStatus) => {
     });
     
     if (response.ok) {
-      // Recharger les suggestions pour refléter le changement
+      // Recharger les suggestions pour reflï¿½ter le changement
       await loadAiSuggestions();
       
-      // Mettre à jour les compteurs
+      // Mettre ï¿½ jour les compteurs
       if (newStatus === 'reviewed') {
         pendingReviewCount.value = Math.max(0, pendingReviewCount.value - 1);
       }
     } else {
-      console.error('Erreur lors de la mise à jour du statut');
+      console.error('Erreur lors de la mise ï¿½ jour du statut');
     }
   } catch (error) {
-    console.error('Erreur lors de la mise à jour du statut:', error);
+    console.error('Erreur lors de la mise ï¿½ jour du statut:', error);
   }
 }
 
-// Fonction pour basculer l'affichage des détails d'une suggestion
+// Fonction pour basculer l'affichage des dï¿½tails d'une suggestion
 const toggleSuggestionDetails = (suggestionId) => {
   const expanded = new Set(expandedSuggestions.value)
   if (expanded.has(suggestionId)) {
@@ -484,7 +484,7 @@ const toggleSuggestionDetails = (suggestionId) => {
   expandedSuggestions.value = expanded
 }
 
-// Vérifier si une suggestion est dépliée
+// Vï¿½rifier si une suggestion est dï¿½pliï¿½e
 const isSuggestionExpanded = (suggestionId) => {
   return expandedSuggestions.value.has(suggestionId)
 }
@@ -516,7 +516,7 @@ const loadMoreAiSuggestions = async () => {
     if (response.ok) {
       const data = await response.json();
       
-      // Ajouter les nouvelles suggestions à la liste existante
+      // Ajouter les nouvelles suggestions ï¿½ la liste existante
       aiSuggestions.value = [...aiSuggestions.value, ...(data.data || [])];
       aiSuggestionsPagination.value = data.pagination || {};
     } else {
