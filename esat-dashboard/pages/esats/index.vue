@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden">
     
     <!-- Grid Background with fade effect -->
@@ -16,11 +16,11 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-20 items-center">
           <div class="flex items-center">
-            <NuxtLink to="/dashboard" class="text-2xl font-semibold text-white hover:text-green-400 transition-colors duration-200">BAYTH</NuxtLink>
+            <NuxtLink to="/dashboard" class="text-2xl font-semibold text-white hover:text-pink-400 transition-colors duration-200">BAYTH</NuxtLink>
             <span class="ml-4 text-sm text-gray-400">/ ESATs</span>
           </div>
           <div class="flex items-center space-x-4">
-            <NuxtLink to="/esats/create" class="inline-flex items-center px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-full font-medium transition-all duration-200 shadow-lg hover:shadow-xl">
+            <NuxtLink to="/esats/create" class="inline-flex items-center px-6 py-3 bg-pink-500 hover:bg-pink-600 text-white rounded-full font-medium transition-all duration-200 shadow-lg hover:shadow-xl">
               <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
               </svg>
@@ -72,8 +72,8 @@
                 <div class="text-2xl font-bold text-white">{{ esats.filter(e => e.email).length }}</div>
                 <div class="text-sm text-gray-300">Avec email</div>
               </div>
-              <div class="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center">
-                <svg class="w-6 h-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div class="w-12 h-12 bg-pink-500/20 rounded-xl flex items-center justify-center">
+                <svg class="w-6 h-6 text-pink-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
               </div>
@@ -222,7 +222,7 @@
                   <td class="px-6 py-4 whitespace-nowrap">
                     <div class="space-y-1">
                       <div v-if="esat.email" class="flex items-center">
-                        <svg class="w-4 h-4 text-green-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="w-4 h-4 text-pink-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                         </svg>
                         <a :href="`mailto:${esat.email}`" class="text-blue-400 hover:text-blue-300 hover:underline text-sm transition-colors duration-200">
@@ -253,7 +253,7 @@
                         </svg>
                       </NuxtLink>
                       <NuxtLink :to="`/esats/edit/${esat.id}`" 
-                                class="p-2 rounded-lg hover:bg-green-500/20 text-green-400 hover:text-green-300 transition-all duration-200" 
+                                class="p-2 rounded-lg hover:bg-pink-500/20 text-pink-400 hover:text-pink-300 transition-all duration-200" 
                                 title="Modifier">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -499,3 +499,5 @@ const deleteEsat = async () => {
   filter: blur(50px);
 }
 </style>
+
+

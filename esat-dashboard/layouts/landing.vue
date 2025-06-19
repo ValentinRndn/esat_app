@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="min-h-screen">
     <slot />
   </div>
@@ -7,3 +7,4 @@
 <script setup>
 // Layout ultra-simple pour la page d'accueil
 </script> 
+

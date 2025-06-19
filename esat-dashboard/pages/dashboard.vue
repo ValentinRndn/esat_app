@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden">
     
     <!-- Grid Background with fade effect -->
@@ -20,7 +20,7 @@
             <span class="ml-4 text-sm text-gray-400">Dashboard</span>
           </div>
           <div class="flex items-center space-x-4">
-            <NuxtLink to="/users/create" class="inline-flex items-center px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-full font-medium transition-all duration-200 shadow-lg hover:shadow-xl">
+            <NuxtLink to="/users/create" class="inline-flex items-center px-6 py-3 bg-pink-500 hover:bg-pink-600 text-white rounded-full font-medium transition-all duration-200 shadow-lg hover:shadow-xl">
               <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
               </svg>
@@ -37,14 +37,13 @@
         
         <!-- Header Section -->
         <div class="mb-12">
-          <div class="inline-flex items-center pl-1 pr-4 py-1 rounded-full bg-green-500/10 mb-4">
-            <span class="text-sm font-semibold text-gray-800 mr-2 rounded-full py-2 px-4 bg-green-400">Tableau de bord</span>
-            <span class="text-sm text-gray-300">Vue d'ensemble</span>
+          <div class="inline-flex items-center pl-1 pr-4 py-1 rounded-full bg-pink-500/10 mb-4">
+            <span class="text-sm font-semibold text-gray-800 mr-2 rounded-full py-2 px-4 bg-pink-400">Tableau de bord</span>
           </div>
-          <h1 class="text-4xl font-bold text-white mb-4">
-            Bienvenue dans votre 
-            <span class="text-green-400">espace de gestion</span>
-          </h1>
+          <div class="space-y-2 mb-6">
+            <h1 class="text-3xl font-bold text-white">Bonjour {{ currentUser?.first_name }} 👋</h1>
+            <span class="text-pink-400">espace de gestion</span>
+          </div>
           <p class="text-gray-300 text-lg max-w-2xl">
             Gérez efficacement vos travailleurs, ESATs et utilisateurs depuis cette interface centralisée.
           </p>
@@ -56,21 +55,21 @@
           <!-- Travailleurs Card -->
           <div class="relative bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-200 group">
             <div class="flex items-center justify-between mb-4">
-              <div class="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center group-hover:bg-green-500/30 transition-colors duration-200">
-                <svg class="w-6 h-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div class="w-12 h-12 bg-pink-500/20 rounded-xl flex items-center justify-center group-hover:bg-pink-500/30 transition-colors duration-200">
+                <svg class="w-6 h-6 text-pink-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
               </div>
               <div class="text-right">
                 <div class="text-3xl font-bold text-white">{{ workersCount || 0 }}</div>
-                <div class="text-sm text-green-400 font-medium">+12% ce mois</div>
+                <div class="text-sm text-pink-400 font-medium">+12% ce mois</div>
               </div>
             </div>
             <div class="mb-4">
               <h3 class="text-lg font-semibold text-white mb-1">Travailleurs</h3>
               <p class="text-gray-400 text-sm">Travailleurs actifs dans le système</p>
             </div>
-            <NuxtLink to="/workers" class="inline-flex items-center text-sm text-green-400 hover:text-green-300 font-medium transition-colors duration-200">
+            <NuxtLink to="/workers" class="inline-flex items-center text-sm text-pink-400 hover:text-pink-300 font-medium transition-colors duration-200">
               Voir tous les travailleurs
               <svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -106,21 +105,21 @@
           <!-- Utilisateurs Card -->
           <div class="relative bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-200 group">
             <div class="flex items-center justify-between mb-4">
-              <div class="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center group-hover:bg-purple-500/30 transition-colors duration-200">
-                <svg class="w-6 h-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+              <div class="w-12 h-12 bg-pink-500/20 rounded-xl flex items-center justify-center group-hover:bg-pink-500/30 transition-colors duration-200">
+                <svg class="w-6 h-6 text-pink-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m9 5.197v0M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
                 </svg>
               </div>
               <div class="text-right">
                 <div class="text-3xl font-bold text-white">{{ usersCount || 0 }}</div>
-                <div class="text-sm text-purple-400 font-medium">5 en ligne</div>
+                <div class="text-sm text-pink-400 font-medium">5 en ligne</div>
               </div>
             </div>
             <div class="mb-4">
               <h3 class="text-lg font-semibold text-white mb-1">Utilisateurs</h3>
               <p class="text-gray-400 text-sm">Utilisateurs du système</p>
             </div>
-            <NuxtLink to="/users" class="inline-flex items-center text-sm text-purple-400 hover:text-purple-300 font-medium transition-colors duration-200">
+            <NuxtLink to="/users" class="inline-flex items-center text-sm text-pink-400 hover:text-pink-300 font-medium transition-colors duration-200">
               Voir tous les utilisateurs
               <svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -392,9 +391,9 @@ const formatDate = (dateString) => {
 
 const getStatusClass = (status) => {
   const statusClasses = {
-    'pending': 'bg-orange-500/20 text-orange-400',
+    'pending': 'bg-pink-500/20 text-pink-400',
     'completed': 'bg-blue-500/20 text-blue-400',
-    'reviewed': 'bg-green-500/20 text-green-400',
+    'reviewed': 'bg-pink-500/20 text-pink-400',
     'applied': 'bg-purple-500/20 text-purple-400',
     'rejected': 'bg-red-500/20 text-red-400'
   };
@@ -403,8 +402,8 @@ const getStatusClass = (status) => {
 
 const getTypeClass = (type) => {
   const typeClasses = {
-    'job_recommendation': 'bg-blue-500/10 text-blue-300',
-    'skills_assessment': 'bg-green-500/10 text-green-300',
+    'job_recommendation': 'bg-pink-500/10 text-pink-300',
+    'skills_assessment': 'bg-pink-500/10 text-pink-300',
     'training_plan': 'bg-purple-500/10 text-purple-300',
     'career_guidance': 'bg-yellow-500/10 text-yellow-300'
   };
@@ -624,3 +623,5 @@ watch(showAiSuggestions, (newValue) => {
   filter: blur(50px);
 }
 </style> 
+
+

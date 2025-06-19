@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden">
     
     <!-- Grid Background with fade effect -->
@@ -16,7 +16,7 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-20 items-center">
           <div class="flex items-center">
-            <NuxtLink to="/dashboard" class="text-2xl font-semibold text-white hover:text-green-400 transition-colors duration-200">BAYTH</NuxtLink>
+            <NuxtLink to="/dashboard" class="text-2xl font-semibold text-white hover:text-pink-400 transition-colors duration-200">BAYTH</NuxtLink>
             <span class="ml-4 text-sm text-gray-400">/ Utilisateurs</span>
           </div>
           <div class="flex items-center space-x-4">
@@ -72,8 +72,8 @@
                 <div class="text-2xl font-bold text-white">{{ users.filter(u => u.role === 'admin').length }}</div>
                 <div class="text-sm text-gray-300">Administrateurs</div>
               </div>
-              <div class="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center">
-                <svg class="w-6 h-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div class="w-12 h-12 bg-pink-500/20 rounded-xl flex items-center justify-center">
+                <svg class="w-6 h-6 text-pink-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                 </svg>
               </div>
@@ -217,7 +217,7 @@
                         </svg>
                       </NuxtLink>
                       <NuxtLink :to="`/users/edit/${user.id}`" 
-                                class="p-2 rounded-lg hover:bg-green-500/20 text-green-400 hover:text-green-300 transition-all duration-200" 
+                                class="p-2 rounded-lg hover:bg-pink-500/20 text-pink-400 hover:text-pink-300 transition-all duration-200" 
                                 title="Modifier">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -325,7 +325,7 @@ const formatRole = (role) => {
 const getRoleClass = (role) => {
   switch (role) {
     case 'admin':
-      return 'bg-green-500/20 text-green-400';
+      return 'bg-pink-500/20 text-pink-400';
     case 'moderator':
       return 'bg-yellow-500/20 text-yellow-400';
     default:
@@ -472,3 +472,5 @@ const deleteUser = async () => {
   filter: blur(50px);
 }
 </style>
+
+

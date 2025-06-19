@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div>
     <slot />
   </div>
@@ -9,3 +9,4 @@ export default {
   name: 'EmptyLayout'
 }
 </script> 
+

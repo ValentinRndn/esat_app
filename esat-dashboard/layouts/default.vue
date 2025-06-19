@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden">
     <!-- Grid Background avec effet de fade -->
     <div class="absolute inset-0 z-0">
@@ -37,12 +37,12 @@
       <!-- Header avec logo -->
       <div class="p-6 border-b border-white/20 flex-shrink-0 flex items-center justify-between">
         <div class="flex items-center space-x-3">
-          <div class="w-10 h-10 bg-gradient-to-br from-green-400 to-green-600 rounded-xl shadow-lg flex items-center justify-center">
+          <div class="w-10 h-10 bg-gradient-to-br from-pink-400 to-pink-600 rounded-xl shadow-lg flex items-center justify-center">
             <span class="text-white font-bold text-lg">B</span>
           </div>
           <div>
             <h1 class="text-xl font-bold text-white">
-              <span class="text-green-400">BAYTH</span>
+              <span class="text-pink-400">BAYTH</span>
             </h1>
             <p class="text-gray-400 text-xs">Dashboard ESAT</p>
           </div>
@@ -67,7 +67,7 @@
               to="/dashboard" 
               @click="closeSidebarOnMobile"
               class="group flex items-center p-4 rounded-xl text-white hover:bg-white/10 transition-all duration-200 hover:shadow-lg border border-transparent hover:border-white/20"
-              active-class="bg-green-500/20 border-green-500/30 text-green-300 shadow-lg"
+              active-class="bg-pink-500/20 border-pink-500/30 text-pink-300 shadow-lg"
             >
               <div class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center mr-3 group-hover:bg-white/20 transition-colors">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -132,7 +132,7 @@
               to="/esats" 
               @click="closeSidebarOnMobile"
               class="group flex items-center p-4 rounded-xl text-white hover:bg-white/10 transition-all duration-200 hover:shadow-lg border border-transparent hover:border-white/20"
-              active-class="bg-green-500/20 border-green-500/30 text-green-300 shadow-lg"
+              active-class="bg-pink-500/20 border-pink-500/30 text-pink-300 shadow-lg"
             >
               <div class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center mr-3 group-hover:bg-white/20 transition-colors">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -149,7 +149,7 @@
       <div class="p-4 border-t border-white/20 bg-white/5 backdrop-blur-lg flex-shrink-0">
         <div class="flex items-center justify-between text-white/80">
           <div class="flex items-center flex-1 min-w-0">
-            <div class="w-10 h-10 bg-gradient-to-br from-green-400 to-green-600 rounded-xl shadow-lg flex items-center justify-center mr-3">
+            <div class="w-10 h-10 bg-gradient-to-br from-pink-400 to-pink-600 rounded-xl shadow-lg flex items-center justify-center mr-3">
               <span class="text-sm font-bold text-white">{{ userInitials }}</span>
             </div>
             <div class="flex-1 min-w-0">
@@ -475,3 +475,4 @@ html {
   }
 }
 </style>
+

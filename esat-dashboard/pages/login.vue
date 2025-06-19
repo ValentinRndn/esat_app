@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden flex items-center justify-center">
     
     <!-- Grid Background with fade effect -->
@@ -17,7 +17,7 @@
       <!-- Header with logo -->
       <div class="text-center mb-8">
         <h1 class="text-4xl font-bold text-white mb-2">
-          <span class="text-green-400">BAYTH</span>
+          <span class="text-pink-400">BAYTH</span>
         </h1>
         <p class="text-gray-400">Dashboard ESAT</p>
       </div>
@@ -47,7 +47,7 @@
               type="email" 
               id="email" 
               v-model="form.email" 
-              class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200" 
+              class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all duration-200" 
               placeholder="votre@email.com"
               required
               :disabled="loading"
@@ -60,7 +60,7 @@
               type="password" 
               id="password" 
               v-model="form.password" 
-              class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
+              class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-all duration-200"
               placeholder="Votre mot de passe"
               required
               :disabled="loading"
@@ -70,7 +70,7 @@
           <button 
             type="submit" 
             :disabled="loading"
-            class="w-full inline-flex items-center justify-center px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+            class="w-full inline-flex items-center justify-center px-6 py-3 bg-pink-500 hover:bg-pink-600 text-white rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed font-medium"
           >
             <svg v-if="loading" class="animate-spin w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -238,3 +238,5 @@ const login = async () => {
   filter: blur(50px);
 }
 </style> 
+
+

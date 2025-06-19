@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden">
     
     <!-- Grid Background with fade effect -->
@@ -16,7 +16,7 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-20 items-center">
           <div class="flex items-center">
-            <NuxtLink to="/dashboard" class="text-2xl font-semibold text-white hover:text-green-400 transition-colors duration-200">BAYTH</NuxtLink>
+            <NuxtLink to="/dashboard" class="text-2xl font-semibold text-white hover:text-pink-400 transition-colors duration-200">BAYTH</NuxtLink>
             <span class="ml-4 text-sm text-gray-400">/ Utilisateurs / Nouveau</span>
           </div>
           <div class="flex items-center space-x-4">
@@ -68,13 +68,13 @@
         </div>
         
         <!-- Message de succès -->
-        <div v-if="success" class="bg-green-500/10 backdrop-blur-lg border border-green-500/20 rounded-2xl p-6 mb-8">
+        <div v-if="success" class="bg-pink-500/10 backdrop-blur-lg border border-pink-500/20 rounded-2xl p-6 mb-8">
           <div class="flex items-start">
-            <svg class="h-6 w-6 text-green-400 mr-3 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg class="h-6 w-6 text-pink-400 mr-3 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
             </svg>
             <div class="flex-1">
-              <span class="text-green-300">Utilisateur créé avec succès !</span>
+              <span class="text-pink-300">Utilisateur créé avec succès !</span>
               <div class="mt-4 flex space-x-3">
                 <NuxtLink :to="`/users/${createdUserId}`" class="inline-flex items-center px-4 py-2 bg-purple-500/20 hover:bg-purple-500/30 text-purple-400 rounded-lg transition-all duration-200 border border-purple-500/20">
                   <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -446,3 +446,5 @@ const submitForm = async () => {
   filter: blur(50px);
 }
 </style>
+
+

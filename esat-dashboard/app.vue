@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
@@ -122,3 +122,4 @@ a:hover {
   background-color: #f5f5f5;
 }
 </style>
+
