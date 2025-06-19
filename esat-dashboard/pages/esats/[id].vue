@@ -551,8 +551,8 @@ const loadWorkers = async () => {
   width: 100%;
   height: 100%;
   background-image: 
-    linear-gradient(rgba(34, 197, 94, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(34, 197, 94, 0.1) 1px, transparent 1px);
+    linear-gradient(rgba(236, 72, 153, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(236, 72, 153, 0.1) 1px, transparent 1px);
   background-size: 80px 80px;
   background-position: 0 0, 0 0;
   animation: grid-move 20s linear infinite;
@@ -600,9 +600,9 @@ const loadWorkers = async () => {
   height: 700px;
   background: radial-gradient(
     circle,
-    rgba(34, 197, 94, 0.25) 0%,
-    rgba(34, 197, 94, 0.15) 30%,
-    rgba(34, 197, 94, 0.08) 60%,
+    rgba(236, 72, 153, 0.25) 0%,
+    rgba(236, 72, 153, 0.15) 30%,
+    rgba(236, 72, 153, 0.08) 60%,
     transparent 100%
   );
   filter: blur(60px);
@@ -615,9 +615,9 @@ const loadWorkers = async () => {
   height: 700px;
   background: radial-gradient(
     circle,
-    rgba(34, 197, 94, 0.20) 0%,
-    rgba(34, 197, 94, 0.12) 30%,
-    rgba(34, 197, 94, 0.06) 60%,
+    rgba(236, 72, 153, 0.20) 0%,
+    rgba(236, 72, 153, 0.12) 30%,
+    rgba(236, 72, 153, 0.06) 60%,
     transparent 100%
   );
   filter: blur(50px);

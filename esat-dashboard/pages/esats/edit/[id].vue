@@ -388,8 +388,8 @@ const resetForm = () => {
 /* Grid Background */
 .grid-pattern {
   background-image: 
-    linear-gradient(rgba(34, 197, 94, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(34, 197, 94, 0.1) 1px, transparent 1px);
+    linear-gradient(rgba(236, 72, 153, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(236, 72, 153, 0.1) 1px, transparent 1px);
   background-size: 50px 50px;
   position: absolute;
   inset: 0;
@@ -421,9 +421,9 @@ const resetForm = () => {
   height: 600px;
   background: radial-gradient(
     circle,
-    rgba(34, 197, 94, 0.15) 0%,
-    rgba(34, 197, 94, 0.08) 30%,
-    rgba(34, 197, 94, 0.03) 60%,
+    rgba(236, 72, 153, 0.15) 0%,
+    rgba(236, 72, 153, 0.08) 30%,
+    rgba(236, 72, 153, 0.03) 60%,
     transparent 100%
   );
 }
@@ -449,7 +449,7 @@ const resetForm = () => {
 
 .form-input:focus {
   transform: translateY(-1px);
-  box-shadow: 0 10px 25px rgba(34, 197, 94, 0.1);
+  box-shadow: 0 10px 25px rgba(236, 72, 153, 0.1);
 }
 
 /* Button hover effects */

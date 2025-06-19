@@ -1139,7 +1139,8 @@ const submitForm = async () => {
   left: 0;
   width: 100%;
     height: 100%;
-  @apply pink-grid-bg;
+  background: linear-gradient(rgba(236, 72, 153, 0.1) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(236, 72, 153, 0.1) 1px, transparent 1px);
   background-size: 80px 80px;
   background-position: 0 0, 0 0;
   animation: grid-move 20s linear infinite;

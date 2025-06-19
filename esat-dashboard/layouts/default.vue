@@ -1,4 +1,4 @@
-ï»¿<template>
+<template>
   <div class="min-h-screen main-gradient-bg relative overflow-hidden">
     <!-- Grid Background avec effet de fade -->
     <div class="absolute inset-0 z-0">
@@ -61,7 +61,7 @@
       
       <nav class="p-4 flex-1">
         <ul class="space-y-2">
-          <!-- Navigation conditionnelle basÃ©e sur les permissions -->
+          <!-- Navigation conditionnelle basée sur les permissions -->
           <li v-if="canAccessDashboard">
             <NuxtLink 
               to="/dashboard" 
@@ -158,11 +158,11 @@
             </div>
           </div>
           
-          <!-- Bouton de dÃ©connexion -->
+          <!-- Bouton de déconnexion -->
           <button 
             @click="handleLogout"
             class="ml-3 p-2 text-white/60 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200 border border-transparent hover:border-white/20"
-            title="Se dÃ©connecter"
+            title="Se déconnecter"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
@@ -188,10 +188,10 @@ const canAccessWorkers = ref(false);
 const canAccessEsats = ref(false);
 const canAccessMyEsat = ref(false);
 
-// Ã‰tat de la sidebar mobile
+// État de la sidebar mobile
 const isSidebarOpen = ref(false);
 
-// Fonctions pour contrÃ´ler la sidebar
+// Fonctions pour contrôler la sidebar
 const toggleSidebar = () => {
   isSidebarOpen.value = !isSidebarOpen.value;
 };
@@ -207,12 +207,12 @@ const closeSidebarOnMobile = () => {
   }
 };
 
-// GÃ©rer le redimensionnement de la fenÃªtre
+// Gérer le redimensionnement de la fenêtre
 const handleResize = () => {
   if (window.innerWidth >= 1024) {
     isSidebarOpen.value = true; // Toujours ouverte sur desktop
   } else {
-    isSidebarOpen.value = false; // FermÃ©e par dÃ©faut sur mobile
+    isSidebarOpen.value = false; // Fermée par défaut sur mobile
   }
 };
 
@@ -237,14 +237,14 @@ const userRoleDisplay = computed(() => {
   return roleMap[user.value.role] || user.value.role;
 });
 
-// Computed pour vÃ©rifier si l'onglet "Mon ESAT" doit Ãªtre actif
+// Computed pour vérifier si l'onglet "Mon ESAT" doit être actif
 const isMyEsatActive = computed(() => {
   if (!user.value?.esat_id) return false;
   
   const route = useRoute();
   const currentPath = route.path;
   
-  // Actif si on est sur /my-esat ou sur la page de dÃ©tails de son propre ESAT
+  // Actif si on est sur /my-esat ou sur la page de détails de son propre ESAT
   if (currentPath === '/my-esat') return true;
   
   const esatIdMatch = currentPath.match(/^\/esats\/(\d+)/);
@@ -256,30 +256,30 @@ const isMyEsatActive = computed(() => {
   return false;
 });
 
-// Fonction de dÃ©connexion
+// Fonction de déconnexion
 const handleLogout = async () => {
   try {
     const { logout } = useAuth();
     await logout();
   } catch (error) {
-    console.error('Erreur lors de la dÃ©connexion:', error);
-    // Forcer la redirection vers login mÃªme en cas d'erreur
+    console.error('Erreur lors de la déconnexion:', error);
+    // Forcer la redirection vers login même en cas d'erreur
     await navigateTo('/login');
   }
 };
 
-// Initialisation cÃ´tÃ© client seulement
+// Initialisation côté client seulement
 onMounted(async () => {
   if (!process.client) return;
   
   try {
-    // GÃ©rer la taille d'Ã©cran initiale
+    // Gérer la taille d'écran initiale
     handleResize();
     
-    // Ã‰couter les changements de taille d'Ã©cran
+    // Écouter les changements de taille d'écran
     window.addEventListener('resize', handleResize);
     
-    // RÃ©cupÃ©rer les composables d'authentification
+    // Récupérer les composables d'authentification
     const { user: authUser, fetchUser } = useAuth();
     const { 
       canAccessDashboard: dashboard, 
@@ -289,7 +289,7 @@ onMounted(async () => {
       canAccessMyEsat: myEsat
     } = usePermissions();
     
-    // RÃ©cupÃ©rer l'utilisateur connectÃ©
+    // Récupérer l'utilisateur connecté
     await fetchUser();
     await nextTick();
     
@@ -306,7 +306,7 @@ onMounted(async () => {
   }
 });
 
-// Nettoyer les Ã©vÃ©nements
+// Nettoyer les événements
 onUnmounted(() => {
   if (process.client) {
     window.removeEventListener('resize', handleResize);
@@ -328,7 +328,8 @@ onUnmounted(() => {
   width: 100%;
   height: 100%;
   background-image: 
-    
+    linear-gradient(rgba(236, 72, 153, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(236, 72, 153, 0.1) 1px, transparent 1px);
   background-size: 80px 80px;
   background-position: 0 0, 0 0;
 }
@@ -441,7 +442,7 @@ onUnmounted(() => {
   }
 }
 
-/* Animations supplÃ©mentaires */
+/* Animations supplémentaires */
 .sidebar-container {
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -467,7 +468,7 @@ html {
   scroll-behavior: smooth;
 }
 
-/* EmpÃªcher le scroll du body quand la sidebar mobile est ouverte */
+/* Empêcher le scroll du body quand la sidebar mobile est ouverte */
 @media (max-width: 1023px) {
   body:has(.sidebar-open) {
     overflow: hidden;
