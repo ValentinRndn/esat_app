@@ -5,11 +5,15 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
+    "start": "",
     "dev-clean": "cross-env NUXT_DEVTOOLS_ENABLED=false NODE_ENV=production nuxt dev --port 3007",
     "dev-minimal": "cross-env NUXT_DEVTOOLS_ENABLED=false nuxt dev --config-file nuxt.config.minimal.ts --port 3008",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
+  },
+  "overrides": {
+    "unicorn-magic": "0.1.0"
   },
   "dependencies": {
     "@nuxtjs/dotenv": "^1.4.2",

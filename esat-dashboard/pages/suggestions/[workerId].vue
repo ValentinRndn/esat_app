@@ -429,6 +429,14 @@ const initializeMap = async () => {
     // Importer Leaflet dynamiquement
     const L = await import('leaflet');
     
+    // Configurer les icônes par défaut de Leaflet pour corriger le problème des "Mark"
+    delete L.default.Icon.Default.prototype._getIconUrl;
+    L.default.Icon.Default.mergeOptions({
+      iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
+      iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+    });
+    
     // Vérifier que le conteneur existe toujours
     if (!mapContainer.value) return;
     

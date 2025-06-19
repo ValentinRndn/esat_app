@@ -1,4 +1,4 @@
-import { defineEventHandler, createError } from 'h3';
+import { defineEventHandler, createError, setHeaders } from 'h3';
 import { db, WorkerTable, EsatTable, EsatSelectable } from '../../../utils/db';
 import { Selectable } from 'kysely';
 import { GoogleGenerativeAI } from '@google/generative-ai';
@@ -8,10 +8,20 @@ import { useRuntimeConfig } from '#imports';
 type WorkerSelectable = Selectable<WorkerTable>;
 
 export default defineEventHandler(async (event) => {
+  // Définir les headers CORS pour la production
+  setHeaders(event, {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Content-Type': 'application/json'
+  });
+
   try {
     const runtimeConfig = useRuntimeConfig();
-    const geminiApiKey = 'AIzaSyA4j8xar5nsXqJ3bSpMyDYntoKqSBRP5To';
+    // Utiliser la configuration runtime au lieu d'une clé hardcodée
+    const geminiApiKey = runtimeConfig.geminiApiKey || process.env.NUXT_GEMINI_API_KEY || process.env.GEMINI_API_KEY;
 
+    console.log('Nuxt App - Environment:', process.env.NODE_ENV);
     console.log('Nuxt App - Using Gemini API Key from runtimeConfig:', geminiApiKey ? geminiApiKey.substring(0, 5) + '...' : 'Not Set or Empty');
 
     if (!geminiApiKey) {
