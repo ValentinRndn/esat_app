@@ -32,7 +32,7 @@
 
         <!-- Main Title -->
         <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-8 leading-tight">
-          le projet individuel<br>
+          Le projet individuel<br>
           <span class="text-pink-400">augmenté.</span>
         </h1>
 
