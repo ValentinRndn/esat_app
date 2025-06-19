@@ -5,7 +5,7 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
-    "start": "",
+    "start": "nuxt start",
     "dev-clean": "cross-env NUXT_DEVTOOLS_ENABLED=false NODE_ENV=production nuxt dev --port 3007",
     "dev-minimal": "cross-env NUXT_DEVTOOLS_ENABLED=false nuxt dev --config-file nuxt.config.minimal.ts --port 3008",
     "generate": "nuxt generate",
