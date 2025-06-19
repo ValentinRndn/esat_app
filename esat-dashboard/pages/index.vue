@@ -32,7 +32,7 @@
 
         <!-- Main Title -->
         <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-8 leading-tight">
-          La gestion des ESAT<br>
+          La gestion des ESATs<br>
           <span class="text-pink-400">simplifiée.</span>
         </h1>
 
