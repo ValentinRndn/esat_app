@@ -1,5 +1,5 @@
 ﻿<template>
-  <div class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden">
+  <div class="min-h-screen main-gradient-bg relative overflow-hidden">
     <!-- Grid Background avec effet de fade -->
     <div class="absolute inset-0 z-0">
       <div class="grid-pattern"></div>
@@ -328,8 +328,7 @@ onUnmounted(() => {
   width: 100%;
   height: 100%;
   background-image: 
-    linear-gradient(rgba(34, 197, 94, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(34, 197, 94, 0.1) 1px, transparent 1px);
+    
   background-size: 80px 80px;
   background-position: 0 0, 0 0;
 }
@@ -366,8 +365,8 @@ onUnmounted(() => {
   height: 500px;
   background: radial-gradient(
     circle,
-    rgba(34, 197, 94, 0.15) 0%,
-    rgba(34, 197, 94, 0.08) 30%,
+    rgba(236, 72, 153, 0.15) 0%,
+    rgba(236, 72, 153, 0.08) 30%,
     transparent 60%
   );
   filter: blur(40px);
@@ -380,8 +379,8 @@ onUnmounted(() => {
   height: 400px;
   background: radial-gradient(
     circle,
-    rgba(34, 197, 94, 0.12) 0%,
-    rgba(34, 197, 94, 0.06) 30%,
+    rgba(236, 72, 153, 0.12) 0%,
+    rgba(236, 72, 153, 0.06) 30%,
     transparent 60%
   );
   filter: blur(30px);

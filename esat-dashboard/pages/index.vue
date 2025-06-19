@@ -1,5 +1,5 @@
 ﻿<template>
-  <div class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden">
+  <div class="min-h-screen main-gradient-bg relative overflow-hidden">
     
     <!-- Header -->
     <header class="relative z-50 px-6 py-6">
@@ -98,11 +98,11 @@
     <!-- Background Effects -->
     <div class="absolute inset-0 z-0">
       <!-- Subtle Grid -->
-      <div class="absolute inset-0 bg-[linear-gradient(rgba(34,197,94,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(34,197,94,0.03)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
+      <div class="absolute inset-0 pink-grid-bg"></div>
       
       <!-- Light Effects -->
-      <div class="absolute top-1/4 right-1/4 w-96 h-96 bg-pink-500/5 rounded-full blur-3xl"></div>
-      <div class="absolute bottom-1/4 left-1/4 w-96 h-96 bg-pink-500/3 rounded-full blur-3xl"></div>
+      <div class="absolute top-1/4 right-1/4 w-96 h-96 pink-light-effect-1 rounded-full blur-3xl"></div>
+      <div class="absolute bottom-1/4 left-1/4 w-96 h-96 pink-light-effect-2 rounded-full blur-3xl"></div>
     </div>
   </div>
 </template>
@@ -123,48 +123,6 @@ const scrollToDemo = () => {
 };
 </script>
 
-<style scoped>
-/* Smooth gradients */
-.bg-gradient-to-br {
-  background: linear-gradient(135deg, #111827 0%, #1f2937 50%, #111827 100%);
-}
-
-/* Light Halos */
-.light-halo {
-  position: absolute;
-  border-radius: 50%;
-  pointer-events: none;
-}
-
-.light-halo-1 {
-  top: -8%;
-  right: -8%;
-  width: 700px;
-  height: 700px;
-  background: radial-gradient(
-    circle,
-    rgba(34, 197, 94, 0.25) 0%,
-    rgba(34, 197, 94, 0.15) 30%,
-    rgba(34, 197, 94, 0.08) 60%,
-    transparent 100%
-  );
-  filter: blur(60px);
-}
-
-.light-halo-2 {
-  top: 5%;
-  left: 5%;
-  width: 700px;
-  height: 700px;
-  background: radial-gradient(
-    circle,
-    rgba(34, 197, 94, 0.20) 0%,
-    rgba(34, 197, 94, 0.12) 30%,
-    rgba(34, 197, 94, 0.06) 60%,
-    transparent 100%
-  );
-  filter: blur(50px);
-}
-</style> 
+ 
 
 
